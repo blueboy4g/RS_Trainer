@@ -1,0 +1,310 @@
+[
+  {
+    "tick": 4,
+    "ability": "Invoke_Death"
+  },
+  {
+    "tick": 7,
+    "ability": "Conjure_Undead_Army"
+  },
+  {
+    "tick": 10,
+    "ability": "Life_Transfer"
+  },
+  {
+    "tick": 13,
+    "ability": "Command_Vengeful_Ghost"
+  },
+  {
+    "tick": 16,
+    "ability": "Command_Skeleton_Warrior"
+  },
+  {
+    "tick": 16,
+    "ability": "Surge"
+  },
+  {
+    "tick": 16,
+    "ability": "Death_Skulls"
+  },
+  {
+    "tick": 19,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 22,
+    "ability": "Bloat"
+  },
+  {
+    "tick": 25,
+    "ability": "Touch_of_Death"
+  },
+  {
+    "tick": 28,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 31,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 34,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 37,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 40,
+    "ability": "Command_Skeleton_Warrior"
+  },
+  {
+    "tick": 43,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 46,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 49,
+    "ability": "Touch_of_Death"
+  },
+  {
+    "tick": 52,
+    "ability": "Bloat"
+  },
+  {
+    "tick": 52,
+    "ability": "[Freedom]"
+  },
+  {
+    "tick": 55,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 58,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 58,
+    "ability": "Surge"
+  },
+  {
+    "tick": 61,
+    "ability": "Split_Soul"
+  },
+  {
+    "tick": 64,
+    "ability": "Volley_of_Souls"
+  },
+  {
+    "tick": 64,
+    "ability": "Surge"
+  },
+  {
+    "tick": 67,
+    "ability": "Threads_of_Fate"
+  },
+  {
+    "tick": 70,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 73,
+    "ability": "Touch_of_Death"
+  },
+  {
+    "tick": 76,
+    "ability": "Command_Skeleton_Warrior"
+  },
+  {
+    "tick": 76,
+    "ability": "Invoke_Death"
+  },
+  {
+    "tick": 79,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 82,
+    "ability": "Volley_of_Souls"
+  },
+  {
+    "tick": 85,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 88,
+    "ability": "Bloat"
+  },
+  {
+    "tick": 91,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 94,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 97,
+    "ability": "Command_Skeleton_Warrior"
+  },
+  {
+    "tick": 100,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 103,
+    "ability": "Touch_of_Death"
+  },
+  {
+    "tick": 106,
+    "ability": "Death_Skulls"
+  },
+  {
+    "tick": 109,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 112,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 115,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 118,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 118,
+    "ability": "Living_Death"
+  },
+  {
+    "tick": 118,
+    "ability": "Adrenaline_potion"
+  },
+  {
+    "tick": 121,
+    "ability": "Touch_of_Death"
+  },
+  {
+    "tick": 124,
+    "ability": "Death_Skulls"
+  },
+  {
+    "tick": 127,
+    "ability": "Finger_of_Death"
+  },
+  {
+    "tick": 130,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 133,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 136,
+    "ability": "Finger_of_Death"
+  },
+  {
+    "tick": 139,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 142,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 145,
+    "ability": "Death_Skulls"
+  },
+  {
+    "tick": 145,
+    "ability": "Invoke_Death"
+  },
+  {
+    "tick": 148,
+    "ability": "Split_Soul"
+  },
+  {
+    "tick": 151,
+    "ability": "Volley_of_Souls"
+  },
+  {
+    "tick": 154,
+    "ability": "Touch_of_Death"
+  },
+  {
+    "tick": 157,
+    "ability": "Finger_of_Death"
+  },
+  {
+    "tick": 160,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 163,
+    "ability": "Death_Skulls"
+  },
+  {
+    "tick": 166,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 169,
+    "ability": "Life_Transfer"
+  },
+  {
+    "tick": 172,
+    "ability": "Command_Skeleton_Warrior"
+  },
+  {
+    "tick": 175,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 178,
+    "ability": "Touch_of_Death"
+  },
+  {
+    "tick": 181,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 184,
+    "ability": "Death_Skulls"
+  },
+  {
+    "tick": 187,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 187,
+    "ability": "Finger_of_Death"
+  },
+  {
+    "tick": 190,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 193,
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 196,
+    "ability": "Command_Skeleton_Warrior"
+  },
+  {
+    "tick": 199,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 202,
+    "ability": "Volley_of_Souls"
+  }
+]
