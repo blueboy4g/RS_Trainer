@@ -36,7 +36,7 @@ press_zone_rect = pygame.Rect(PRESS_ZONE_X, (SCREEN_HEIGHT // 2) - 450, 1, 450) 
 tick_bars = []  # Store tick bars
 
 # Load note sequences
-with open("../RS_Trainer/Telos_Necro.json") as f:
+with open("../RS_Trainer/TelosMagic.json") as f:
     note_sequence = json.load(f)
 
 # Game variables
