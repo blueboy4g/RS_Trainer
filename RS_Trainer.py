@@ -2,8 +2,8 @@ import json
 import time
 
 from DialAnimation import DialAnimation
-from TestConfig import *
-from TestNote import Note, TickBar
+from Config import *
+from Ability import Ability, TickBar
 import pygame
 import tkinter as tk
 
@@ -32,7 +32,7 @@ press_zone_rect = pygame.Rect(PRESS_ZONE_X, (SCREEN_HEIGHT // 2) - 225, 1, 450) 
 tick_bars = []  # Store tick bars
 
 # Load note sequences
-with open("Vernyx.json") as f:
+with open("Boss_Rotations/Vernyx.json") as f:
     note_sequence = json.load(f)
 
 # Game variables
@@ -128,7 +128,7 @@ while running:
                     note_y = (SCREEN_HEIGHT // 4) + (tick_count * NOTE_SPACING_Y)
                     if key == []:
                         key = ["MOUSE"]
-                    note = Note(
+                    note = Ability(
                         ability=ability,
                         key=key,
                         image_path=image_path,

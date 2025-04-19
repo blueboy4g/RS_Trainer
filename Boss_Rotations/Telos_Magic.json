@@ -17,15 +17,15 @@
   },
   {
     "tick": 13,
+    "ability": "Adrenaline_potion"
+  },
+  {
+    "tick": 14,
     "ability": "Smoke_Cloud"
   },
   {
-    "tick": 13,
-    "ability": "Vulnerability_bomb"
-  },
-  {
-    "tick": 16,
-    "ability": "Roar_Of_Awakening"
+    "tick": 14,
+    "ability": "Weapon_Special_Attack"
   },
   {
     "tick": 19,

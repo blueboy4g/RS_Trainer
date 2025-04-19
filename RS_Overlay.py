@@ -4,8 +4,8 @@ import time
 import win32con
 
 from DialAnimation import DialAnimation
-from TestConfig import *
-from TestNote import Note
+from Config import *
+from Ability import Ability
 import tkinter as tk
 import pygame
 import threading
@@ -36,8 +36,12 @@ press_zone_rect = pygame.Rect(PRESS_ZONE_X, (SCREEN_HEIGHT // 2) - 450, 1, 450) 
 tick_bars = []  # Store tick bars
 
 # Load note sequences
-with open("../RS_Trainer/TelosMagic.json") as f:
+# with open("../RS_Trainer/Telos_Necro.json") as f:
+#     note_sequence = json.load(f)
+
+with open("Boss_Rotations/Telos_Necro.json") as f:
     note_sequence = json.load(f)
+
 
 # Game variables
 running = True
@@ -77,6 +81,33 @@ key_combination_map = {
     "SHIFT+8": "*",
     "SHIFT+9": "(",
     "SHIFT+0": ")",
+    "SHIFT+A": "A",
+    "SHIFT+B": "B",
+    "SHIFT+C": "C",
+    "SHIFT+D": "D",
+    "SHIFT+E": "E",
+    "SHIFT+F": "F",
+    "SHIFT+G": "G",
+    "SHIFT+H": "H",
+    "SHIFT+I": "I",
+    "SHIFT+J": "J",
+    "SHIFT+K": "K",
+    "SHIFT+L": "L",
+    "SHIFT+M": "M",
+    "SHIFT+N": "N",
+    "SHIFT+O": "O",
+    "SHIFT+P": "P",
+    "SHIFT+Q": "Q",
+    "SHIFT+R": "R",
+    "SHIFT+S": "S",
+    "SHIFT+T": "T",
+    "SHIFT+U": "U",
+    "SHIFT+V": "V",
+    "SHIFT+W": "W",
+    "SHIFT+X": "X",
+    "SHIFT+Y": "Y",
+    "SHIFT+Z": "Z",
+
     # Add more mappings as needed
 }
 
@@ -344,7 +375,7 @@ while running:
                     note_y = (SCREEN_HEIGHT // 24) + (tick_count * (NOTE_SPACING_Y - 20))
                     if key == []:
                         key = ["MOUSE"]
-                    note = Note(
+                    note = Ability(
                         ability=ability,
                         key=key,
                         image_path=image_path,
@@ -369,7 +400,7 @@ while running:
                     note_y = (SCREEN_HEIGHT // 24) + (tick_count_queue * (NOTE_SPACING_Y - 20))
                     if key == []:
                         key = ["MOUSE"]
-                    note = Note(
+                    note = Ability(
                         ability=ability,
                         key=key,
                         image_path=image_path,

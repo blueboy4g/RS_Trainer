@@ -1,9 +1,9 @@
 import re
 import difflib
-from TestConfig import ABILITY_KEYBINDS
+from Config import ABILITY_KEYBINDS
 import json
 
-TextFile = "PVM_Discord2.txt"
+TextFile = "PVM_Discord.txt"
 
 ALIASES = {
     "(tc)": "<:Target_Cycle:000000000000000000>",  # Replace with actual emoji ID if needed
@@ -37,6 +37,12 @@ EMOJI_NAME_OVERRIDES = {
     "prep": "Preparation",
     "meta": "Metamorphosis",
     "bd": "Bladed Dive",
+    "natty": "Natrual Instinct",
+    "eof": "Essence_of_Finality",
+    "asfix": "Asphyxiate",
+    "ioh": "Ingenuity_of_the_humans",
+    "magma": "Magma_Tempest",
+    "tc": "Target_Cycle",
 
 }
 

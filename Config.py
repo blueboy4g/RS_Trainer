@@ -1,0 +1,222 @@
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+PRESS_ZONE_X = 100  # Position where notes should be pressed... note its 10 pixels wide as well -> we need to move 10 pixels in .6 seconds?
+
+TICK_DURATION = 0.6  # Each tick is 600ms
+NOTE_SPEED = 100  # Pixels per tick?
+ABILITY_DEFAULT_WIDTH = 75  # Default width of ability images
+NOTE_SPACING_Y = 100  # Space between stacked notes
+
+
+# Ability to Key Mapping (Supports Function Keys and Modifiers)
+#Can use SHIFT, MOUSE, LCTRL, F1-F12
+ABILITY_KEYBINDS = {
+
+    #GEAR SWAPS
+    "Royal_Crossbow": ["`"],
+    "Noxious_Scythe": ["F4"],
+    "Fractured_Staff_Of_Armadyl": ["F4"],
+    "Soulbound_Lantern": ["F1"],
+    "Omni_Guard": ["F2"],
+    "Death_Guard": [],
+    "Skull_Lantern": ["LCTRL", "F3"],
+    "Roar_Of_Awakening": ["F1"],
+    "Ode_To_Deceit": ["F2"],
+    "Dark_Shard_Of_Leng": ["F1"],
+    "Dark_Sliver_Of_Leng": ["F2"],
+
+    #MISC
+    "Move": ["MOUSE"],
+    "Powerburst_of_vitality": [],
+    "Demon_Slayer": [],
+    "Dive": ["B"],
+    "Dragon_Slayer": [],
+    "Eat_Food": ["A"],
+    "Escape": ["H"],
+    "Essence_of_Finality": ["LCTRL", "2"],
+    "Limitless": ["LCTRL", "1"],
+    "Onslaught": [],
+    "Quiver_ammo_slot_1": [],
+    "Quiver_ammo_slot_2": [],
+    "Reprisal": [],
+    "Sacrifice": [],
+    "Shatter": [],
+    "Storm_Shards": [],
+    "Tuska's_Wrath": [],
+    "Undead_Slayer": [],
+    "Weapon_Special_Attack": ["\\"],
+    "Adrenaline_potion": ["G"],
+    "Target_Cycle": ["Z"],
+    "Vulnerability_bomb": ["V"],
+
+    #MAGIC ABILITIES
+    "Asphyxiate": ["E"],
+    "Chain": ["5"],
+    "Combust": [","],
+    "Concentrated_Blast": [],
+    "Corruption_Blast": ["4"],
+    "Deep_Impact": ["SHIFT", "W"],
+    "Detonate": ["T"],
+    "Dragon_Breath": ["2"],
+    "Greater_Chain": ["5"],
+    "Greater_Concentrated_Blast": ["1"],
+    "Greater_Sonic_Wave": ["3"],
+    "Greater_Sunshine": ["Y"],
+    "Horror": [""],
+    "Impact": ["SHIFT", "E"],
+    "Magma_Tempest": ["M"],
+    "Metamorphosis": ["-"],
+    "Omnipower": ["W"],
+    "Shock": ["SHIFT", "O"],
+    "Smoke_Tendrils": ["Q"],
+    "Sonic_Wave": ["3"],
+    "Sunshine": ["Y"],
+    "Surge": ["["],
+    "Tsunami": ["6"],
+    "Wild_Magic": ["R"],
+    "Wrack": ["3"],
+    "Wrack_and_Ruin": ["3"],
+
+    #MAGIC SPELLS
+    "Exsanguinate": [],
+    "Incite_Fear": [],
+    "Temporal_Anomaly": [],
+    "Disruption_Shield": [";"],
+    "Vengeance": ["0"],
+    "Smoke_Cloud": ["X"],
+    "Blood_Barrage": ["F3"],
+    "Intercept": ["K"],
+    "Spellbook_Swap": ["P"],
+    "Animate_Dead": ["F5"],
+
+    #DEFENSE ABILITIES
+    "Anticipation": ["SHIFT", "1"],
+    "Barricade": ["U"],
+    "Bash": [],
+    "Cease": ["O"],
+    "Debilitate": ["LCTRL", "3"],
+    "Devotion": ["SHIFT", "R"],
+    "Divert": ["SHIFT", "3"],
+    "[Freedom]": ["SHIFT", "2"],
+    "Ice_Asylum": [],
+    "Immortality": [],
+    "Ingenuity_of_the_Humans": ["SHIFT", "Q"],
+    "Natural_Instinct": ["N"],
+    "Preparation": ["I"],
+    "Provoke": [],
+    "Reflect": ["SHIFT", "5"],
+    "Rejuvenate": [],
+    "Resonance": ["SHIFT", "4"],
+    "Revenge": [],
+
+    #MELEE ABILITIES
+    "Assault": ["R"],
+    "Backhand": ["Q"],
+    "Balanced_Strike": [],
+    "Barge": [],
+    "Berserk": ["Y"],
+    "Bladed_Dive": ["B"],
+    "Blood_Tendrils": [","],
+    "Chaos_Roar": ["I"],
+    "Cleave": ["1"],
+    "Decimate": ["1"],
+    "Destroy": ["E"],
+    "Dismember": ["6"],
+    "Flurry": ["T"],
+    "Forceful_Backhand": [],
+    "Frenzy": [],
+    "Fury": ["3"],
+    "Greater_Barge": ["-"],
+    "Greater_Flurry": ["T"],
+    "Greater_Fury": ["3"],
+    "Havoc": ["5"],
+    "Hurricane": ["T"],
+    "Kick": [],
+    "Massacre": [],
+    "Meteor_Strike": ["J"],
+    "Overpower": ["U"],
+    "Pulverise": [],
+    "Punish": ["4"],
+    "Quake": ["E"],
+    "Sever": ["2"],
+    "Slaughter": ["W"],
+    "Slice": [],
+    "Smash": [],
+    "Stomp": [],
+
+    #RANGED ABILITIES
+    "Binding_Shot": ["4"],
+    "Bombardment": ["T"],
+    "Corruption_Shot": [","],
+    "Dazing_Shot": [],
+    "Deadshot": [],
+    "Death's_Swiftness": [],
+    "Demoralise": [],
+    "Fragmentation_Shot": ["-"],
+    "Greater_Dazing_Shot": ["2"],
+    "Greater_Death's_Swiftness": ["Y"],
+    "Greater_Ricochet": ["1"],
+    "Incendiary_Shot": ["6"],
+    "Needle_Strike": ["2"],
+    "Piercing_Shot": ["3"],
+    "Rapid_Fire": ["R"],
+    "Ricochet": ["1"],
+    "Rout": [],
+    "Salt_the_Wound": ["W"],
+    "Shadow_Tendrils": ["Q"],
+    "Snap_Shot": ["E"],
+    "Snipe": ["5"],
+    "Tight_Bindings": ["4"],
+    "Unload": [],
+
+    #NECROMANCY ABILITIES
+    "Bloat": ["Q"],
+    "Blood_Siphon": ["M"],
+    "Command_Phantom_Guardian": ["SHIFT", "E"],
+    "Command_Putrid_Zombie": ["X"],
+    "Command_Skeleton_Warrior": ["6"],
+    "Command_Vengeful_Ghost": ["5"],
+    "Conjure_Phantom_Guardian": [],
+    "Conjure_Putrid_Zombie": [],
+    "Conjure_Skeleton_Warrior": [],
+    "Conjure_Undead_Army": ["4"],
+    "Conjure_Vengeful_Ghost": [],
+    "Death_Skulls": ["R"],
+    "Finger_of_Death": ["-"],
+    "Living_Death": ["Y"],
+    "Necromancy": ["3"],
+    "Soul_Sap": ["2"],
+    "Soul_Strike": ["E"],
+    "Spectral_Scythe": [],
+    "Spectral_Scythe_2": [],
+    "Spectral_Scythe_3": [],
+    "Touch_of_Death": ["1"],
+    "Volley_of_Souls": [","],
+    "Life_Transfer": ["F3"],
+    "Threads_of_Fate": ["T"],
+    "Invoke_Lord_of_Bones": ["W"],
+    "Invoke_Death": ["LCTRL", "F1"],
+    "Darkness": ["F5"],
+    "Split_Soul": ["F4"],
+    "Death_Spark": [],
+
+}
+
+#Add weapons, release stored attack
+
+# Abilities that should NOT trigger the dial animation
+EXCLUDED_DIAL_ANIMATIONS = {"Surge", "Dive", "Bladed_Dive", "Escape", "Eat_Food",
+                            "Powerburst_of_vitality", "Move", "Adrenaline_potion",
+                            "Disruption_Shield", "Spellbook_Swap", "Exsanguinate",
+                            "Incite_Fear", "Temporal_Anomaly", "Vengeance", "Target_Cycle",
+                            "Smoke_Cloud", "Blood_Barrage","Vulnerability_bomb", "Royal_Crossbow",
+                            "Noxious_Scythe", "Fractured_Staff_Of_Armadyl", "Soulbound_Lantern", "Omni_Guard",
+                            "Death_Guard", "Skull_Lantern", "Roar_Of_Awakening", "Ode_To_Deceit",
+                            "Dark_Shard_Of_Leng", "Dark_Sliver_Of_Leng",}
+
+
+# Ability to Image Mapping
+prefix="Ability_Icons/30px-"
+ABILITY_IMAGES = {ability: f"{prefix}{ability}.png" for ability in ABILITY_KEYBINDS}
+
+

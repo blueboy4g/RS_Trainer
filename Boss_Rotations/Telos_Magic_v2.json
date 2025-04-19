@@ -1,0 +1,450 @@
+[
+  {
+    "tick": 4,
+    "ability": "Magma_Tempest"
+  },
+  {
+    "tick": 7,
+    "ability": "Devotion"
+  },
+  {
+    "tick": 10,
+    "ability": "Surge"
+  },
+  {
+    "tick": 13,
+    "ability": "Metamorphosis"
+  },
+  {
+    "tick": 16,
+    "ability": "Target_Cycle"
+  },
+  {
+    "tick": 16,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 16,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 19,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 19,
+    "ability": "Adrenaline_potion"
+  },
+  {
+    "tick": 22,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 22,
+    "ability": "Vulnerability_bomb"
+  },
+  {
+    "tick": 25,
+    "ability": "Combust"
+  },
+  {
+    "tick": 28,
+    "ability": "Corruption_Blast"
+  },
+  {
+    "tick": 31,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 34,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 37,
+    "ability": "Asphyxiate"
+  },
+  {
+    "tick": 40,
+    "ability": "Deep_Impact"
+  },
+  {
+    "tick": 43,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 46,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 49,
+    "ability": "Omnipower"
+  },
+  {
+    "tick": 52,
+    "ability": "Tsunami"
+  },
+  {
+    "tick": 55,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 58,
+    "ability": "Impact"
+  },
+  {
+    "tick": 61,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 64,
+    "ability": "Wrack"
+  },
+  {
+    "tick": 67,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 70,
+    "ability": "Greater_Chain"
+  },
+  {
+    "tick": 70,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 73,
+    "ability": "Asphyxiate"
+  },
+  {
+    "tick": 76,
+    "ability": "Deep_Impact"
+  },
+  {
+    "tick": 76,
+    "ability": "Escape"
+  },
+  {
+    "tick": 79,
+    "ability": "Fractured_Staff_Of_Armadyl"
+  },
+  {
+    "tick": 82,
+    "ability": "Impact"
+  },
+  {
+    "tick": 85,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 88,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 91,
+    "ability": "Chain"
+  },
+  {
+    "tick": 94,
+    "ability": "Combust"
+  },
+  {
+    "tick": 97,
+    "ability": "Devotion"
+  },
+  {
+    "tick": 100,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 103,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 106,
+    "ability": "[Freedom]"
+  },
+  {
+    "tick": 109,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 112,
+    "ability": "Surge"
+  },
+  {
+    "tick": 115,
+    "ability": "Resonance"
+  },
+  {
+    "tick": 118,
+    "ability": "Surge"
+  },
+  {
+    "tick": 121,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 124,
+    "ability": "Impact"
+  },
+  {
+    "tick": 127,
+    "ability": "Wrack"
+  },
+  {
+    "tick": 130,
+    "ability": "Asphyxiate"
+  },
+  {
+    "tick": 133,
+    "ability": "Deep_Impact"
+  },
+  {
+    "tick": 136,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 139,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 142,
+    "ability": "Wrack"
+  },
+  {
+    "tick": 145,
+    "ability": "Omnipower"
+  },
+  {
+    "tick": 148,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 151,
+    "ability": "Corruption_Blast"
+  },
+  {
+    "tick": 154,
+    "ability": "Asphyxiate"
+  },
+  {
+    "tick": 157,
+    "ability": "Deep_Impact"
+  },
+  {
+    "tick": 160,
+    "ability": "Impact"
+  },
+  {
+    "tick": 163,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 166,
+    "ability": "Wrack"
+  },
+  {
+    "tick": 169,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 172,
+    "ability": "Resonance"
+  },
+  {
+    "tick": 175,
+    "ability": "Reflect"
+  },
+  {
+    "tick": 178,
+    "ability": "Anticipation"
+  },
+  {
+    "tick": 181,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 184,
+    "ability": "Wrack"
+  },
+  {
+    "tick": 187,
+    "ability": "Detonate"
+  },
+  {
+    "tick": 190,
+    "ability": "Detonate"
+  },
+  {
+    "tick": 190,
+    "ability": "Impact"
+  },
+  {
+    "tick": 193,
+    "ability": "Surge"
+  },
+  {
+    "tick": 193,
+    "ability": "Asphyxiate"
+  },
+  {
+    "tick": 196,
+    "ability": "Deep_Impact"
+  },
+  {
+    "tick": 199,
+    "ability": "Wrack"
+  },
+  {
+    "tick": 202,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 205,
+    "ability": "Barricade"
+  },
+  {
+    "tick": 208,
+    "ability": "Preparation"
+  },
+  {
+    "tick": 211,
+    "ability": "Wrack"
+  },
+  {
+    "tick": 214,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 217,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 220,
+    "ability": "Chain"
+  },
+  {
+    "tick": 223,
+    "ability": "Anticipation"
+  },
+  {
+    "tick": 226,
+    "ability": "Detonate"
+  },
+  {
+    "tick": 229,
+    "ability": "Detonate"
+  },
+  {
+    "tick": 229,
+    "ability": "Impact"
+  },
+  {
+    "tick": 232,
+    "ability": "Asphyxiate"
+  },
+  {
+    "tick": 235,
+    "ability": "Deep_Impact"
+  },
+  {
+    "tick": 238,
+    "ability": "Ingenuity_of_the_humans"
+  },
+  {
+    "tick": 241,
+    "ability": "Resonance"
+  },
+  {
+    "tick": 244,
+    "ability": "Reflect"
+  },
+  {
+    "tick": 247,
+    "ability": "Chain"
+  },
+  {
+    "tick": 250,
+    "ability": "Detonate"
+  },
+  {
+    "tick": 253,
+    "ability": "Detonate"
+  },
+  {
+    "tick": 253,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 256,
+    "ability": "Asphyxiate"
+  },
+  {
+    "tick": 259,
+    "ability": "Wild_Magic"
+  },
+  {
+    "tick": 262,
+    "ability": "Dragon_Breath"
+  },
+  {
+    "tick": 265,
+    "ability": "Wrack"
+  },
+  {
+    "tick": 268,
+    "ability": "Natrual Instinct"
+  },
+  {
+    "tick": 271,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 271,
+    "ability": "Fractured_Staff_Of_Armadyl"
+  },
+  {
+    "tick": 274,
+    "ability": "Dive"
+  },
+  {
+    "tick": 274,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 277,
+    "ability": "Reflect"
+  },
+  {
+    "tick": 280,
+    "ability": "Metamorphosis"
+  },
+  {
+    "tick": 283,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 286,
+    "ability": "Barricade"
+  },
+  {
+    "tick": 289,
+    "ability": "Omnipower"
+  },
+  {
+    "tick": 292,
+    "ability": "Wild_Magic"
+  },
+  {
+    "tick": 295,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 298,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 301,
+    "ability": "Essence_of_Finality"
+  }
+]

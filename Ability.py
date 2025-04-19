@@ -3,7 +3,7 @@ import time
 import pygame
 import os
 
-from TestConfig import NOTE_SPEED
+from Config import NOTE_SPEED
 
 last_tick_bar_time = None  # Initialize tick timing
 
@@ -71,7 +71,7 @@ class TickBar(GameObject):
             screen.blit(avg_tick_text, (10, 50))  # Position the text on screen
 
 
-class Note(GameObject):
+class Ability(GameObject):
     """Represents a falling note that must be pressed"""
     def __init__(self, ability, key, image_path, start_x, start_y, width=75, stationary=False, visible=True):
         super().__init__(start_x, start_y, width, width, NOTE_SPEED)

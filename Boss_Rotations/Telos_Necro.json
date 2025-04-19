@@ -184,28 +184,40 @@
     "ability": "Essence_of_Finality"
   },
   {
-    "tick": 124,
-    "ability": "Conjure_Undead_Army"
-  },
-  {
     "tick": 127,
-    "ability": "Reflect"
+    "ability": "Soul_Sap"
   },
   {
     "tick": 130,
-    "ability": "Resonance"
+    "ability": "Reflect"
   },
   {
-    "tick": 131,
+    "tick": 132,
     "ability": "Preparation"
   },
   {
-    "tick": 133,
+    "tick": 134,
     "ability": "Anticipation"
   },
-  {
+    {
+    "tick": 135,
+    "ability": "Necromancy"
+  },
+    {
     "tick": 136,
+    "ability": "Conjure_Undead_Army"
+  },
+    {
+    "tick": 137,
+    "ability": "Necromancy"
+  },
+  {
+    "tick": 138,
     "ability": "Threads_of_Fate"
+  },
+  {
+    "tick": 138,
+    "ability": "Vulnerability_bomb"
   },
   {
     "tick": 139,
@@ -217,23 +229,35 @@
   },
   {
     "tick": 145,
-    "ability": "Finger_of_Death"
+    "ability": "Weapon_Special_Attack"
   },
   {
     "tick": 145,
     "ability": "Surge"
   },
-      {
+  {
     "tick": 146,
-    "ability": "Soul_Sap"
+    "ability": "Freedom"
   },
     {
     "tick": 147,
-    "ability": "Divert"
+    "ability": "Command_Vengeful_Ghost"
   },
   {
     "tick": 148,
-    "ability": "Devotion"
+    "ability": "Soul_Sap"
+  },
+  {
+    "tick": 149,
+    "ability": "Freedom"
+  },
+  {
+    "tick": 151,
+    "ability": "Touch_of_Death"
+  },
+  {
+    "tick": 152,
+    "ability": "Divert"
   },
   {
     "tick": 154,
@@ -243,44 +267,48 @@
     "tick": 157,
     "ability": "Anticipation"
   },
+    {
+    "tick": 158,
+    "ability": "Reflect"
+  },
   {
-    "tick": 160,
-    "ability": "Touch_of_Death"
+    "tick": 159,
+    "ability": "Command_Skeleton_Warrior"
   },
     {
-    "tick": 161,
-    "ability": "Soul_Sap"
-  },
-  {
-    "tick": 163,
-    "ability": "Soul_Strike"
+    "tick": 160,
+    "ability": "Command_Phantom_Guardian"
   },
   {
     "tick": 166,
     "ability": "Essence_of_Finality"
   },
   {
-    "tick": 169,
-    "ability": "Divert"
-  },
-  {
-    "tick": 172,
-    "ability": "Freedom"
-  },
-  {
     "tick": 173,
-    "ability": "Soul_Sap"
+    "ability": "Freedom"
   },
   {
     "tick": 175,
     "ability": "Ingenuity_of_the_Humans"
   },
   {
-    "tick": 178,
-    "ability": "Command_Vengeful_Ghost"
+    "tick": 176,
+    "ability": "Surge"
   },
   {
     "tick": 179,
+    "ability": "Soul_Sap"
+  },
+    {
+    "tick": 180,
+    "ability": "Resonance"
+  },
+  {
+    "tick": 181,
+    "ability": "Preparation"
+  },
+  {
+    "tick": 182,
     "ability": "Soul_Sap"
   },
   {
@@ -326,6 +354,10 @@
   {
     "tick": 211,
     "ability": "Barricade"
+  },
+    {
+    "tick": 212,
+    "ability": "Split_Soul"
   },
   {
     "tick": 214,
