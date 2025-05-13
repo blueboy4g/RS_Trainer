@@ -1,6 +1,22 @@
 [
   {
     "tick": 4,
+    "ability": "Spellbook_Swap"
+  },
+    {
+    "tick": 4,
+    "ability": "Vengeance"
+  },
+    {
+    "tick": 5,
+    "ability": "Spellbook_Swap"
+  },
+    {
+    "tick": 5,
+    "ability": "Disruption_Shield"
+  },
+  {
+    "tick": 6,
     "ability": "Soul_Sap"
   },
   {
@@ -54,6 +70,10 @@
   {
     "tick": 37,
     "ability": "Command_Skeleton_Warrior"
+  },
+  {
+    "tick": 40,
+    "ability": "Target_Cycle"
   },
   {
     "tick": 40,
@@ -257,17 +277,17 @@
   },
   {
     "tick": 152,
-    "ability": "Divert"
+    "ability": "Devotion"
   },
   {
-    "tick": 154,
-    "ability": "Soul_Sap"
+    "tick": 156,
+    "ability": "Anticipation"
   },
   {
     "tick": 157,
-    "ability": "Anticipation"
+    "ability": "Soul_Sap"
   },
-    {
+  {
     "tick": 158,
     "ability": "Reflect"
   },
