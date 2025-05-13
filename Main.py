@@ -9,7 +9,7 @@ import requests
 import webbrowser
 
 CURRENT_VERSION = "1.0.0"
-VERSION_URL = "https://raw.githubusercontent.com/youruser/RS_Trainer/main/version.json"
+VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version.json"
 
 def check_for_update():
     try:
