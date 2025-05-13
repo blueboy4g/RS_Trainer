@@ -1,15 +1,37 @@
+import shutil
 import tkinter as tk
 from tkinter import filedialog, messagebox
+from tkinter import ttk
 import subprocess
 import threading
 import os
 import sys
-
 import requests
 import webbrowser
 
+from config.config import ensure_keybinds_file_exists
+ensure_keybinds_file_exists()
+
+# ----------------- Config -----------------
 CURRENT_VERSION = "0.8.0"
 VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version.json"
+
+APP_NAME = "Azulyn"
+APPDATA_DIR = os.path.join(os.environ["APPDATA"], APP_NAME)
+os.makedirs(APPDATA_DIR, exist_ok=True)
+
+last_boss_selected_save = os.path.join(APPDATA_DIR, "last_boss_selected.txt")
+last_rotation_selected_save = os.path.join(APPDATA_DIR, "last_rotation_selected.txt")
+KEYBINDS_FILE = os.path.join(APPDATA_DIR, "keybinds.json")
+PVM_DISCORD_FILE = os.path.join(APPDATA_DIR, "pvm_discord.txt")
+DEFAULT_PVM_DISCORD_PATH = os.path.join("config", "pvm_discord.txt")
+
+ICON_PATH = "Resources/azulyn_icon.ico"
+# ------------------------------------------
+
+if not os.path.exists(PVM_DISCORD_FILE):
+    if os.path.exists(DEFAULT_PVM_DISCORD_PATH):
+        shutil.copy(DEFAULT_PVM_DISCORD_PATH, PVM_DISCORD_FILE)
 
 def check_for_update():
     try:
@@ -18,47 +40,38 @@ def check_for_update():
         latest_version = data["version"]
         download_url = data["download_url"]
         notes = data.get("notes", "")
-
         if latest_version != CURRENT_VERSION:
-            message = f"A new version ({latest_version}) is available!\n\nChanges:\n{notes}\n\nDownload now?"
-            if messagebox.askyesno("Update Available", message):
+            if messagebox.askyesno("Update Available", f"New version {latest_version} available:\n\n{notes}\n\nDownload now?"):
                 webbrowser.open(download_url)
         else:
-            messagebox.showinfo("No Update", f"You are running the latest version ({CURRENT_VERSION}).")
-
+            messagebox.showinfo("No Update", f"You're running the latest version ({CURRENT_VERSION})")
     except Exception as e:
-        messagebox.showerror("Update Check Failed", f"Could not check for updates:\n{e}")
+        messagebox.showerror("Update Check Failed", str(e))
 
-
-CONFIG_SAVE_FILE = "config/last_config.txt"
-CONFIG_SAVE_FILE2 = "config/last_config2.txt"
-
-def load_last_used_config():
-    if os.path.exists(CONFIG_SAVE_FILE):
-        with open(CONFIG_SAVE_FILE, 'r') as f:
+def load_last_used_boss():
+    if os.path.exists(last_boss_selected_save):
+        with open(last_boss_selected_save, 'r') as f:
             return f.read().strip()
-    return "boss_rotations/Telos_Necro.json"
+    return "boss_rotations/telos_necro.json"
 
-def load_last_used_config2():
-    if os.path.exists(CONFIG_SAVE_FILE2):
-        with open(CONFIG_SAVE_FILE2, 'r') as f:
+def load_last_pvm_rot():
+    if os.path.exists(last_rotation_selected_save):
+        with open(last_rotation_selected_save, 'r') as f:
             return f.read().strip()
-    return "config/pvm_discord.txt"
+    return PVM_DISCORD_FILE
 
 def save_current_config():
-    with open(CONFIG_SAVE_FILE, 'w') as f:
-        f.write(config_path.get())
+    with open(last_boss_selected_save, 'w') as f:
+        f.write(last_used_boss.get())
 
 def start_script(exe_path, log_output=False, args=None):
     full_path = os.path.abspath(exe_path)
-    script_dir = os.path.dirname(full_path)
     args = args or []
-
     def run():
         try:
             process = subprocess.Popen(
                 [full_path] + args,
-                cwd=script_dir,
+                cwd=os.path.dirname(full_path),
                 stdout=subprocess.PIPE if log_output else None,
                 stderr=subprocess.STDOUT if log_output else None,
                 text=True
@@ -71,49 +84,16 @@ def start_script(exe_path, log_output=False, args=None):
                 process.wait()
         except Exception as e:
             messagebox.showerror("Error", f"Failed to launch {exe_path}:\n{e}")
-
     threading.Thread(target=run).start()
-
 
 def open_file_editor(filepath):
     if not os.path.isfile(filepath):
         messagebox.showerror("Error", f"File not found: {filepath}")
         return
-
-    editor = get_default_editor()
-    try:
-        subprocess.Popen([editor, filepath])
-    except Exception as e:
-        messagebox.showerror("Error", f"Failed to open file with {editor}:\n{e}")
+    subprocess.Popen([get_default_editor(), filepath])
 
 def get_default_editor():
     return os.environ.get("EDITOR", "notepad")
-
-def browse_config_file():
-    file_path = filedialog.askopenfilename(
-        title="Select Config File",
-        filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")]
-    )
-    if file_path:
-        config_path.set(file_path)
-        save_current_config()
-
-def open_current_config():
-    open_file_editor(config_path.get())
-
-def open_key_bind_config():
-    open_file_editor(key_bind_config.get())
-
-def open_txt_file():
-    file_path = filedialog.askopenfilename(
-        title="Select TXT File",
-        filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
-    )
-    if file_path:
-        open_file_editor(file_path)
-
-def open_rotation_txt():
-    open_file_editor(config_path2.get())
 
 def browse_rotation_file():
     file_path = filedialog.askopenfilename(
@@ -122,48 +102,98 @@ def browse_rotation_file():
         filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")]
     )
     if file_path:
-        # Make path relative to current working directory
         rel_path = os.path.relpath(file_path)
-        config_path.set(rel_path)
+        last_used_boss.set(rel_path)
         save_current_config()
 
-# ✅ Tkinter Setup
+# --------------- UI Setup ----------------
 root = tk.Tk()
-root.title("Runescape Trainer")
-root.iconbitmap("Resources/azulyn_icon.ico")  # ✅ Set your icon here
+root.title("RuneScape Trainer")
+root.geometry("650x450")
+root.iconbitmap(ICON_PATH)
 
-# ✅ Track config file path
-config_path = tk.StringVar(value=load_last_used_config())
-config_path2 = tk.StringVar(value=load_last_used_config2())
-key_bind_config = tk.StringVar(value="config/keybinds.json")
+# Dark button styling
+style = ttk.Style()
+style.theme_use("default")
+style.configure("Dark.TButton", foreground="white", background="#444", padding=6)
+style.map("Dark.TButton", background=[("active", "#555")])
 
-# --- Script Buttons ---
-tk.Button(root, text="Start RS Trainer", command=lambda: start_script("scripts/RS_Trainer.exe", args=[os.path.normpath("../" + config_path.get())])).pack(pady=5)
-tk.Button(root, text="Start RS Overlay", command=lambda: start_script("scripts/RS_Overlay.exe", args=[os.path.normpath("../" + config_path.get())])).pack(pady=5)
+last_used_boss = tk.StringVar(value=load_last_used_boss())
+last_used_pvm_rot = tk.StringVar(value=load_last_pvm_rot())
+key_bind_config = tk.StringVar(value=KEYBINDS_FILE)
 
-# --- Rotation Builder ---
-tk.Label(root, text="Current Rotation:").pack()
-tk.Entry(root, textvariable=config_path, width=50).pack(padx=10)
-tk.Button(root, text="Browse Rotation File", command=browse_rotation_file).pack(pady=5)
 
-tk.Button(root, text="Build Rotation", command=lambda: start_script("scripts/rotation_creation.exe", log_output=True)).pack(pady=5)
+ascii_title = r"""
+   _____               .__                
+  /  _  \ __________ __|  | ___.__. ____  
+ /  /_\  \\___   /  |  \  |<   |  |/    \ 
+/    |    \/    /|  |  /  |_\___  |   |  \
+\____|__  /_____ \____/|____/ ____|___|  /
+        \/      \/          \/         \/ 
+"""
 
-# --- Config Controls ---
-tk.Label(root, text="Rotation Path:").pack()
-tk.Entry(root, textvariable=config_path2, width=50).pack(padx=10)
-# tk.Button(root, text="Browse Config File", command=browse_config_file).pack(pady=5)
-tk.Button(root, text="Edit Rotation", command=open_rotation_txt).pack(pady=5)
+# Layout Frames
+top_frame = tk.Frame(root)
+top_frame.pack(pady=5, fill="x")
 
-tk.Button(root, text="Edit Keybinds", command=open_key_bind_config).pack(pady=5)
-# tk.Button(root, text="Open TXT File to Edit", command=open_txt_file).pack(pady=5)
-# --- Log Output Area ---
-tk.Label(root, text="Build Rotation Log:").pack()
-log_text = tk.Text(root, height=10, width=70, wrap=tk.WORD)
-log_text.pack(padx=10, pady=5)
+tk.Label(
+    top_frame,
+    text='RuneScape Trainer',
+    font='Helvetica 12 bold',
+    foreground="black",
+).pack(pady=0)
 
-# --- Clear Log Button ---
-tk.Button(root, text="Clear Log", command=lambda: log_text.delete("1.0", tk.END)).pack(pady=5)
-tk.Label(root, text=f"Current Version: {CURRENT_VERSION}").pack(pady=2)
-tk.Button(root, text="Check for Updates", command=check_for_update).pack(pady=5)
+left = tk.Frame(top_frame)
+right = tk.Frame(top_frame)
+left.pack(side="left", padx=5, expand=True, fill="both")
+right.pack(side="right", padx=5, expand=True, fill="both")
+
+log_frame = tk.Frame(root)
+log_frame.pack(pady=2, fill="both")
+
+bottom_frame = tk.Frame(root)
+bottom_frame.pack(pady=(0, 0))
+
+
+ttk.Button(left, text="Start RS Overlay", style="Gray.TButton",
+           command=lambda: start_script("scripts/RS_Overlay.exe", args=[os.path.normpath("../" + last_used_boss.get())])).pack(pady=2, fill="x")
+ttk.Button(left, text="Edit Keybinds", style="Gray.TButton",
+           command=lambda: open_file_editor(key_bind_config.get())).pack(pady=2, fill="x")
+ttk.Button(left, text="Build Rotation", style="Gray.TButton",
+           command=lambda: start_script("scripts/rotation_creation.exe", log_output=True)).pack(pady=2, fill="x")
+
+tk.Label(left, text="Current Boss:").pack(pady=(5, 2))
+tk.Entry(left, textvariable=last_used_boss, width=40).pack()
+
+ttk.Button(right, text="Start RS Trainer", style="Gray.TButton",
+           command=lambda: start_script("scripts/RS_Trainer.exe", args=[os.path.normpath("../" + last_used_boss.get())])).pack(pady=2, fill="x")
+ttk.Button(right, text="Select Boss Script", style="Gray.TButton",
+           command=browse_rotation_file).pack(pady=2, fill="x")
+ttk.Button(right, text="Build Rotation File", style="Gray.TButton",
+           command=lambda: open_file_editor(last_used_pvm_rot.get())).pack(pady=2, fill="x")
+
+tk.Label(right, text="Rotation Path:").pack(pady=(5, 2))
+tk.Entry(right, textvariable=last_used_pvm_rot, width=40).pack()
+
+# Log Output
+tk.Label(log_frame, text="Build Rotation Log:").pack()
+log_text = tk.Text(log_frame, height=10, width=70, wrap=tk.WORD)
+log_text.pack(padx=5, pady=(0, 2))
+
+ttk.Button(bottom_frame, text="Clear Log", style="Gray.TButton",
+           command=lambda: log_text.delete("1.0", tk.END)).pack(side="left", padx=5, pady=1)
+ttk.Button(bottom_frame, text="Check for Updates", style="Gray.TButton",
+           command=check_for_update).pack(side="left", padx=5, pady=1)
+
+tk.Label(root, font=("Courier", 8), text=f"Current Version: {CURRENT_VERSION}").pack()
+
+tk.Label(
+    root,
+    text=ascii_title,
+    font=("Courier", 3),
+    justify="left",
+    anchor="w",
+    foreground="blue",
+).pack(pady=0)
 
 root.mainloop()

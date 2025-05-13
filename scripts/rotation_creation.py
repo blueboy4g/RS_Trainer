@@ -1,18 +1,32 @@
+import os
 import re
 import difflib
 import json
-with open("../config/keybinds.json", "r") as f:
+import shutil
+
+from config.config import USER_KEYBINDS, ensure_keybinds_file_exists
+
+APP_NAME = "Azulyn"
+APPDATA_DIR = os.path.join(os.environ["APPDATA"], APP_NAME)
+PVM_DISCORD_FILE = os.path.join(APPDATA_DIR, "pvm_discord.txt")
+DEFAULT_PVM_DISCORD_PATH = os.path.join("config", "pvm_discord.txt")
+
+if not os.path.exists(PVM_DISCORD_FILE):
+    if os.path.exists(DEFAULT_PVM_DISCORD_PATH):
+        shutil.copy(DEFAULT_PVM_DISCORD_PATH, PVM_DISCORD_FILE)
+
+ensure_keybinds_file_exists()  # Make sure the file exists in AppData
+
+with open(USER_KEYBINDS, "r") as f:
     config = json.load(f)
 
 ABILITY_KEYBINDS = config["ABILITY_KEYBINDS"]
 
 try:
-    TextFile = "config/pvm_discord.txt"
-    with open(TextFile, "r", encoding="utf-8") as f:
+    with open(PVM_DISCORD_FILE, "r", encoding="utf-8") as f:
         text = f.read()
 except:
-    TextFile = "../config/pvm_discord.txt"
-    with open(TextFile, "r", encoding="utf-8") as f:
+    with open(PVM_DISCORD_FILE, "r", encoding="utf-8") as f:
         text = f.read()
 
 ALIASES = {
@@ -81,7 +95,7 @@ for chunk in chunks:
         for raw_name in matches:
             key = raw_name.lower()
             if key in IGNORED_EMOJI_NAMES:
-                print(f"⛔ Skipping ignored emoji: {key}")
+                print(f" Skipping ignored emoji: {key}")
                 continue
             # Check hardcoded overrides first
             if key in EMOJI_NAME_OVERRIDES:
@@ -96,7 +110,7 @@ for chunk in chunks:
                     # Map back to original-cased name
                     best_match = next(name for name in ability_names if name.lower().replace("_", "") == matched_lower)
                 else:
-                    print(f"⚠️ Could not match emoji name: {raw_name}")
+                    print(f" Could not match emoji name: {raw_name}")
                     continue
 
             result.append({"tick": tick, "ability": best_match})

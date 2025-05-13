@@ -16,10 +16,7 @@ PYTHON_SCRIPTS = [
 
 RESOURCE_FILES = [
     "config/keybinds.json",
-    "config/last_config.txt",
-    "config/last_config2.txt",
     "config/pvm_discord.txt",
-
 ]
 
 RESOURCE_DIRS = [
@@ -44,10 +41,15 @@ for script_path in PYTHON_SCRIPTS:
 
     output_path.mkdir(parents=True, exist_ok=True)
 
+    add_data_flags = ' '.join([
+        f'--add-data "{file};{Path(file).parent}"' for file in RESOURCE_FILES
+    ])
+
     cmd = (
         f'pyinstaller --onefile --noconsole '
         f'--icon="{icon_path}" '
-        f'--distpath "{output_path}" '                           # place output directly in dist_final mirror
+        f'{add_data_flags} '
+        f'--distpath "{output_path}" '
         f'"{script_path}"'
     )
     subprocess.run(cmd, shell=True, check=True)
