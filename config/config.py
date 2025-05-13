@@ -1,10 +1,10 @@
 import json
 
 try:
-    with open("../config/keybinds.json", "r") as f:
+    with open("config/keybinds.json", "r") as f:
         config = json.load(f)
 except:
-    with open("keybinds.json", "r") as f:
+    with open("../config/keybinds.json", "r") as f:
         config = json.load(f)
 
 SCREEN_WIDTH = 800

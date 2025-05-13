@@ -6,15 +6,20 @@ with open("../config/keybinds.json", "r") as f:
 
 ABILITY_KEYBINDS = config["ABILITY_KEYBINDS"]
 
-TextFile = "PVM_Discord.txt"
+try:
+    TextFile = "config/pvm_discord.txt"
+    with open(TextFile, "r", encoding="utf-8") as f:
+        text = f.read()
+except:
+    TextFile = "../config/pvm_discord.txt"
+    with open(TextFile, "r", encoding="utf-8") as f:
+        text = f.read()
 
 ALIASES = {
     "(tc)": "<:Target_Cycle:000000000000000000>",  # Replace with actual emoji ID if needed
     "(r)": "<:Smoke_Cloud:000000000000000000>",     # Example replacement
 }
 
-with open(TextFile, "r", encoding="utf-8") as f:
-    text = f.read()
 
 # Replace aliases
 for alias, replacement in ALIASES.items():

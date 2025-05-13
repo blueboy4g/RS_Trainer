@@ -31,13 +31,13 @@ def check_for_update():
 
 
 CONFIG_SAVE_FILE = "config/last_config.txt"
-CONFIG_SAVE_FILE2 = "Config/last_config2.txt"
+CONFIG_SAVE_FILE2 = "config/last_config2.txt"
 
 def load_last_used_config():
     if os.path.exists(CONFIG_SAVE_FILE):
         with open(CONFIG_SAVE_FILE, 'r') as f:
             return f.read().strip()
-    return "Boss_Rotations/Telos_Necro.json"
+    return "boss_rotations/Telos_Necro.json"
 
 def load_last_used_config2():
     if os.path.exists(CONFIG_SAVE_FILE2):
@@ -117,7 +117,7 @@ def open_rotation_txt():
 
 def browse_rotation_file():
     file_path = filedialog.askopenfilename(
-        initialdir="Boss_Rotations",
+        initialdir="boss_rotations",
         title="Select Rotation File",
         filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")]
     )
@@ -138,15 +138,15 @@ config_path2 = tk.StringVar(value=load_last_used_config2())
 key_bind_config = tk.StringVar(value="config/keybinds.json")
 
 # --- Script Buttons ---
-tk.Button(root, text="Start RS Trainer", command=lambda: start_script("RS_Trainer.exe", args=[config_path.get()])).pack(pady=5)
-tk.Button(root, text="Start RS Overlay", command=lambda: start_script("RS_Overlay.exe", args=[config_path.get()])).pack(pady=5)
+tk.Button(root, text="Start RS Trainer", command=lambda: start_script("scripts/RS_Trainer.exe", args=[os.path.normpath("../" + config_path.get())])).pack(pady=5)
+tk.Button(root, text="Start RS Overlay", command=lambda: start_script("scripts/RS_Overlay.exe", args=[os.path.normpath("../" + config_path.get())])).pack(pady=5)
 
 # --- Rotation Builder ---
 tk.Label(root, text="Current Rotation:").pack()
 tk.Entry(root, textvariable=config_path, width=50).pack(padx=10)
 tk.Button(root, text="Browse Rotation File", command=browse_rotation_file).pack(pady=5)
 
-tk.Button(root, text="Build Rotation", command=lambda: start_script("Rotation_Creation.exe", log_output=True)).pack(pady=5)
+tk.Button(root, text="Build Rotation", command=lambda: start_script("scripts/rotation_creation.exe", log_output=True)).pack(pady=5)
 
 # --- Config Controls ---
 tk.Label(root, text="Rotation Path:").pack()
