@@ -13,7 +13,7 @@ from config.config import ensure_keybinds_file_exists
 ensure_keybinds_file_exists()
 
 # ----------------- Config -----------------
-CURRENT_VERSION = "0.8.0"
+CURRENT_VERSION = "0.8.5"
 VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version.json"
 
 APP_NAME = "Azulyn"
