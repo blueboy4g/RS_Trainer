@@ -1,7 +1,11 @@
 import json
 
-with open("Config.json", "r") as f:
-    config = json.load(f)
+try:
+    with open("../config/keybinds.json", "r") as f:
+        config = json.load(f)
+except:
+    with open("keybinds.json", "r") as f:
+        config = json.load(f)
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -25,7 +29,7 @@ EXCLUDED_DIAL_ANIMATIONS = {"Surge", "Dive", "Bladed_Dive", "Escape", "Eat_Food"
 
 
 # Ability to Image Mapping
-prefix="Ability_Icons/30px-"
+prefix="../ability_icons/30px-"
 ABILITY_IMAGES = {ability: f"{prefix}{ability}.png" for ability in config["ABILITY_KEYBINDS"]}
 
 

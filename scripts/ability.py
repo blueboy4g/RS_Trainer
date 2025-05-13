@@ -3,7 +3,7 @@ import time
 import pygame
 import os
 
-from Config import NOTE_SPEED
+from config.config import NOTE_SPEED
 
 last_tick_bar_time = None  # Initialize tick timing
 

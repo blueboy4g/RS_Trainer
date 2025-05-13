@@ -30,7 +30,7 @@ def check_for_update():
         messagebox.showerror("Update Check Failed", f"Could not check for updates:\n{e}")
 
 
-CONFIG_SAVE_FILE = "Config/last_config.txt"
+CONFIG_SAVE_FILE = "config/last_config.txt"
 CONFIG_SAVE_FILE2 = "Config/last_config2.txt"
 
 def load_last_used_config():
@@ -43,7 +43,7 @@ def load_last_used_config2():
     if os.path.exists(CONFIG_SAVE_FILE2):
         with open(CONFIG_SAVE_FILE2, 'r') as f:
             return f.read().strip()
-    return "PVM_Discord.txt"
+    return "config/pvm_discord.txt"
 
 def save_current_config():
     with open(CONFIG_SAVE_FILE, 'w') as f:
@@ -135,7 +135,7 @@ root.iconbitmap("Resources/azulyn_icon.ico")  # ✅ Set your icon here
 # ✅ Track config file path
 config_path = tk.StringVar(value=load_last_used_config())
 config_path2 = tk.StringVar(value=load_last_used_config2())
-key_bind_config = tk.StringVar(value="Config.json")
+key_bind_config = tk.StringVar(value="config/keybinds.json")
 
 # --- Script Buttons ---
 tk.Button(root, text="Start RS Trainer", command=lambda: start_script("RS_Trainer.exe", args=[config_path.get()])).pack(pady=5)

@@ -5,13 +5,13 @@ from pathlib import Path
 
 # ==== CONFIGURATION ====
 PYTHON_SCRIPTS = [
-    ("Main.py", "--noconsole --icon=Resources/azulyn_icon.ico Main.py"),
-    ("Config.py", "--noconsole --icon=Resources/azulyn_icon.ico Main.py"),
-    ("Scripts/RS_Trainer.py", "--noconsole --icon=Resources/azulyn_icon.ico Main.py"),
-    ("Scripts/RS_Overlay.py", "--noconsole --icon=Resources/azulyn_icon.ico Main.py"),
-    ("Scripts/Rotation_Creation.py", "--noconsole --icon=Resources/azulyn_icon.ico Main.py"),
-    ("Scripts/Ability.py", "--noconsole --icon=Resources/azulyn_icon.ico Main.py"),
-    ("Scripts/DialAnimation.py", "--noconsole --icon=Resources/azulyn_icon.ico Main.py"),
+    "Main.py",
+    "Config.py",
+    "Scripts/RS_Trainer.py",
+    "Scripts/RS_Overlay.py",
+    "Scripts/Rotation_Creation.py",
+    "Scripts/Ability.py",
+    "Scripts/DialAnimation.py",
 ]
 
 RESOURCE_FILES = [
@@ -34,13 +34,30 @@ shutil.rmtree(DIST_DIR, ignore_errors=True)
 DIST_DIR.mkdir(exist_ok=True)
 
 # ==== BUILD EXEs ====
-for script, extra_flags in PYTHON_SCRIPTS:
-    print(f"[✓] Building {script}...")
-    cmd = f'pyinstaller --onefile {extra_flags} {script}'
+for script_path in PYTHON_SCRIPTS:
+    print(f"[✓] Building {script_path}...")
+    icon_path = "resources/azulyn_icon.ico"
+
+    cmd = (
+        f'pyinstaller --onefile --noconsole '
+        f'--icon="{icon_path}" '
+        f'"{script_path}"'
+    )
     subprocess.run(cmd, shell=True, check=True)
 
+    # Determine source .exe and destination
+    exe_name = Path(script_path).stem + ".exe"
+    built_exe = Path("dist") / exe_name
+    rel_target_path = Path(script_path).with_suffix(".exe")  # Scripts/RS_Trainer.exe
+    final_exe_path = DIST_DIR / rel_target_path
+
+    if built_exe.exists():
+        print(f"[✓] Copying {exe_name} to dist_final/{rel_target_path.parent}...")
+        final_exe_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(built_exe, final_exe_path)
+
 # ==== COPY EXEs ====
-for script, _ in PYTHON_SCRIPTS:
+for script in PYTHON_SCRIPTS:
     exe_name = Path(script).stem + ".exe"
     built_exe = Path("dist") / exe_name
     if built_exe.exists():
@@ -64,6 +81,7 @@ for dir_name in RESOURCE_DIRS:
 # ==== CLEAN BUILD TRASH ====
 print("[✓] Cleaning PyInstaller temp files...")
 shutil.rmtree("build", ignore_errors=True)
+shutil.rmtree("dist", ignore_errors=True)
 shutil.rmtree("__pycache__", ignore_errors=True)
 for spec in Path().glob("*.spec"):
     spec.unlink()

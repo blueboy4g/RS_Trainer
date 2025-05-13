@@ -1,12 +1,12 @@
 import re
 import difflib
 import json
-with open("../Config.json", "r") as f:
+with open("../config/keybinds.json", "r") as f:
     config = json.load(f)
 
 ABILITY_KEYBINDS = config["ABILITY_KEYBINDS"]
 
-TextFile = "Config/PVM_Discord.txt"
+TextFile = "PVM_Discord.txt"
 
 ALIASES = {
     "(tc)": "<:Target_Cycle:000000000000000000>",  # Replace with actual emoji ID if needed

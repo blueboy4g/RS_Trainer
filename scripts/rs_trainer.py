@@ -1,8 +1,8 @@
 import time
 
-from Config import *
-from Scripts.DialAnimation import DialAnimation
-from Scripts.Ability import Ability, TickBar
+from config.config import *
+from scripts.dial_animation import DialAnimation
+from scripts.ability import Ability, TickBar
 import pygame
 import tkinter as tk
 
@@ -10,17 +10,17 @@ import tkinter as tk
 
 import sys
 import json
-with open("../Config.json", "r") as f:
+with open("../config/keybinds.json", "r") as f:
     config = json.load(f)
 
 ABILITY_KEYBINDS = config["ABILITY_KEYBINDS"]
 
 if len(sys.argv) < 2:
     print("Usage: python RS_Trainer.py <config_file>")
-    sys.exit(1)
-
-config_file = sys.argv[1]
-print(f"Using config: {config_file}")
+    config_file = "../boss_rotations/Telos_Necro.json"
+else:
+    config_file = sys.argv[1]
+    print(f"Using config: {config_file}")
 
 # Example: load the config
 with open(config_file, 'r') as f:
@@ -31,6 +31,8 @@ with open(config_file, 'r') as f:
 # Initialize Pygame
 pygame.init()
 pygame.display.set_caption("RS Trainer")
+icon = pygame.image.load("../resources/azulyn_icon.ico")
+pygame.display.set_icon(icon)
 
 # Tkinter is used to center the window on screen
 root = tk.Tk()
