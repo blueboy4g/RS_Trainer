@@ -13,9 +13,9 @@ import win32gui
 
 import sys
 import json
-from config.config import USER_KEYBINDS, ensure_keybinds_file_exists
+from config.config import USER_KEYBINDS
 
-ensure_keybinds_file_exists()  # Make sure the file exists in AppData
+
 
 with open(USER_KEYBINDS, "r") as f:
     config = json.load(f)
@@ -26,7 +26,7 @@ ABILITY_KEYBINDS = config["ABILITY_KEYBINDS"]
 
 if len(sys.argv) < 2:
     print("Usage: python RS_Trainer.py <config_file>")
-    config_file = "boss_rotations/demo.json"
+    config_file = "C://Users//PC//AppData//Roaming//Azulyn//boss_rotations//kerapac_hybrid_solo.json"
 else:
     config_file = sys.argv[1]
     print(f"Using config: {config_file}")

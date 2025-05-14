@@ -4,18 +4,17 @@ import difflib
 import json
 import shutil
 
-from config.config import USER_KEYBINDS, ensure_keybinds_file_exists
+from config.config import USER_KEYBINDS
 
 APP_NAME = "Azulyn"
 APPDATA_DIR = os.path.join(os.environ["APPDATA"], APP_NAME)
-PVM_DISCORD_FILE = os.path.join(APPDATA_DIR, "pvm_discord.txt")
-DEFAULT_PVM_DISCORD_PATH = os.path.join("config", "pvm_discord.txt")
+BUILD_ROTATION_FILE = os.path.join(APPDATA_DIR, "build_rotation.txt")
+DEFAULT_BUILD_ROTATION_FILE = os.path.join("config", "build_rotation.txt")
 
-if not os.path.exists(PVM_DISCORD_FILE):
-    if os.path.exists(DEFAULT_PVM_DISCORD_PATH):
-        shutil.copy(DEFAULT_PVM_DISCORD_PATH, PVM_DISCORD_FILE)
+if not os.path.exists(BUILD_ROTATION_FILE):
+    if os.path.exists(DEFAULT_BUILD_ROTATION_FILE):
+        shutil.copy(DEFAULT_BUILD_ROTATION_FILE, BUILD_ROTATION_FILE)
 
-ensure_keybinds_file_exists()  # Make sure the file exists in AppData
 
 with open(USER_KEYBINDS, "r") as f:
     config = json.load(f)
@@ -23,10 +22,10 @@ with open(USER_KEYBINDS, "r") as f:
 ABILITY_KEYBINDS = config["ABILITY_KEYBINDS"]
 
 try:
-    with open(PVM_DISCORD_FILE, "r", encoding="utf-8") as f:
+    with open(BUILD_ROTATION_FILE, "r", encoding="utf-8") as f:
         text = f.read()
 except:
-    with open(PVM_DISCORD_FILE, "r", encoding="utf-8") as f:
+    with open(BUILD_ROTATION_FILE, "r", encoding="utf-8") as f:
         text = f.read()
 
 ALIASES = {
@@ -59,7 +58,7 @@ EMOJI_NAME_OVERRIDES = {
     "prep": "Preparation",
     "meta": "Metamorphosis",
     "bd": "Bladed Dive",
-    "natty": "Natrual Instinct",
+    "natty": "Natural_Instinct",
     "eof": "Essence_of_Finality",
     "asfix": "Asphyxiate",
     "ioh": "Ingenuity_of_the_humans",
@@ -68,12 +67,17 @@ EMOJI_NAME_OVERRIDES = {
     "balista": "Unload",
     "prismofrestoration": "Prism_of_Restoration",
     "zerk": "Berserk",
-
+    "cane": "Hurricane",
+    "dba": "Dragon_Battleaxe",
+    "lengmh": "Dark_Shard_Of_Leng",
+    "lengoh": "Dark_Sliver_Of_Leng",
+    "gbarge": "Greater_Barge",
 }
 
 IGNORED_EMOJI_NAMES = {
     "deathguard90",
     "omniguard",
+    "dragonclaw"
 }
 
 
@@ -86,35 +90,45 @@ result = []
 # Prepare list of all ability names for fuzzy matching
 ability_names = list(ABILITY_KEYBINDS.keys())
 
-# Split the input string by '→'
-chunks = text.split("→")
-for chunk in chunks:
-    parts = chunk.strip().split("+")
+# Split by → to indicate +3 ticks
+sections = re.split(r"→", text)
+
+for section in sections:
+    section = section.strip()
+    parts = section.split()
+
     for part in parts:
+        # Tick adjustment like '2t'
+        tick_match = re.match(r"^(\d{1,2})t$", part.lower())
+        if tick_match:
+            tick += int(tick_match.group(1))
+            continue
+
+        # Handle emoji matches
         matches = re.findall(r"<:([a-zA-Z0-9_]+):\d+>", part)
         for raw_name in matches:
             key = raw_name.lower()
             if key in IGNORED_EMOJI_NAMES:
-                print(f" Skipping ignored emoji: {key}")
+                print(f"Skipping ignored emoji: {key}")
                 continue
-            # Check hardcoded overrides first
+
             if key in EMOJI_NAME_OVERRIDES:
                 best_match = EMOJI_NAME_OVERRIDES[key]
             else:
-                # Fuzzy match fallback
-                simplified_ability_names = [a.lower().replace("_", "") for a in ability_names]
-                close_matches = difflib.get_close_matches(key.replace("_", ""), simplified_ability_names, n=1, cutoff=0.6)
-
+                simplified = [a.lower().replace("_", "") for a in ability_names]
+                close_matches = difflib.get_close_matches(key.replace("_", ""), simplified, n=1, cutoff=0.6)
                 if close_matches:
-                    matched_lower = close_matches[0]
-                    # Map back to original-cased name
-                    best_match = next(name for name in ability_names if name.lower().replace("_", "") == matched_lower)
+                    matched = close_matches[0]
+                    best_match = next(a for a in ability_names if a.lower().replace("_", "") == matched)
                 else:
-                    print(f" Could not match emoji name: {raw_name}")
+                    print(f"Could not match emoji name: {raw_name}")
                     continue
 
             result.append({"tick": tick, "ability": best_match})
-    tick += 3  # Increase tick every time we see →
+
+    # After each → section, increment tick by 3 (unless overridden by Nt)
+    tick += 3
+
 
 # for entry in result:
 #     print(json.dumps(entry))

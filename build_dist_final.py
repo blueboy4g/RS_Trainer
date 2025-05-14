@@ -16,7 +16,7 @@ PYTHON_SCRIPTS = [
 
 RESOURCE_FILES = [
     "config/keybinds.json",
-    "config/pvm_discord.txt",
+    "config/build_rotation.txt",
 ]
 
 RESOURCE_DIRS = [

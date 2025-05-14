@@ -9,8 +9,7 @@ import sys
 import requests
 import webbrowser
 
-from config.config import ensure_keybinds_file_exists
-ensure_keybinds_file_exists()
+from config.config import *
 
 # ----------------- Config -----------------
 CURRENT_VERSION = "0.8.5"
@@ -23,15 +22,27 @@ os.makedirs(APPDATA_DIR, exist_ok=True)
 last_boss_selected_save = os.path.join(APPDATA_DIR, "last_boss_selected.txt")
 last_rotation_selected_save = os.path.join(APPDATA_DIR, "last_rotation_selected.txt")
 KEYBINDS_FILE = os.path.join(APPDATA_DIR, "keybinds.json")
-PVM_DISCORD_FILE = os.path.join(APPDATA_DIR, "pvm_discord.txt")
-DEFAULT_PVM_DISCORD_PATH = os.path.join("config", "pvm_discord.txt")
+BUILD_ROTATION_FILE = os.path.join(APPDATA_DIR, "build_rotation.txt")
+DEFAULT_BUILD_ROTATION_FILE = os.path.join("config", "build_rotation.txt")
+from pathlib import Path
+
+APPDATA_BOSS_DIR = Path(os.getenv("APPDATA") or Path.home() / ".config") / "Azulyn" / "boss_rotations"
+SOURCE_BOSS_DIR = Path("boss_rotations")
+APPDATA_BOSS_DIR.mkdir(parents=True, exist_ok=True)
+
+BOSS_FILE = os.path.join(APPDATA_BOSS_DIR, "demo.json")
 
 ICON_PATH = "Resources/azulyn_icon.ico"
 # ------------------------------------------
 
-if not os.path.exists(PVM_DISCORD_FILE):
-    if os.path.exists(DEFAULT_PVM_DISCORD_PATH):
-        shutil.copy(DEFAULT_PVM_DISCORD_PATH, PVM_DISCORD_FILE)
+if not os.path.exists(BUILD_ROTATION_FILE):
+    if os.path.exists(DEFAULT_BUILD_ROTATION_FILE):
+        shutil.copy(DEFAULT_BUILD_ROTATION_FILE, BUILD_ROTATION_FILE)
+
+for file in SOURCE_BOSS_DIR.glob("*.json"):
+    target = APPDATA_BOSS_DIR / file.name
+    if not target.exists():
+        shutil.copy(file, target)
 
 def check_for_update():
     try:
@@ -52,13 +63,13 @@ def load_last_used_boss():
     if os.path.exists(last_boss_selected_save):
         with open(last_boss_selected_save, 'r') as f:
             return f.read().strip()
-    return "boss_rotations/telos_necro.json"
+    return BOSS_FILE
 
 def load_last_pvm_rot():
     if os.path.exists(last_rotation_selected_save):
         with open(last_rotation_selected_save, 'r') as f:
             return f.read().strip()
-    return PVM_DISCORD_FILE
+    return BUILD_ROTATION_FILE
 
 def save_current_config():
     with open(last_boss_selected_save, 'w') as f:
@@ -97,14 +108,22 @@ def get_default_editor():
 
 def browse_rotation_file():
     file_path = filedialog.askopenfilename(
-        initialdir="boss_rotations",
+        initialdir=str(APPDATA_BOSS_DIR),
         title="Select Rotation File",
         filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")]
     )
     if file_path:
-        rel_path = os.path.relpath(file_path)
-        last_used_boss.set(rel_path)
+        last_used_boss.set(file_path)
         save_current_config()
+
+def open_donation():
+    webbrowser.open("https://buymeacoffee.com/azulyn")
+
+def open_discord():
+    webbrowser.open("https://discord.gg/Sp7Sh52B")
+
+def open_youtube():
+    webbrowser.open("https://www.youtube.com/@Azulyn1")
 
 # --------------- UI Setup ----------------
 root = tk.Tk()
@@ -152,11 +171,13 @@ log_frame = tk.Frame(root)
 log_frame.pack(pady=2, fill="both")
 
 bottom_frame = tk.Frame(root)
-bottom_frame.pack(pady=(0, 0))
+bottom_frame.pack(pady=(15, 0))
 
+footer = tk.Frame(root)
+footer.pack(side="right", pady=(20, 0))
 
 ttk.Button(left, text="Start RS Overlay", style="Gray.TButton",
-           command=lambda: start_script("scripts/RS_Overlay.exe", args=[os.path.normpath("../" + last_used_boss.get())])).pack(pady=2, fill="x")
+           command=lambda: start_script("scripts/RS_Overlay.exe", args=[last_used_boss.get()])).pack(pady=2, fill="x")
 ttk.Button(left, text="Edit Keybinds", style="Gray.TButton",
            command=lambda: open_file_editor(key_bind_config.get())).pack(pady=2, fill="x")
 ttk.Button(left, text="Build Rotation", style="Gray.TButton",
@@ -166,7 +187,7 @@ tk.Label(left, text="Current Boss:").pack(pady=(5, 2))
 tk.Entry(left, textvariable=last_used_boss, width=40).pack()
 
 ttk.Button(right, text="Start RS Trainer", style="Gray.TButton",
-           command=lambda: start_script("scripts/RS_Trainer.exe", args=[os.path.normpath("../" + last_used_boss.get())])).pack(pady=2, fill="x")
+           command=lambda: start_script("scripts/RS_Trainer.exe", args=[last_used_boss.get()])).pack(pady=2, fill="x")
 ttk.Button(right, text="Select Boss Script", style="Gray.TButton",
            command=browse_rotation_file).pack(pady=2, fill="x")
 ttk.Button(right, text="Build Rotation File", style="Gray.TButton",
@@ -184,16 +205,23 @@ ttk.Button(bottom_frame, text="Clear Log", style="Gray.TButton",
            command=lambda: log_text.delete("1.0", tk.END)).pack(side="left", padx=5, pady=1)
 ttk.Button(bottom_frame, text="Check for Updates", style="Gray.TButton",
            command=check_for_update).pack(side="left", padx=5, pady=1)
+ttk.Button(bottom_frame, text="Azulyn Youtube", style="Gray.TButton",
+           command=open_youtube).pack(side="left", padx=5, pady=1)
+ttk.Button(bottom_frame, text="Azulyn Discord", style="Gray.TButton",
+           command=open_discord).pack(side="left", padx=5, pady=1)
+ttk.Button(bottom_frame, text="Donate", style="Gray.TButton",
+           command=open_donation).pack(side="left", padx=5, pady=1)
 
-tk.Label(root, font=("Courier", 8), text=f"Current Version: {CURRENT_VERSION}").pack()
+# tk.Label(
+#     footer,
+#     text=ascii_title,
+#     font=("Courier", 3),
+#     justify="right",
+#     anchor="w",
+#     foreground="blue",
+# ).pack(side="left", padx=5, pady=0)
 
-tk.Label(
-    root,
-    text=ascii_title,
-    font=("Courier", 3),
-    justify="left",
-    anchor="w",
-    foreground="blue",
-).pack(pady=0)
+tk.Label(footer, font=("Courier", 8), text=f"Current Version: {CURRENT_VERSION}").pack(side="right", padx=5, pady=0)
+
 
 root.mainloop()
