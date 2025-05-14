@@ -51,7 +51,7 @@ def play_game():
     root = tk.Tk()
     root.withdraw()
     screen_w, screen_h = root.winfo_screenwidth(), root.winfo_screenheight()
-    win_w, win_h = 800, 200
+    win_w, win_h = 450, 300
     x = round((screen_w - win_w) / 2)
     y = round((screen_h - win_h) / 2 * 0.8)
 
@@ -79,6 +79,7 @@ def play_game():
     last_tick_bar_time = None  # Store last tick bar collision time
     tick_note_counts = {}
     tick_note_counts_queue = {}# Dictionary to track notes stacking per tick
+    tick_note_counts_queue2 = {}# Dictionary to track notes stacking per tick
     pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN, pygame.KEYUP])
     dial_animation = DialAnimation(win_w // 2 - 25, win_h - 75)
     dial_animation_queue = []  # Queue for animations
@@ -369,6 +370,10 @@ def play_game():
             future_ticks = [note["tick"] for note in note_sequence if note["tick"] > current_tick]
             next_note = min(future_ticks, default=None)
 
+            if next_note is not None:
+                future_future_ticks = [note["tick"] for note in note_sequence if note["tick"] > next_note]
+                next_next_note = min(future_future_ticks, default=None)
+
         for note in spawned_notes:
             result = note.update(dt)
             if result == "missed":
@@ -385,6 +390,7 @@ def play_game():
             for note_data in note_sequence:
                 tick_count = tick_note_counts.get(current_tick, 0)
                 tick_count_queue = tick_note_counts_queue.get(next_note, 0)
+                tick_count_queue2 = tick_note_counts_queue2.get(next_next_note, 0)
                 if note_data["tick"] == current_tick:
                     ability = note_data["ability"]
                     if ability in ABILITY_KEYBINDS and ability in ABILITY_IMAGES:
@@ -426,7 +432,7 @@ def play_game():
                             ability=ability,
                             key=key,
                             image_path=image_path,
-                            start_x=press_zone_rect.x + 350,  # Place note on press_zone_rect
+                            start_x=press_zone_rect.x + 150,  # Place note on press_zone_rect
                             start_y=note_y,
                             width=width / 2,
                             stationary=True,  # Mark note as stationary
@@ -434,6 +440,31 @@ def play_game():
                         )
                         spawned_notes_queue.append(note)
                         tick_note_counts_queue[next_note] = tick_count_queue + 1
+
+                if note_data["tick"] == next_next_note:
+                    ability = note_data["ability"]
+                    if ability in ABILITY_KEYBINDS and ability in ABILITY_IMAGES:
+                        key = ABILITY_KEYBINDS[ability]  # Get mapped keybind
+                        image_path = ABILITY_IMAGES[ability]  # Get mapped image
+                        width = note_data.get("width", ABILITY_DEFAULT_WIDTH)  # Default width to 75 if not provided
+                        # Debug log for missing notes
+                        #print(f"Spawning note: {ability}, Keys: {key}, Tick: {next_note}, Width: {width}")
+
+                        note_y = (SCREEN_HEIGHT // 24) + (tick_count_queue2 * (NOTE_SPACING_Y - 20))
+                        if key == []:
+                            key = ["MOUSE"]
+                        note = Ability(
+                            ability=ability,
+                            key=key,
+                            image_path=image_path,
+                            start_x=press_zone_rect.x + 250,  # Place note on press_zone_rect
+                            start_y=note_y,
+                            width=width / 2,
+                            stationary=True,  # Mark note as stationary
+                            visible=see_notes
+                        )
+                        spawned_notes_queue.append(note)
+                        tick_note_counts_queue2[next_next_note] = tick_count_queue2 + 1
 
 
             #tick_bars.append(TickBar(SCREEN_WIDTH))  # Always spawn from the right side
@@ -508,7 +539,7 @@ def play_game():
 
         for i, text in enumerate(results):
             rendered_text = font.render(text, True, (255, 255, 255))
-            screen.blit(rendered_text, (SCREEN_WIDTH // 2 - 150, 10 + i * 25))
+            screen.blit(rendered_text, (SCREEN_WIDTH // 2 - 240, 10 + i * 25))
 
         pygame.display.flip()
 
