@@ -114,6 +114,9 @@ def browse_rotation_file():
     )
     if file_path:
         last_used_boss.set(file_path)
+        last_used_boss_trimmed_string = last_used_boss.get().split("/")[-1].split("\\")[-1]
+        last_used_boss_trimmed_string = last_used_boss_trimmed_string.replace(".json", "")
+        last_used_boss_trimmed.set(last_used_boss_trimmed_string)
         save_current_config()
 
 def open_donation():
@@ -184,7 +187,11 @@ ttk.Button(left, text="Build Rotation", style="Gray.TButton",
            command=lambda: start_script("scripts/rotation_creation.exe", log_output=True)).pack(pady=2, fill="x")
 
 tk.Label(left, text="Current Boss:").pack(pady=(5, 2))
-tk.Entry(left, textvariable=last_used_boss, width=40).pack()
+
+last_used_boss_trimmed = last_used_boss.get().split("/")[-1].split("\\")[-1]
+last_used_boss_trimmed = last_used_boss_trimmed.replace(".json", "")
+last_used_boss_trimmed = tk.StringVar(value=last_used_boss_trimmed)
+tk.Entry(left, textvariable=last_used_boss_trimmed, width=40).pack()
 
 ttk.Button(right, text="Start RS Trainer", style="Gray.TButton",
            command=lambda: start_script("scripts/RS_Trainer.exe", args=[last_used_boss.get()])).pack(pady=2, fill="x")
@@ -193,8 +200,14 @@ ttk.Button(right, text="Select Boss Script", style="Gray.TButton",
 ttk.Button(right, text="Build Rotation File", style="Gray.TButton",
            command=lambda: open_file_editor(last_used_pvm_rot.get())).pack(pady=2, fill="x")
 
+#trim everything but the .json name at the end
+last_used_pvm_rot_trimmed = last_used_pvm_rot.get().split("/")[-1].split("\\")[-1]
+#trim everything the .json name at the end
+last_used_pvm_rot_trimmed = last_used_pvm_rot_trimmed.replace(".txt", "")
+last_used_pvm_rot_trimmed = tk.StringVar(value=last_used_pvm_rot_trimmed)
+
 tk.Label(right, text="Rotation Path:").pack(pady=(5, 2))
-tk.Entry(right, textvariable=last_used_pvm_rot, width=40).pack()
+tk.Entry(right, textvariable=last_used_pvm_rot_trimmed, width=40).pack()
 
 # Log Output
 tk.Label(log_frame, text="Build Rotation Log:").pack()
