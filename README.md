@@ -45,4 +45,4 @@ You can donate via: https://buymeacoffee.com/azulyn
 ## Resources
 https://www.youtube.com/@Azulyn1
 
-https://discord.gg/Sp7Sh52B
+https://discord.gg/XRxsHtcPRJ
