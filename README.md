@@ -34,7 +34,11 @@ Modifiers such as "CTRL", "ALT", and "SHIFT" are supported.
 ```
 
 ## FAQ
-Empty
+
+[FAQ VIDEO](https://youtu.be/AmuDzXJdMcA)
+
+
+[![FAQ VIDEO](http://img.youtube.com/vi/AmuDzXJdMcA/0.jpg)](https://youtu.be/AmuDzXJdMcA)
 
 ## Donate
 Support would be very much appreciated! It would help my wife understand I'm not wasting all my time...  
