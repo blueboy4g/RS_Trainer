@@ -6,13 +6,13 @@ from setuptools import setup
 
 
 
-# create-dmg 'dist/RS_Trainer.app' \
+# create-dmg 'dist/Azulyn.app' \
 #   --overwrite \
-#   --dmg-title='RS Trainer' \
+#   --dmg-title='Azulyn' \
 #   --app-drop-link \
 #   --quit-app-before-install \
 #   --identity="" \
-#   --dmg-path=dist/installer/RS_Trainer_1.0.dmg
+#   --dmg-path=dist/installer/Azulyn_0.7.0.dmg
 
 
 APP = ['main.py']
@@ -42,11 +42,11 @@ OPTIONS = {
         '/Library/Frameworks/Python.framework/Versions/3.11/lib/libtk8.6.dylib',
     ],
     'plist': {
-        'CFBundleName': 'RS_Trainer',
-        'CFBundleDisplayName': 'RS_Trainer',
+        'CFBundleName': 'Azulyn',
+        'CFBundleDisplayName': 'Azulyn',
         'CFBundleIdentifier': 'com.grant.rstrainer',
-        'CFBundleVersion': '1.0.0',
-        'CFBundleShortVersionString': '1.0',
+        'CFBundleVersion': '0.7.0',
+        'CFBundleShortVersionString': '7.0',
     },
 
     'iconfile': 'resources/azulyn_icon.png',  # optional
