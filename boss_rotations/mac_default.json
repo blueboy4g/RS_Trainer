@@ -1,0 +1,42 @@
+[
+  {
+    "tick": 4,
+    "ability": "Dismember"
+  },
+  {
+    "tick": 7,
+    "ability": "Berserk"
+  },
+  {
+    "tick": 10,
+    "ability": "Fury"
+  },
+  {
+    "tick": 13,
+    "ability": "Sever"
+  },
+  {
+    "tick": 16,
+    "ability": "Decimate"
+  },
+  {
+    "tick": 19,
+    "ability": "Assault"
+  },
+  {
+    "tick": 24,
+    "ability": "Sever"
+  },
+  {
+    "tick": 27,
+    "ability": "Decimate"
+  },
+  {
+    "tick": 30,
+    "ability": "Destroy"
+  },
+  {
+    "tick": 36,
+    "ability": "Sever"
+  }
+]
