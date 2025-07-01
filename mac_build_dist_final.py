@@ -4,6 +4,17 @@ from setuptools import setup
 #                  python mac_build_dist_final.py py2app
 #                  dist/main.app/Contents/MacOS/main
 
+
+
+# create-dmg 'dist/RS_Trainer.app' \
+#   --overwrite \
+#   --dmg-title='RS Trainer' \
+#   --app-drop-link \
+#   --quit-app-before-install \
+#   --identity="" \
+#   --dmg-path=dist/installer/RS_Trainer_1.0.dmg
+
+
 APP = ['main.py']
 
 OPTIONS = {
