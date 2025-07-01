@@ -12,13 +12,13 @@ except Exception:
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
     from pynput import keyboard
 
-from dial_animation import DialAnimation
+from scripts.dial_animation import DialAnimation
 try:
     from config.config import *
 except Exception:
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
     from config.config import *
-from ability import Ability
+from scripts.ability import Ability
 
 from Cocoa import NSApp, NSApplication, NSWindow
 from Cocoa import NSWindowCollectionBehaviorCanJoinAllSpaces
@@ -52,6 +52,7 @@ with open(config_file, 'r') as f:
     note_sequence = json.load(f)
 
 def play_game():
+    print("1")
     global running, current_tick, score, missed_notes, spawned_notes, tick_bars, key_press_count, new_global_key_events, still_active_global_key_events
     # Put everything from initialization to show_results() here
 
@@ -66,28 +67,28 @@ def play_game():
     # x = round((screen_w - win_w) / 2)
     # y = round((screen_h - win_h) / 2 * 0.8)
     # root.destroy()
-
+    print("2")
     # Initialize Pygame
     pygame.init()
+    pygame.display.init()
 
-    #todo icon = pygame.image.load("resources/azulyn_icon.ico")
-    #todo pygame.display.set_icon(icon)
+    icon = pygame.image.load("azulyn_icon.png")
+    pygame.display.set_icon(icon)
     pygame.display.set_caption("RS Trainer (Overlay)")
 
     # Create Pygame screen and set window position
     screen = pygame.display.set_mode((win_w, win_h))
 
-    pygame.init()
     pygame.display.set_caption("RS Trainer (Overlay)")
     #screen = pygame.display.set_mode((800, 600))  # Change dimensions as needed
     pygame.display.flip()
-
+    print("3")
     # Get the Cocoa app instance
     app = NSApplication.sharedApplication()
     app.activateIgnoringOtherApps_(True)
 
     floating_level = CGWindowLevelForKey(kCGFloatingWindowLevelKey)
-
+    print("4")
     # Loop through all app windows to find the one with our title
     for window in app.windows():
         if window.title() == "RS Trainer (Overlay)":
@@ -100,7 +101,7 @@ def play_game():
     # Game Variables
     press_zone_rect = pygame.Rect(PRESS_ZONE_X, (SCREEN_HEIGHT // 2) - 450, 1, 450)  # 1 pixel wide with extra height
     tick_bars = []  # Store tick bars
-
+    print("5")
     # Game variables
     running = True
     clock = pygame.time.Clock()
@@ -128,7 +129,7 @@ def play_game():
     key_press_count = 0
     new_global_key_events = []
     still_active_global_key_events = []
-
+    print("8")
     key_combination_map = {
         "SHIFT+1": "!",
         "SHIFT+2": "@",
@@ -177,96 +178,24 @@ def play_game():
                 return symbol
         return key
 
-    def global_key_listener():
-        held_keys = set()
-        global key_press_count, new_global_key_events, still_active_global_key_events
-        key_press_count = 0
-        new_global_key_events = []
-        still_active_global_key_events = []
-
-        # Map keys for shift+number to symbol
-        key_combination_map = {
-            'shift+1': '!',
-            'shift+2': '@',
-            'shift+3': '#',
-            'shift+4': '$',
-            'shift+5': '%',
-            'shift+6': '^',
-            'shift+7': '&',
-            'shift+8': '*',
-            'shift+9': '(',
-            'shift+0': ')'
-        }
-
-        def on_press(key):
-            global key_press_count
-            try:
-                k = key.char.lower()
-            except AttributeError:
-                # Special keys (shift, ctrl, etc.)
-                k = str(key).lower().replace('key.', '')
-
-            if k not in held_keys:
-                held_keys.add(k)
-                key_press_count += 1
-                print(f"[GLOBAL] Key pressed once: {k} (Total: {key_press_count})")
-                still_active_global_key_events.append(k)
-                print(still_active_global_key_events)
-                new_global_key_events[:] = still_active_global_key_events.copy()
-
-        def on_release(key):
-            try:
-                k = key.char.lower()
-            except AttributeError:
-                k = str(key).lower().replace('key.', '')
-
-            print(f"[GLOBAL] Key released: {k}")
-            held_keys.discard(k)
-            if k in still_active_global_key_events:
-                still_active_global_key_events.remove(k)
-
-            if k == 'shift':
-                # Remove all shifted symbols when shift released
-                for char in '!@#$%^&*()':
-                    if char in still_active_global_key_events:
-                        still_active_global_key_events.remove(char)
-                        held_keys.discard(char)
-            else:
-                # Remove shift if shift+key combo released
-                for combination, symbol in key_combination_map.items():
-                    mod, k_comb = combination.split('+')
-                    if k_comb == k and mod == 'shift' and 'shift' in still_active_global_key_events:
-                        still_active_global_key_events.remove('shift')
-                        held_keys.discard('shift')
-
-                # Remove corresponding symbol when number key released
-                if k in '1234567890':
-                    symbol = key_combination_map.get(f'shift+{k}')
-                    if symbol and symbol in still_active_global_key_events:
-                        still_active_global_key_events.remove(symbol)
-                        held_keys.discard(symbol)
-
-            new_global_key_events[:] = still_active_global_key_events.copy()
-        listener = keyboard.Listener(on_press=on_press, on_release=on_release)
-        try:
-            listener.start()
-            print("[Listener] Started")
-        except Exception as e:
-            print(f"[Listener] Failed: {e}")
-
     # def make_window_always_on_top():
     #     hwnd = win32gui.GetForegroundWindow()  # Get current foreground window
     #     win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST, 0, 0, 0, 0,
     #                           win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
     # make_window_always_on_top()
     # Start the global key listener
-    threading.Thread(target=global_key_listener, daemon=True).start()
+    print("9")
+    # threading.Thread(target=global_key_listener, daemon=True).start()
+    #run_thread = threading.Thread(target=global_key_listener, daemon=True)
+    print("10")
+    # time.sleep(4)
+    #run_thread.start()
+    # time.sleep(4)
     while running:
         screen.fill((0, 0, 0))  # Clear screen
         mouse_clicked = False  # Track mouse click state
         key_pressed = False  # Track key press state
         dt = clock.tick(60) / 1000.0  # Convert milliseconds to seconds
-
         # Update animation
         dial_animation.update(dt)
 
@@ -537,14 +466,14 @@ def play_game():
             #tick_bars.append(TickBar(SCREEN_WIDTH))  # Always spawn from the right side
 
         # Update and draw notes
-        # for note in spawned_notes:
-        #     result = note.update(dt)
-        #     if result == "missed":
-        #         missed_notes += 1
-        #     note.draw(screen)
-        #
-        # for note in spawned_notes_queue:
-        #     note.draw(screen)
+        for note in spawned_notes:
+            result = note.update(dt)
+            if result == "missed":
+                missed_notes += 1
+            note.draw(screen)
+
+        for note in spawned_notes_queue:
+            note.draw(screen)
 
 
         # Update and draw tick bars
@@ -619,6 +548,8 @@ def play_game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 waiting = False
+                pygame.quit()
+                return False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                 # Restart the game
                 running = True
@@ -627,22 +558,145 @@ def play_game():
                 missed_notes = 0
                 spawned_notes = []
                 tick_bars = []
-                waiting = False  # Exit the results screen loop
-                # Optionally reload the note sequence or reset other variables if needed
-
-
-def prompt_restart():
-    pygame.event.clear()
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE):
-                return False
-            elif event.type == pygame.KEYUP and event.key == pygame.K_r:
+                waiting = False
+                print("YOOOOO")
+                pygame.event.clear()
+                # pygame.quit()
+                # pygame.display.quit()
+                # pygame.font.quit()
+                # close_all_windows()
+                time.sleep(3)
                 return True
+                # run_thread.join()
+                # time.sleep(5)
 
-while True:
-    play_game()
-    if not prompt_restart():
-        break
-pygame.quit()
+def close_all_windows():
+    app = NSApplication.sharedApplication()
+    for window in app.windows():
+        print("its a me windowwww " + str(window))
+        window.close()
+
+# if __name__ == "__main__":
+#     while True:
+#         play_game()
+#     pygame.quit()
+
+
+# from PyObjCTools import AppHelper
+# from Cocoa import NSApplication
+# import logging
+#
+# logging.basicConfig(filename="/tmp/pynput_debug.log", level=logging.DEBUG)
+#
+# def global_key_listener():
+#     def on_press(key):
+#         logging.debug(f"[Listener] Key down: {key}")
+#         print(f"[Listener] Key down: {key}")
+#     def on_release(key):
+#         logging.debug(f"[Listener] Key up: {key}")
+#         print(f"[Listener] Key up: {key}")
+#     try:
+#         listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+#         listener.start()
+#         logging.info("[Listener] Started successfully")
+#     except Exception as e:
+#         logging.error(f"[Listener] Failed to start: {e}")
+
+
+def global_key_listener():
+    held_keys = set()
+    global key_press_count, new_global_key_events, still_active_global_key_events
+    key_press_count = 0
+    new_global_key_events = []
+    still_active_global_key_events = []
+
+    # Map keys for shift+number to symbol
+    key_combination_map = {
+        'shift+1': '!',
+        'shift+2': '@',
+        'shift+3': '#',
+        'shift+4': '$',
+        'shift+5': '%',
+        'shift+6': '^',
+        'shift+7': '&',
+        'shift+8': '*',
+        'shift+9': '(',
+        'shift+0': ')'
+    }
+
+    def on_press(key):
+        global key_press_count
+        try:
+            k = key.char.lower()
+        except AttributeError:
+            # Special keys (shift, ctrl, etc.)
+            k = str(key).lower().replace('key.', '')
+
+        if k not in held_keys:
+            held_keys.add(k)
+            key_press_count += 1
+            print(f"[GLOBAL] Key pressed once: {k} (Total: {key_press_count})")
+            still_active_global_key_events.append(k)
+            print(still_active_global_key_events)
+            new_global_key_events[:] = still_active_global_key_events.copy()
+
+    def on_release(key):
+        try:
+            k = key.char.lower()
+        except AttributeError:
+            k = str(key).lower().replace('key.', '')
+
+        print(f"[GLOBAL] Key released: {k}")
+        held_keys.discard(k)
+        if k in still_active_global_key_events:
+            still_active_global_key_events.remove(k)
+
+        if k == 'shift':
+            # Remove all shifted symbols when shift released
+            for char in '!@#$%^&*()':
+                if char in still_active_global_key_events:
+                    still_active_global_key_events.remove(char)
+                    held_keys.discard(char)
+        else:
+            # Remove shift if shift+key combo released
+            for combination, symbol in key_combination_map.items():
+                mod, k_comb = combination.split('+')
+                if k_comb == k and mod == 'shift' and 'shift' in still_active_global_key_events:
+                    still_active_global_key_events.remove('shift')
+                    held_keys.discard('shift')
+
+            # Remove corresponding symbol when number key released
+            if k in '1234567890':
+                symbol = key_combination_map.get(f'shift+{k}')
+                if symbol and symbol in still_active_global_key_events:
+                    still_active_global_key_events.remove(symbol)
+                    held_keys.discard(symbol)
+
+        new_global_key_events[:] = still_active_global_key_events.copy()
+    listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+    try:
+        listener.start()
+        print("[Listener] Started")
+        # listener.stop()
+    except Exception as e:
+        print(f"[Listener] Failed: {e}")
+
+
+if __name__ == "__main__":
+    # app = NSApplication.sharedApplication()
+    # AppHelper.callAfter(play_game)
+    # AppHelper.runEventLoop()
+    # global_key_listener()
+    run_thread = threading.Thread(target=global_key_listener, daemon=True)
+    run_thread.start()
+    playing = True
+    while playing:
+        try:
+            playing = play_game()
+        except Exception as e:
+            import traceback
+
+            with open("/tmp/rs_trainer_error.log", "w") as f:
+                f.write(traceback.format_exc())
+            raise
+    pygame.quit()

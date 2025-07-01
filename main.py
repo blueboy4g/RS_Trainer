@@ -1,702 +1,299 @@
+import shutil
+import subprocess
+import threading
 import os
 import sys
+import requests
+import webbrowser
 
-import ctypes
-import time
+from config.config import *
 
-# import win32con
-# import win32gui
-try:
-    from pynput import keyboard
-except Exception:
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-    from pynput import keyboard
-
-from scripts.dial_animation import DialAnimation
-try:
-    from config.config import *
-except Exception:
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-    from config.config import *
-from scripts.ability import Ability
-
-from Cocoa import NSApp, NSApplication, NSWindow
-from Cocoa import NSWindowCollectionBehaviorCanJoinAllSpaces
-from Quartz import kCGFloatingWindowLevelKey, CGWindowLevelForKey
-import pygame
-import threading
-
-import json
-from config.config import USER_KEYBINDS, APPDATA_DIR
-#os.environ["SDL_VIDEODRIVER"] = "dummy"
-with open(USER_KEYBINDS, "r") as f:
-    config = json.load(f)
-
-
-ABILITY_KEYBINDS = config["ABILITY_KEYBINDS"]
-
-
-if len(sys.argv) < 2:
-    print("Usage: python RS_Trainer.py <config_file>")
-    if platform.system() == "Windows":
-        config_file = "C://Users//PC//AppData//Roaming//Azulyn//boss_rotations//kerapac_hybrid_solo.json"
-    else:
-        APPDATA_DIR = os.path.join(os.path.expanduser("~"), ".config", APP_NAME)
-        config_file = APPDATA_DIR + "/boss_rotations/kerapac_hybrid_solo.json"
+# ----------------- Config -----------------
+CURRENT_VERSION = "1.0.0"
+if platform.system() == "Windows":
+    VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version.json"
 else:
-    config_file = sys.argv[1]
-    print(f"Using config: {config_file}")
+    VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version_mac.json"
 
-# Example: load the config
-with open(config_file, 'r') as f:
-    note_sequence = json.load(f)
+import os
+import platform
 
-def play_game():
-    print("1")
-    global running, current_tick, score, missed_notes, spawned_notes, tick_bars, key_press_count, new_global_key_events, still_active_global_key_events
-    # Put everything from initialization to show_results() here
+APP_NAME = "Azulyn"
 
-    # Now you can use `config` in your script
+if platform.system() == "Windows":
+    APPDATA_DIR = os.path.join(os.environ["APPDATA"], APP_NAME)
+else:
+    APPDATA_DIR = os.path.join(os.path.expanduser("~"), ".config", APP_NAME)
 
-    # Tkinter is used to center the window on screen
-    # root = tk.Tk()
-    #
-    # root.withdraw()
-    # screen_w, screen_h = root.winfo_screenwidth(), root.winfo_screenheight()
-    win_w, win_h = 450, 300
-    # x = round((screen_w - win_w) / 2)
-    # y = round((screen_h - win_h) / 2 * 0.8)
-    # root.destroy()
-    print("2")
-    # Initialize Pygame
-    pygame.init()
-    pygame.display.init()
+os.makedirs(APPDATA_DIR, exist_ok=True)
 
-    icon = pygame.image.load("azulyn_icon.png")
-    pygame.display.set_icon(icon)
-    pygame.display.set_caption("RS Trainer (Overlay)")
+last_boss_selected_save = os.path.join(APPDATA_DIR, "last_boss_selected.txt")
+last_rotation_selected_save = os.path.join(APPDATA_DIR, "last_rotation_selected.txt")
+KEYBINDS_FILE = os.path.join(APPDATA_DIR, "keybinds.json")
+BUILD_ROTATION_FILE = os.path.join(APPDATA_DIR, "build_rotation.txt")
+DEFAULT_BUILD_ROTATION_FILE = os.path.join("config", "build_rotation.txt")
+from pathlib import Path
 
-    # Create Pygame screen and set window position
-    screen = pygame.display.set_mode((win_w, win_h))
+# APPDATA_BOSS_DIR = Path(os.getenv("APPDATA") or Path.home() / ".config") / "Azulyn" / "boss_rotations"
+APPDATA_BOSS_DIR = Path(APPDATA_DIR) / "boss_rotations"
+SOURCE_BOSS_DIR = Path("boss_rotations")
+APPDATA_BOSS_DIR.mkdir(parents=True, exist_ok=True)
 
-    pygame.display.set_caption("RS Trainer (Overlay)")
-    #screen = pygame.display.set_mode((800, 600))  # Change dimensions as needed
-    pygame.display.flip()
-    print("3")
-    # Get the Cocoa app instance
-    app = NSApplication.sharedApplication()
-    app.activateIgnoringOtherApps_(True)
+BOSS_FILE = os.path.join(APPDATA_BOSS_DIR, "demo.json")
 
-    floating_level = CGWindowLevelForKey(kCGFloatingWindowLevelKey)
-    print("4")
-    # Loop through all app windows to find the one with our title
-    for window in app.windows():
-        if window.title() == "RS Trainer (Overlay)":
-            window.setLevel_(floating_level)
-            window.setCollectionBehavior_(NSWindowCollectionBehaviorCanJoinAllSpaces)
-            break
+ICON_PATH = "Resources/azulyn_icon.ico"
+# ------------------------------------------
 
-    see_notes=True
+if not os.path.exists(BUILD_ROTATION_FILE):
+    if os.path.exists(DEFAULT_BUILD_ROTATION_FILE):
+        shutil.copy(DEFAULT_BUILD_ROTATION_FILE, BUILD_ROTATION_FILE)
 
-    # Game Variables
-    press_zone_rect = pygame.Rect(PRESS_ZONE_X, (SCREEN_HEIGHT // 2) - 450, 1, 450)  # 1 pixel wide with extra height
-    tick_bars = []  # Store tick bars
-    print("5")
-    # Game variables
-    running = True
-    clock = pygame.time.Clock()
-    spawned_notes = []
-    spawned_notes_queue = []
-    current_tick = 0
-    next_tick_time = time.time() + TICK_DURATION
-    last_tick_time = time.time()  # Track last tick time for debugging
-    score = 0
-    total_notes = len(note_sequence)
-    missed_notes = 0
-    last_tick_bar_time = None  # Store last tick bar collision time
-    tick_note_counts = {}
-    tick_note_counts_queue = {}# Dictionary to track notes stacking per tick
-    tick_note_counts_queue2 = {}# Dictionary to track notes stacking per tick
-    pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN, pygame.KEYUP])
-    dial_animation = DialAnimation(win_w // 2 - 25, win_h - 75)
-    dial_animation_queue = []  # Queue for animations
-    current_animation = None  # Track the currently playing animation
-    failed_attempts = 0  # Track failed attempts
-    feedback_message = None  # Store feedback message
-    feedback_timer = 0  # Timer for feedback message
+for file in SOURCE_BOSS_DIR.glob("*.json"):
+    target = APPDATA_BOSS_DIR / file.name
+    if not target.exists():
+        shutil.copy(file, target)
 
 
-    key_press_count = 0
-    new_global_key_events = []
-    still_active_global_key_events = []
-    print("8")
-    key_combination_map = {
-        "SHIFT+1": "!",
-        "SHIFT+2": "@",
-        "SHIFT+3": "#",
-        "SHIFT+4": "$",
-        "SHIFT+5": "%",
-        "SHIFT+6": "^",
-        "SHIFT+7": "&",
-        "SHIFT+8": "*",
-        "SHIFT+9": "(",
-        "SHIFT+0": ")",
-        "SHIFT+A": "A",
-        "SHIFT+B": "B",
-        "SHIFT+C": "C",
-        "SHIFT+D": "D",
-        "SHIFT+E": "E",
-        "SHIFT+F": "F",
-        "SHIFT+G": "G",
-        "SHIFT+H": "H",
-        "SHIFT+I": "I",
-        "SHIFT+J": "J",
-        "SHIFT+K": "K",
-        "SHIFT+L": "L",
-        "SHIFT+M": "M",
-        "SHIFT+N": "N",
-        "SHIFT+O": "O",
-        "SHIFT+P": "P",
-        "SHIFT+Q": "Q",
-        "SHIFT+R": "R",
-        "SHIFT+S": "S",
-        "SHIFT+T": "T",
-        "SHIFT+U": "U",
-        "SHIFT+V": "V",
-        "SHIFT+W": "W",
-        "SHIFT+X": "X",
-        "SHIFT+Y": "Y",
-        "SHIFT+Z": "Z",
+def run_gui():
+    import tkinter as tk
+    from tkinter import filedialog, messagebox
+    from tkinter import ttk
 
-        # Add more mappings as needed
-    }
-    # Function to get the mapped value
-    def get_mapped_key(key):
-        for combination, symbol in key_combination_map.items():
-            mod, k = combination.split('+')
-            if k.lower() == key.lower():
-                return symbol
-        return key
-
-    # def make_window_always_on_top():
-    #     hwnd = win32gui.GetForegroundWindow()  # Get current foreground window
-    #     win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST, 0, 0, 0, 0,
-    #                           win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
-    # make_window_always_on_top()
-    # Start the global key listener
-    print("9")
-    # threading.Thread(target=global_key_listener, daemon=True).start()
-    #run_thread = threading.Thread(target=global_key_listener, daemon=True)
-    print("10")
-    # time.sleep(4)
-    #run_thread.start()
-    # time.sleep(4)
-    while running:
-        screen.fill((0, 0, 0))  # Clear screen
-        mouse_clicked = False  # Track mouse click state
-        key_pressed = False  # Track key press state
-        dt = clock.tick(60) / 1000.0  # Convert milliseconds to seconds
-        # Update animation
-        dial_animation.update(dt)
-
-        # If no animation is playing, start the next one from the queue
-        if current_animation is None and dial_animation_queue:
-            current_animation = dial_animation_queue.pop(0)  # Start the next animation
-            current_animation.start()  # Ensure it begins playing
-
-        # Update and draw the current animation
-        if current_animation:
-            current_animation.update(dt)
-            if not current_animation.active:
-                current_animation = None  # Move to the next animation when done
-
-        # Draw the current animation
-        if current_animation:
-            current_animation.draw(screen)
-        key_down = None
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key not in [pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_LCTRL, pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT]:
-                    print(f"Key pressed: {event.key}")
-                    key_pressed = True
-                    key_down = event.key
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                print(f"Mouse clicked at {event.pos}")
-                mouse_clicked = True
-
-        keys = pygame.key.get_pressed()
-        # Check for hits
-        if key_down or mouse_clicked or new_global_key_events:
-            print("new_global_key_events:", new_global_key_events)
-            print("Key pressed:", key_down)
-            ONE_NOTE_HIT = False
-            for note in spawned_notes[:]:
-                try:
-                    required_keys_pressed = False  # Start with False (assume key is NOT pressed)
-
-                    for k in note.key:
-                        k = k.strip().upper()  # Normalize key formatting
-                        required_keys_pressed = all(
-                            (keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]) if k == "SHIFT" else
-                            (keys[pygame.K_LCTRL] or keys[pygame.K_RCTRL]) if k in ["CTRL", "LCTRL"] else
-                            (keys[pygame.K_LALT] or keys[pygame.K_RALT]) if k == "ALT" else
-                            (keys[pygame.K_LEFTBRACKET] if k == "[" else
-                             keys[pygame.K_RIGHTBRACKET] if k == "]" else
-                             keys[pygame.K_BACKSLASH] if k == "\\" else
-                             keys[pygame.K_MINUS] if k == "-" else
-                             keys[pygame.K_COMMA] if k == "," else
-                             keys[pygame.K_BACKQUOTE] if k == "`" else
-                             pygame.mouse.get_pressed()[0] if k == "MOUSE" else
-                             keys[getattr(pygame, f'K_F{k[1:]}', None)] if k.startswith("F") and k[1:].isdigit() else
-                             keys[getattr(pygame, f'K_{k.lower()}', None)] if getattr(pygame, f'K_{k.lower()}',
-                                                                                      None) else False)
-                            for k in note.key
-                        )
-
-                    # if not required_keys_pressed:
-                        # required_keys_pressed = all(
-                        #     (k.lower() == "mouse" and "space" in new_global_key_events) or
-                        #     (mapped_key in new_global_key_events) or
-                        #     (k.lower() in new_global_key_events) or
-                        #     ("shift" in new_global_key_events and k.lower() == "3" and "@" in new_global_key_events) or
-                        #     ("ctrl" in new_global_key_events and f"ctrl+{k.lower()}" in key_combination_map and
-                        #      key_combination_map[f"ctrl+{k.lower()}"] in new_global_key_events) or
-                        #     ("alt" in new_global_key_events and f"alt+{k.lower()}" in key_combination_map and
-                        #      key_combination_map[f"alt+{k.lower()}"] in new_global_key_events)
-                        #     for k in note.key
-                        # )
-
-                    if required_keys_pressed:
-                        new_global_key_events = []
-
-                    for k in note.key:
-                        print("WE GOT: " + str(k))
-
-                    #TODO seems like we get random misses and im not sure why?
-                    if required_keys_pressed == False:
-                        for k in note.key:
-                            print("k.lower is " + str(k.lower()))
-                            mapped_key = get_mapped_key(k.lower())
-                            print("Mapped key is " + str(mapped_key))
-                            required_keys_pressed = False
-                            print("IN LOOP: " + str(k))
-                            if k.lower() == "mouse":
-                                # if space is in new global key
-                                if "space" in new_global_key_events:
-                                    required_keys_pressed = True
-
-                            elif mapped_key in new_global_key_events:
-                                print(f"Key {mapped_key} is pressed mapped")
-                                required_keys_pressed = True
-
-
-                            elif k.lower() in new_global_key_events:
-                                print(f"Key {k} is pressed")
-                                required_keys_pressed = True
-
-                            # Check for modifier combinations
-                            elif "shift" in new_global_key_events and f"shift+{k.lower()}" in key_combination_map:
-                                if key_combination_map[f"shift+{k.lower()}"] in new_global_key_events:
-                                    print(f"Key {key_combination_map[f'shift+{k.lower()}']} is pressed with SHIFT")
-                                    required_keys_pressed = True
-
-                            elif "ctrl" in new_global_key_events and k.lower() == 'lctrl':
-                                print(f"Key is pressed with CTRL")
-                                required_keys_pressed = True
-
-                            elif "alt" in new_global_key_events and f"alt+{k.lower()}" in key_combination_map:
-                                if key_combination_map[f"alt+{k.lower()}"] in new_global_key_events:
-                                    print(f"Key {key_combination_map[f'alt+{k.lower()}']} is pressed with ALT")
-                                    required_keys_pressed = True
-                            elif required_keys_pressed == False:
-                                print(f"Key {k} is NOT pressed")
-                                required_keys_pressed = False
-                                break
-
-                    if required_keys_pressed and press_zone_rect.colliderect(note.rect):
-                        print(f"Hit detected: {note.ability}")  # Debugging log
-                        score += 1
-                        spawned_notes.remove(note)
-                        feedback_message = "Correct"
-                        feedback_timer = time.time() + 1  # Show feedback for 1 second
-                        failed_attempts = 0  # Reset failed attempts
-                        ONE_NOTE_HIT = True
-
-                        if note.ability not in EXCLUDED_DIAL_ANIMATIONS:
-                            new_animation = DialAnimation(win_w // 2 - 25, win_h - 75)
-                            dial_animation_queue.append(new_animation)
-
-                except KeyError:
-                    print(f"Warning: Unrecognized ability in note: {note.ability}")
-
-            # Check for missed notes after the loop
-            if not ONE_NOTE_HIT and (key_pressed or mouse_clicked or new_global_key_events):
-                if new_global_key_events == ['shift'] or new_global_key_events == ['ctrl'] or new_global_key_events == ['alt']:
-                    pass
-                else:
-                    print(key_pressed)
-                    print(new_global_key_events)
-                    failed_attempts += 1
-                    missed_notes += 1  # Increment missed notes
-                    print("Failed attempts:", failed_attempts)
-                    feedback_message = "Wrong!"
-                    feedback_timer = time.time() + 1  # Show feedback for 1 second
-                    if failed_attempts >= 3:
-                        print("Making visible")
-                        for note in spawned_notes:
-                            note.visible = True  # Show the note after 3 failed attempts
-        new_global_key_events.clear()
-
-        # Tick system: Check if it's time for the next tick
-        current_time = time.time()
-        if current_time >= next_tick_time and not spawned_notes:
-            print("On tick " + str(current_tick))
-            #YEP this is pretty dumb but on my Mac I am hitting a race condition on startup that breaks everything
-            if current_tick == 0:
-                time.sleep(3)
-            spawned_notes_queue = []  # Reset queue for new notes
-            actual_tick_duration = current_time - last_tick_time
-            last_tick_time = current_time
-            current_tick += 1
-            #next_tick_time += TICK_DURATION  # Remove tick time so it instant
-
-            future_ticks = [note["tick"] for note in note_sequence if note["tick"] > current_tick]
-            next_note = min(future_ticks, default=None)
-
-            if next_note is not None:
-                future_future_ticks = [note["tick"] for note in note_sequence if note["tick"] > next_note]
-                next_next_note = min(future_future_ticks, default=None)
-
-        for note in spawned_notes:
-            result = note.update(dt)
-            if result == "missed":
-                missed_notes += 1
-            note.draw(screen)
-
-        for note in spawned_notes_queue:
-            note.draw(screen)
-
-        current_time = time.time()
-        if current_time >= next_tick_time and not spawned_notes:
-
-            # Spawn notes based on tick timing
-            for note_data in note_sequence:
-                tick_count = tick_note_counts.get(current_tick, 0)
-                tick_count_queue = tick_note_counts_queue.get(next_note, 0)
-                tick_count_queue2 = tick_note_counts_queue2.get(next_next_note, 0)
-                if note_data["tick"] == current_tick:
-                    ability = note_data["ability"]
-                    if ability in ABILITY_KEYBINDS and ability in ABILITY_IMAGES:
-                        key = ABILITY_KEYBINDS[ability]  # Get mapped keybind
-                        image_path = ABILITY_IMAGES[ability]  # Get mapped image
-                        print(str(image_path))
-                        width = note_data.get("width", ABILITY_DEFAULT_WIDTH)  # Default width to 75 if not provided
-                        # Debug log for missing notes
-
-                        print(f"Spawning note: {ability}, Keys: {key}, Tick: {current_tick}, Width: {width}, tick_count: {tick_count}, NOTE_SPACING_Y: {NOTE_SPACING_Y}")
-                        note_y = (SCREEN_HEIGHT // 24) + (tick_count * (NOTE_SPACING_Y - 20))
-                        if key == []:
-                            key = ["MOUSE"]
-                        note = Ability(
-                            ability=ability,
-                            key=key,
-                            image_path=image_path,
-                            start_x=press_zone_rect.x,  # Place note on press_zone_rect
-                            start_y=note_y,
-                            width=width / 2,
-                            stationary=True,  # Mark note as stationary
-                            visible=see_notes
-                        )
-                        spawned_notes.append(note)
-                        tick_note_counts[current_tick] = tick_count + 1
-
-                if note_data["tick"] == next_note:
-                    ability = note_data["ability"]
-                    if ability in ABILITY_KEYBINDS and ability in ABILITY_IMAGES:
-                        key = ABILITY_KEYBINDS[ability]  # Get mapped keybind
-                        image_path = ABILITY_IMAGES[ability]  # Get mapped image
-                        width = note_data.get("width", ABILITY_DEFAULT_WIDTH)  # Default width to 75 if not provided
-                        # Debug log for missing notes
-                        #print(f"Spawning note: {ability}, Keys: {key}, Tick: {next_note}, Width: {width}")
-
-                        note_y = (SCREEN_HEIGHT // 24) + (tick_count_queue * (NOTE_SPACING_Y - 20))
-                        if key == []:
-                            key = ["MOUSE"]
-                        note = Ability(
-                            ability=ability,
-                            key=key,
-                            image_path=image_path,
-                            start_x=press_zone_rect.x + 150,  # Place note on press_zone_rect
-                            start_y=note_y,
-                            width=width / 2,
-                            stationary=True,  # Mark note as stationary
-                            visible=see_notes
-                        )
-                        spawned_notes_queue.append(note)
-                        tick_note_counts_queue[next_note] = tick_count_queue + 1
-
-                if note_data["tick"] == next_next_note:
-                    ability = note_data["ability"]
-                    if ability in ABILITY_KEYBINDS and ability in ABILITY_IMAGES:
-                        key = ABILITY_KEYBINDS[ability]  # Get mapped keybind
-                        image_path = ABILITY_IMAGES[ability]  # Get mapped image
-                        width = note_data.get("width", ABILITY_DEFAULT_WIDTH)  # Default width to 75 if not provided
-                        # Debug log for missing notes
-                        #print(f"Spawning note: {ability}, Keys: {key}, Tick: {next_note}, Width: {width}")
-
-                        note_y = (SCREEN_HEIGHT // 24) + (tick_count_queue2 * (NOTE_SPACING_Y - 20))
-                        if key == []:
-                            key = ["MOUSE"]
-                        note = Ability(
-                            ability=ability,
-                            key=key,
-                            image_path=image_path,
-                            start_x=press_zone_rect.x + 250,  # Place note on press_zone_rect
-                            start_y=note_y,
-                            width=width / 2,
-                            stationary=True,  # Mark note as stationary
-                            visible=see_notes
-                        )
-                        spawned_notes_queue.append(note)
-                        tick_note_counts_queue2[next_next_note] = tick_count_queue2 + 1
-
-
-            #tick_bars.append(TickBar(SCREEN_WIDTH))  # Always spawn from the right side
-
-        # Update and draw notes
-        for note in spawned_notes:
-            result = note.update(dt)
-            if result == "missed":
-                missed_notes += 1
-            note.draw(screen)
-
-        for note in spawned_notes_queue:
-            note.draw(screen)
-
-
-        # Update and draw tick bars
-        for bar in tick_bars:
-            bar.update(press_zone_rect, dt)
-            bar.draw(screen)
-
-        # Remove expired tick bars and notes
-        tick_bars = [bar for bar in tick_bars if bar.active]
-        spawned_notes = [note for note in spawned_notes if note.active]
-
-        # Draw pressing zone
-        pygame.draw.rect(screen, (255, 0, 0), press_zone_rect)
-
-        # Process events ONCE per frame
-        if not pygame.key.get_focused():
-            pass
-
-        # Display score and misses
-        font = pygame.font.Font(None, 48)
-        #score_text = font.render(f"Score: {score}", True, (255, 255, 255))
-        #misses_text = font.render(f"Misses: {missed_notes}", True, (255, 255, 255))
-        #screen.blit(score_text, (10, 10))
-        #screen.blit(misses_text, (10, 60))
-
-        # Display feedback message
-        if feedback_message and time.time() < feedback_timer:
-            font = pygame.font.Font(None, 22)
-            if feedback_message == "Wrong!":
-                feedback_text = font.render(feedback_message, True, (255, 0, 0))
+    def check_for_update():
+        try:
+            response = requests.get(VERSION_URL, timeout=5)
+            data = response.json()
+            latest_version = data["version"]
+            download_url = data["download_url"]
+            notes = data.get("notes", "")
+            if latest_version != CURRENT_VERSION:
+                if messagebox.askyesno("Update Available", f"New version {latest_version} available:\n\n{notes}\n\nDownload now?"):
+                    webbrowser.open(download_url)
             else:
-                feedback_text = font.render(feedback_message, True, (0, 255, 0))
-            screen.blit(feedback_text,
-                        (win_w // 2 - feedback_text.get_width() // 2, win_h // 2 - feedback_text.get_height() // 2))
+                messagebox.showinfo("No Update", f"You're running the latest version ({CURRENT_VERSION})")
+        except Exception as e:
+            messagebox.showerror("Update Check Failed", str(e))
+
+    def load_last_used_boss():
+        if os.path.exists(last_boss_selected_save):
+            with open(last_boss_selected_save, 'r') as f:
+                return f.read().strip()
+        return BOSS_FILE
+
+    def load_last_pvm_rot():
+        if os.path.exists(last_rotation_selected_save):
+            with open(last_rotation_selected_save, 'r') as f:
+                return f.read().strip()
+        return BUILD_ROTATION_FILE
+
+    def save_current_config():
+        with open(last_boss_selected_save, 'w') as f:
+            f.write(last_used_boss.get())
+
+    def start_script(exe_path, log_output=False, args=None):
+        args = args or []
+        if exe_path.endswith(".py"):
+            # Use current Python interpreter for .py files
+            command = [sys.executable, exe_path] + args
         else:
-            feedback_message = None  # Clear feedback message after timer expires
+            # Use the given command directly
+            command = [exe_path] + args
 
-        pygame.display.flip()
+        def run():
+            try:
+                process = subprocess.Popen(
+                    command,
+                    cwd=os.path.dirname(__file__),
+                    stdout=subprocess.PIPE if log_output else None,
+                    stderr=subprocess.STDOUT if log_output else None,
+                    text=True
+                )
+                if log_output:
+                    log_text.delete("1.0", tk.END)
+                    for line in process.stdout:
+                        log_text.insert(tk.END, line)
+                        log_text.see(tk.END)
+                    process.wait()
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to launch {exe_path}:\n{e}")
+        threading.Thread(target=run).start()
 
-        # Check if all notes have played
-        if (current_tick - 15) >= max([n["tick"] for n in note_sequence]) and not spawned_notes:
-            game_over = True
-            running = False  # End game loop
+    def open_file_editor(filepath):
+        if not os.path.isfile(filepath):
+            messagebox.showerror("Error", f"File not found: {filepath}")
+            return
+        subprocess.Popen([get_default_editor(), filepath])
 
-    def show_results(screen, score, total_notes, missed_notes):
-        accuracy = (score / total_notes) * 100 if total_notes > 0 else 0
-        font = pygame.font.Font(None, 24)
-        screen.fill((0, 0, 0))
-
-        results = [
-            "Done!",
-            f"Final Score: {score}",
-            f"Total Notes: {total_notes}",
-            f"Missed Notes: {missed_notes}",
-            f"Accuracy: {score / (total_notes + missed_notes) * 100:.2f}%",
-            "Press ESC to exit",
-            "Press R to restart"
-        ]
-
-        for i, text in enumerate(results):
-            rendered_text = font.render(text, True, (255, 255, 255))
-            screen.blit(rendered_text, (SCREEN_WIDTH // 2 - 240, 10 + i * 25))
-
-        pygame.display.flip()
-
-    # Display results
-    show_results(screen, score, total_notes, missed_notes)
-
-    # Exit or restart screen handling
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                waiting = False
-                pygame.quit()
-                return False
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                # Restart the game
-                running = True
-                current_tick = 0
-                score = 0
-                missed_notes = 0
-                spawned_notes = []
-                tick_bars = []
-                waiting = False
-                print("YOOOOO")
-                pygame.event.clear()
-                # pygame.quit()
-                # pygame.display.quit()
-                # pygame.font.quit()
-                # close_all_windows()
-                time.sleep(3)
-                return True
-                # run_thread.join()
-                # time.sleep(5)
-
-def close_all_windows():
-    app = NSApplication.sharedApplication()
-    for window in app.windows():
-        print("its a me windowwww " + str(window))
-        window.close()
-
-# if __name__ == "__main__":
-#     while True:
-#         play_game()
-#     pygame.quit()
-
-
-# from PyObjCTools import AppHelper
-# from Cocoa import NSApplication
-# import logging
-#
-# logging.basicConfig(filename="/tmp/pynput_debug.log", level=logging.DEBUG)
-#
-# def global_key_listener():
-#     def on_press(key):
-#         logging.debug(f"[Listener] Key down: {key}")
-#         print(f"[Listener] Key down: {key}")
-#     def on_release(key):
-#         logging.debug(f"[Listener] Key up: {key}")
-#         print(f"[Listener] Key up: {key}")
-#     try:
-#         listener = keyboard.Listener(on_press=on_press, on_release=on_release)
-#         listener.start()
-#         logging.info("[Listener] Started successfully")
-#     except Exception as e:
-#         logging.error(f"[Listener] Failed to start: {e}")
-
-
-def global_key_listener():
-    held_keys = set()
-    global key_press_count, new_global_key_events, still_active_global_key_events
-    key_press_count = 0
-    new_global_key_events = []
-    still_active_global_key_events = []
-
-    # Map keys for shift+number to symbol
-    key_combination_map = {
-        'shift+1': '!',
-        'shift+2': '@',
-        'shift+3': '#',
-        'shift+4': '$',
-        'shift+5': '%',
-        'shift+6': '^',
-        'shift+7': '&',
-        'shift+8': '*',
-        'shift+9': '(',
-        'shift+0': ')'
-    }
-
-    def on_press(key):
-        global key_press_count
-        try:
-            k = key.char.lower()
-        except AttributeError:
-            # Special keys (shift, ctrl, etc.)
-            k = str(key).lower().replace('key.', '')
-
-        if k not in held_keys:
-            held_keys.add(k)
-            key_press_count += 1
-            print(f"[GLOBAL] Key pressed once: {k} (Total: {key_press_count})")
-            still_active_global_key_events.append(k)
-            print(still_active_global_key_events)
-            new_global_key_events[:] = still_active_global_key_events.copy()
-
-    def on_release(key):
-        try:
-            k = key.char.lower()
-        except AttributeError:
-            k = str(key).lower().replace('key.', '')
-
-        print(f"[GLOBAL] Key released: {k}")
-        held_keys.discard(k)
-        if k in still_active_global_key_events:
-            still_active_global_key_events.remove(k)
-
-        if k == 'shift':
-            # Remove all shifted symbols when shift released
-            for char in '!@#$%^&*()':
-                if char in still_active_global_key_events:
-                    still_active_global_key_events.remove(char)
-                    held_keys.discard(char)
+    def get_default_editor():
+        if platform.system() == "Darwin":
+            return "open"  # macOS's `open` uses the default app for the file type
+        elif platform.system() == "Windows":
+            return os.environ.get("EDITOR", "notepad")
         else:
-            # Remove shift if shift+key combo released
-            for combination, symbol in key_combination_map.items():
-                mod, k_comb = combination.split('+')
-                if k_comb == k and mod == 'shift' and 'shift' in still_active_global_key_events:
-                    still_active_global_key_events.remove('shift')
-                    held_keys.discard('shift')
+            return os.environ.get("EDITOR", "nano")
 
-            # Remove corresponding symbol when number key released
-            if k in '1234567890':
-                symbol = key_combination_map.get(f'shift+{k}')
-                if symbol and symbol in still_active_global_key_events:
-                    still_active_global_key_events.remove(symbol)
-                    held_keys.discard(symbol)
+    def browse_rotation_file():
+        file_path = filedialog.askopenfilename(
+            initialdir=str(APPDATA_BOSS_DIR),
+            title="Select Rotation File",
+            filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")]
+        )
+        if file_path:
+            last_used_boss.set(file_path)
+            last_used_boss_trimmed_string = last_used_boss.get().split("/")[-1].split("\\")[-1]
+            last_used_boss_trimmed_string = last_used_boss_trimmed_string.replace(".json", "")
+            last_used_boss_trimmed.set(last_used_boss_trimmed_string)
+            save_current_config()
 
-        new_global_key_events[:] = still_active_global_key_events.copy()
-    listener = keyboard.Listener(on_press=on_press, on_release=on_release)
-    try:
-        listener.start()
-        print("[Listener] Started")
-        # listener.stop()
-    except Exception as e:
-        print(f"[Listener] Failed: {e}")
+    def open_donation():
+        webbrowser.open("https://buymeacoffee.com/azulyn")
 
+    def open_discord():
+        webbrowser.open("https://discord.gg/Sp7Sh52B")
+
+    def open_youtube():
+        webbrowser.open("https://www.youtube.com/@Azulyn1")
+
+    # --------------- UI Setup ----------------
+    root = tk.Tk()
+    root.title("RuneScape Trainer")
+    root.geometry("650x450")
+    if platform.system() == "Windows":
+        root.iconbitmap(ICON_PATH)
+    elif platform.system() == "Darwin":
+        # macOS: iconbitmap doesn't work, so we use `iconphoto`
+        #TODO
+        #icon = tk.PhotoImage(file="Resources/azulyn_icon.png")
+        #todo icon = tk.PhotoImage(file="azulyn_icon.png")
+        #todo root.iconphoto(True, icon)
+        pass
+
+    # Dark button styling
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure("Dark.TButton", foreground="white", background="#444", padding=6)
+    style.map("Dark.TButton", background=[("active", "#555")])
+    style.configure("Gray.TButton", foreground="white", background="#444", padding=6)
+    style.map("Gray.TButton", background=[("active", "#555")])
+
+    last_used_boss = tk.StringVar(value=load_last_used_boss())
+    last_used_pvm_rot = tk.StringVar(value=load_last_pvm_rot())
+    key_bind_config = tk.StringVar(value=KEYBINDS_FILE)
+
+
+    ascii_title = r"""
+       _____               .__                
+      /  _  \ __________ __|  | ___.__. ____  
+     /  /_\  \\___   /  |  \  |<   |  |/    \ 
+    /    |    \/    /|  |  /  |_\___  |   |  \
+    \____|__  /_____ \____/|____/ ____|___|  /
+            \/      \/          \/         \/ 
+    """
+
+    # Layout Frames
+    top_frame = tk.Frame(root)
+    top_frame.pack(pady=5, fill="x")
+
+    tk.Label(
+        top_frame,
+        text='RuneScape Trainer',
+        font='Helvetica 12 bold',
+        foreground="black",
+    ).pack(pady=0)
+
+    left = tk.Frame(top_frame)
+    right = tk.Frame(top_frame)
+    left.pack(side="left", padx=5, expand=True, fill="both")
+    right.pack(side="right", padx=5, expand=True, fill="both")
+
+    log_frame = tk.Frame(root)
+    log_frame.pack(pady=2, fill="both")
+
+    bottom_frame = tk.Frame(root)
+    bottom_frame.pack(pady=(15, 0))
+
+    footer = tk.Frame(root)
+    footer.pack(side="right", pady=(20, 0))
+
+    ttk.Button(left, text="Start RS Overlay", style="Gray.TButton",
+               #command=lambda: start_script("scripts/RS_Overlay.exe", args=[last_used_boss.get()])).pack(pady=2, fill="x")
+               #command=lambda: start_script("scripts/rs_overlay.py", args=[last_used_boss.get()])).pack(pady=2, fill="x")
+                command=lambda: start_script("python3", args=["./scripts/rs_overlay.py"])).pack(pady=2, fill="x")
+    ttk.Button(left, text="Edit Keybinds", style="Gray.TButton",
+               command=lambda: open_file_editor(key_bind_config.get())).pack(pady=2, fill="x")
+    ttk.Button(left, text="Build Rotation", style="Gray.TButton",
+               # command=lambda: start_script("scripts/rotation_creation.exe", log_output=True)).pack(pady=2, fill="x")
+               command=lambda: start_script("scripts/rotation_creation.py", log_output=True)).pack(pady=2,fill="x")
+    tk.Label(left, text="Current Boss:").pack(pady=(5, 2))
+
+    last_used_boss_trimmed = last_used_boss.get().split("/")[-1].split("\\")[-1]
+    last_used_boss_trimmed = last_used_boss_trimmed.replace(".json", "")
+    last_used_boss_trimmed = tk.StringVar(value=last_used_boss_trimmed)
+    tk.Entry(left, textvariable=last_used_boss_trimmed, width=40).pack()
+
+    ttk.Button(right, text="Start RS Trainer", style="Gray.TButton",
+               command=lambda: start_script("scripts/RS_Trainer.exe", args=[last_used_boss.get()])).pack(pady=2, fill="x")
+    ttk.Button(right, text="Select Boss Script", style="Gray.TButton",
+               command=browse_rotation_file).pack(pady=2, fill="x")
+    ttk.Button(right, text="Build Rotation File", style="Gray.TButton",
+               command=lambda: open_file_editor(last_used_pvm_rot.get())).pack(pady=2, fill="x")
+
+    #trim everything but the .json name at the end
+    last_used_pvm_rot_trimmed = last_used_pvm_rot.get().split("/")[-1].split("\\")[-1]
+    #trim everything the .json name at the end
+    last_used_pvm_rot_trimmed = last_used_pvm_rot_trimmed.replace(".txt", "")
+    last_used_pvm_rot_trimmed = tk.StringVar(value=last_used_pvm_rot_trimmed)
+
+    tk.Label(right, text="Rotation Path:").pack(pady=(5, 2))
+    tk.Entry(right, textvariable=last_used_pvm_rot_trimmed, width=40).pack()
+
+    # Log Output
+    tk.Label(log_frame, text="Build Rotation Log:").pack()
+    log_text = tk.Text(log_frame, height=10, width=70, wrap=tk.WORD)
+    log_text.pack(padx=5, pady=(0, 2))
+
+    ttk.Button(bottom_frame, text="Clear Log", style="Gray.TButton",
+               command=lambda: log_text.delete("1.0", tk.END)).pack(side="left", padx=5, pady=1)
+    ttk.Button(bottom_frame, text="Check for Updates", style="Gray.TButton",
+               command=check_for_update).pack(side="left", padx=5, pady=1)
+    ttk.Button(bottom_frame, text="Azulyn Youtube", style="Gray.TButton",
+               command=open_youtube).pack(side="left", padx=5, pady=1)
+    ttk.Button(bottom_frame, text="Azulyn Discord", style="Gray.TButton",
+               command=open_discord).pack(side="left", padx=5, pady=1)
+    ttk.Button(bottom_frame, text="Donate", style="Gray.TButton",
+               command=open_donation).pack(side="left", padx=5, pady=1)
+
+    # tk.Label(
+    #     footer,
+    #     text=ascii_title,
+    #     font=("Courier", 3),
+    #     justify="right",
+    #     anchor="w",
+    #     foreground="blue",
+    # ).pack(side="left", padx=5, pady=0)
+
+    tk.Label(footer, font=("Courier", 8), text=f"Current Version: {CURRENT_VERSION}").pack(side="right", padx=5, pady=0)
+
+
+    root.mainloop()
+# import tkinter as tk
+#
+# def start_gui():
+#     root = tk.Tk()
+#     root.title("RS Trainer")
+#     root.geometry("500x300")
+#
+#     # ✅ Required to prevent AppKit crash
+#     menubar = tk.Menu(root)
+#     appmenu = tk.Menu(menubar, name='apple')
+#     appmenu.add_command(label='About RS Trainer')
+#     menubar.add_cascade(menu=appmenu)
+#     root.config(menu=menubar)
+#
+#     tk.Label(root, text="Hello macOS Tkinter!").pack(pady=20)
+#     tk.Button(root, text="Quit", command=root.quit).pack()
+#
+#     root.mainloop()
 
 if __name__ == "__main__":
-    # app = NSApplication.sharedApplication()
-    # AppHelper.callAfter(play_game)
-    # AppHelper.runEventLoop()
-    # global_key_listener()
-    run_thread = threading.Thread(target=global_key_listener, daemon=True)
-    run_thread.start()
-    playing = True
-    while playing:
-        try:
-            playing = play_game()
-        except Exception as e:
-            import traceback
-
-            with open("/tmp/rs_trainer_error.log", "w") as f:
-                f.write(traceback.format_exc())
-            raise
-    pygame.quit()
+    run_gui()

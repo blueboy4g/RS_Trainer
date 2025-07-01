@@ -1,6 +1,6 @@
 from setuptools import setup
 
-#Run this!!! ->    rm -rf build dist
+#Run this!!! ->    rm -rf build dist/RS_Trainer.app
 #                  python mac_build_dist_final.py py2app
 #                  dist/main.app/Contents/MacOS/main
 
