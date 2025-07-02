@@ -22,9 +22,17 @@ if getattr(sys, 'frozen', False):
 else:
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+os.makedirs(APPDATA_DIR + "/boss_rotations", exist_ok=True)
+DEFAULT_ROT = os.path.join(BASE_DIR, "../../../boss_rotations/mac_default.json")
+USER_ROT = os.path.join(APPDATA_DIR, "boss_rotations/mac_default.json")
+if not os.path.exists(USER_ROT):
+    if os.path.exists(DEFAULT_ROT):
+        shutil.copy(DEFAULT_ROT, USER_ROT)
+    else:
+        raise FileNotFoundError("Default mac_default.json not found in bundled resources at " + str(DEFAULT_ROT))
+
 # print(str(BASE_DIR))
 DEFAULT_KEYBINDS = os.path.join(BASE_DIR, "keybinds.json")
-
 if not os.path.exists(USER_KEYBINDS):
     if os.path.exists(DEFAULT_KEYBINDS):
         shutil.copy(DEFAULT_KEYBINDS, USER_KEYBINDS)

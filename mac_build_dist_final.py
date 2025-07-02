@@ -1,10 +1,29 @@
 from setuptools import setup
 
-#Run this!!! ->    rm -rf build dist/RS_Trainer.app
-#                  python mac_build_dist_final.py py2app
-#                  dist/main.app/Contents/MacOS/main
+#Run this!!! ->    rm -rf build dist/Azulyn.app
+#                  arch -x86_64 python mac_build_dist_final.py py2app
+# Test app         dist/Azulyn.app/Contents/MacOS/Azulyn
 
 
+# When ready to covert for M1s do this to to force intel arch:
+
+# lipo "dist/Azulyn.app/Contents/MacOS/Azulyn" \
+#   -remove arm64 \
+#   -output "dist/Azulyn.app/Contents/MacOS/Azulyn_x86"
+
+# mv "dist/Azulyn.app/Contents/MacOS/Azulyn_x86" "dist/Azulyn.app/Contents/MacOS/Azulyn"
+
+# Get all the paths of stuff thats not intel
+# find dist/Azulyn.app -type f -perm +111 -exec file {} \; | grep 'Mach-O universal binary'
+
+# add those paths to something like what I have below
+# lipo <path> -remove arm64 -output <path>_x86 && mv <path>_x86 <path>
+#
+# lipo dist/Azulyn.app/Contents/MacOS/Azulyn -remove arm64 -output dist/Azulyn.app/Contents/MacOS/Azulyn_x86 && mv dist/Azulyn.app/Contents/MacOS/Azulyn_x86 dist/Azulyn.app/Contents/MacOS/Azulyn
+# lipo dist/Azulyn.app/Contents/MacOS/python -remove arm64 -output dist/Azulyn.app/Contents/MacOS/python_x86 && mv dist/Azulyn.app/Contents/MacOS/python_x86 dist/Azulyn.app/Contents/MacOS/python
+
+# hold option right click finder and restart
+# the app type should now be intel (might take some time or you have to open it)
 
 # create-dmg 'dist/Azulyn.app' \
 #   --overwrite \
