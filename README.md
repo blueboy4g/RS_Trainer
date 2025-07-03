@@ -30,6 +30,13 @@ Modifiers such as "CTRL", "ALT", and "SHIFT" are supported.
   "Test10": ["-"],                 
   "Test11": ["`"],                
   "Test12": ["\\"],                This is backslash in game "\"
+  "Test13": ["insert"],
+  "Test14": ["home"],
+  "Test15": ["end"],
+  "Test16": ["page up"],
+  "Test17": ["page down"],
+  "Test18": ["delete"],
+
 
 ```
 
@@ -39,6 +46,16 @@ Modifiers such as "CTRL", "ALT", and "SHIFT" are supported.
 
 
 [![FAQ VIDEO](http://img.youtube.com/vi/AmuDzXJdMcA/0.jpg)](https://youtu.be/AmuDzXJdMcA)
+
+### The Azulyn overlay won't stay ontop my screen, it keeps going behind stuff!
+This happens when you click quickly after starting the app into RuneScape or another window. To fix close the overlay and whatever window is going on top likely RuneScape and relaunch both. After launching the overlay don't immediately click into the game, wait until the overlay starts before clicking into the game.
+
+### Why does windows Defender say this could be a virus? 
+Windows says that about every program that doesn't have a verified certificate. It's to be expected from indie projects if you want more security info watch the QA video or ask on discord.
+
+### Want to uninstall?
+Go to C:\Program Files\RS Trainer and run the unins000.exe file, or go to Control Panel\Programs\Programs and Features and uninstall it from there.
+After that go to C:\Users\<Your username>\AppData\Roaming\Azulyn and delete the Azulyn folder to remove all settings and data - Note: this will delete your key binds, and you will have to re-enter them later if you reinstall!
 
 ## Donate
 Support would be very much appreciated! It would help my wife understand I'm not wasting all my time...  
@@ -50,3 +67,8 @@ You can donate via: https://buymeacoffee.com/azulyn
 https://www.youtube.com/@Azulyn1
 
 https://discord.gg/XRxsHtcPRJ
+
+## For other developers
+Want to remake this .exe? You can install Inno Setup 6.4.3, run build_dist_final.py and use the AzulynSetup.iss file in the root of this repository inside Inno to create an .exe!
+
+Want to run in python? Don't run main directly it won't work if it's not an .exe, instead run the rs_overlay.py file with the config you want set inside rs_overlay.

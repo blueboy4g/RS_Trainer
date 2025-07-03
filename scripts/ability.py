@@ -3,12 +3,12 @@ import time
 import pygame
 import os
 
-from config.config import NOTE_SPEED
+from config.config import ABILITY_SPEED
 
 last_tick_bar_time = None  # Initialize tick timing
 
 class GameObject:
-    """Base class for moving objects (TickBar & Note)"""
+    """Base class for moving objects (TickBar & Ability)"""
     def __init__(self, x, y, width, height, speed, color=(200, 200, 200)):
         self.rect = pygame.Rect(x, y, width, height)  # Use a rect for movement
         self.speed = speed  # Movement speed
@@ -37,7 +37,7 @@ class TickBar(GameObject):
     font = pygame.font.Font(None, 36)  # UI font for displaying average tick time
 
     def __init__(self, x):
-        super().__init__(x, 0, 2, pygame.display.get_surface().get_height(), NOTE_SPEED, (50, 50, 50))
+        super().__init__(x, 0, 2, pygame.display.get_surface().get_height(), ABILITY_SPEED, (50, 50, 50))
         self.collided = False  # Detects collision once
 
     def update(self, press_zone_rect, dt):
@@ -72,15 +72,18 @@ class TickBar(GameObject):
 
 
 class Ability(GameObject):
-    """Represents a falling note that must be pressed"""
-    def __init__(self, ability, key, image_path, start_x, start_y, width=75, stationary=False, visible=True):
-        super().__init__(start_x, start_y, width, width, NOTE_SPEED)
+    """Represents a falling ability that must be pressed"""
+    def __init__(self, ability, key, image_path, start_x, start_y, width=75, stationary=False, visible=True, keybinds_visible=True, text_color = ""):
+        super().__init__(start_x, start_y, width, width, ABILITY_SPEED)
+        print(str(ability))
         self.ability = ability  # Store ability name
         self.key = key if isinstance(key, list) else [key]  # Ensure key is list
-        self.is_click_note = "MOUSE" in self.key  # Determine if it's a click note
+        self.is_click_ability = "MOUSE" in self.key  # Determine if it's a click ability
         self.font = pygame.font.Font(None, 24)
-        self.stationary = stationary  # Flag to indicate if the note is stationary
+        self.stationary = stationary  # Flag to indicate if the ability is stationary
         self.visible = visible  # Flag to control visibility
+        self.keybinds_visible = keybinds_visible
+        self.text_color = text_color  # Color for keybind text
 
         # Load image safely
         if os.path.exists(image_path):
@@ -90,24 +93,29 @@ class Ability(GameObject):
             self.image = None
 
     def update(self, dt):
-        """Moves the note if it's not stationary"""
+        """Moves the ability if it's not stationary"""
         if not self.stationary:
             super().update(dt)
 
     def draw(self, screen):
-        """Draws the note and key label if visible"""
-        if not self.visible:
-            return
-
-        if self.image:
-            self.image = pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
-            screen.blit(self.image, self.rect)
-        else:
-            super().draw(screen)  # Use default rect rendering
+        """Draws the ability and key label if visible"""
+        if self.visible:
+            if self.image:
+                self.image = pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
+                screen.blit(self.image, self.rect)
+            else:
+                pass
 
         # Draw key label
-        key_label = "CLICK" if self.is_click_note else " + ".join(self.key)
-        text_surface = self.font.render(key_label, True, (255, 255, 255))
-        text_x = self.rect.x + (self.rect.width // 4)
-        text_y = max(10, self.rect.y - 22)  # Prevents text from going off-screen
-        screen.blit(text_surface, (text_x, text_y))
+        if self.keybinds_visible:
+            #TODO show the keybinds
+            key_label = "CLICK" if self.is_click_ability else " + ".join(self.key)
+            if self.text_color == "red":
+                text_surface = self.font.render(key_label, True, (255, 0, 0))
+            else:
+                text_surface = self.font.render(key_label, True, (255, 255, 255))
+            text_x = self.rect.x + (self.rect.width // 4)
+            text_y = max(10, self.rect.y - 22)  # Prevents text from going off-screen
+            screen.blit(text_surface, (text_x, text_y))
+        else:
+            pass

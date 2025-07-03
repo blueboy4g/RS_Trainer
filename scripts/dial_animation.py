@@ -2,6 +2,9 @@ import pygame
 import time
 import math
 
+from config.config import TICK_DURATION
+
+
 class DialAnimation:
     def __init__(self, x, y, size=50, duration_ticks=3):
         """Create a dial animation that lasts for 'duration_ticks' ticks."""
@@ -10,7 +13,7 @@ class DialAnimation:
         self.size = size
         self.angle = 270  # Start at 270° (pointing up)
         self.start_time = None  # Will be set when animation starts
-        self.duration_seconds = duration_ticks * 0.6  # 3 ticks * 0.6s per tick = 1.8s
+        self.duration_seconds = duration_ticks * TICK_DURATION  # 3 ticks * 0.6s per tick = 1.8s
         self.active = False  # Track if animation is currently running
 
     def start(self):

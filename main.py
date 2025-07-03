@@ -12,7 +12,7 @@ import webbrowser
 from config.config import *
 
 # ----------------- Config -----------------
-CURRENT_VERSION = "1.0.0"
+CURRENT_VERSION = "1.0.5"
 VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version.json"
 
 APP_NAME = "Azulyn"
@@ -22,6 +22,7 @@ os.makedirs(APPDATA_DIR, exist_ok=True)
 last_boss_selected_save = os.path.join(APPDATA_DIR, "last_boss_selected.txt")
 last_rotation_selected_save = os.path.join(APPDATA_DIR, "last_rotation_selected.txt")
 KEYBINDS_FILE = os.path.join(APPDATA_DIR, "keybinds.json")
+CONFIG_FILE = os.path.join(APPDATA_DIR, "config.json")
 BUILD_ROTATION_FILE = os.path.join(APPDATA_DIR, "build_rotation.txt")
 DEFAULT_BUILD_ROTATION_FILE = os.path.join("config", "build_rotation.txt")
 from pathlib import Path
@@ -34,6 +35,24 @@ BOSS_FILE = os.path.join(APPDATA_BOSS_DIR, "demo.json")
 
 ICON_PATH = "Resources/azulyn_icon.ico"
 # ------------------------------------------
+
+with open("config/keybinds.json", "r", encoding="utf-8") as f:
+    print("Loading default keybinds from: ", "config/keybinds.json")
+    default_keybinds = json.load(f)
+
+# Check for missing keys under "ABILITY_KEYBINDS"
+missing_keybinds = {key: value for key, value in default_keybinds["ABILITY_KEYBINDS"].items() if key not in keybind_config["ABILITY_KEYBINDS"]}
+
+if missing_keybinds:
+    # Add missing keys to "ABILITY_KEYBINDS"
+    keybind_config["ABILITY_KEYBINDS"].update(missing_keybinds)
+
+    # Save the updated user keybinds without reformatting other entries
+    with open(USER_KEYBINDS, "w", encoding="utf-8") as f:
+        json.dump(keybind_config, f, indent=4, separators=(',', ': '))
+    print(f"Added missing keybinds under 'ABILITY_KEYBINDS': {missing_keybinds}")
+else:
+    print("All keybinds under 'ABILITY_KEYBINDS' are already present.")
 
 if not os.path.exists(BUILD_ROTATION_FILE):
     if os.path.exists(DEFAULT_BUILD_ROTATION_FILE):
@@ -87,12 +106,12 @@ def start_script(exe_path, log_output=False, args=None):
                 stderr=subprocess.STDOUT if log_output else None,
                 text=True
             )
-            if log_output:
-                log_text.delete("1.0", tk.END)
-                for line in process.stdout:
-                    log_text.insert(tk.END, line)
-                    log_text.see(tk.END)
-                process.wait()
+            # if log_output:
+            #     log_text.delete("1.0", tk.END)
+            #     for line in process.stdout:
+            #         log_text.insert(tk.END, line)
+            #         log_text.see(tk.END)
+            #     process.wait()
         except Exception as e:
             messagebox.showerror("Error", f"Failed to launch {exe_path}:\n{e}")
     threading.Thread(target=run).start()
@@ -102,6 +121,7 @@ def open_file_editor(filepath):
         messagebox.showerror("Error", f"File not found: {filepath}")
         return
     subprocess.Popen([get_default_editor(), filepath])
+
 
 def get_default_editor():
     return os.environ.get("EDITOR", "notepad")
@@ -131,7 +151,7 @@ def open_youtube():
 # --------------- UI Setup ----------------
 root = tk.Tk()
 root.title("RuneScape Trainer")
-root.geometry("650x450")
+root.geometry("450x220")
 root.iconbitmap(ICON_PATH)
 
 # Dark button styling
@@ -143,6 +163,7 @@ style.map("Dark.TButton", background=[("active", "#555")])
 last_used_boss = tk.StringVar(value=load_last_used_boss())
 last_used_pvm_rot = tk.StringVar(value=load_last_pvm_rot())
 key_bind_config = tk.StringVar(value=KEYBINDS_FILE)
+config_file = tk.StringVar(value=CONFIG_FILE)
 
 
 ascii_title = r"""
@@ -158,12 +179,12 @@ ascii_title = r"""
 top_frame = tk.Frame(root)
 top_frame.pack(pady=5, fill="x")
 
-tk.Label(
-    top_frame,
-    text='RuneScape Trainer',
-    font='Helvetica 12 bold',
-    foreground="black",
-).pack(pady=0)
+# tk.Label(
+#     top_frame,
+#     text='RuneScape Trainer',
+#     font='Helvetica 12 bold',
+#     foreground="black",
+# ).pack(pady=0)
 
 left = tk.Frame(top_frame)
 right = tk.Frame(top_frame)
@@ -171,34 +192,36 @@ left.pack(side="left", padx=5, expand=True, fill="both")
 right.pack(side="right", padx=5, expand=True, fill="both")
 
 log_frame = tk.Frame(root)
-log_frame.pack(pady=2, fill="both")
+log_frame.pack(pady=0, fill="both")
 
 bottom_frame = tk.Frame(root)
-bottom_frame.pack(pady=(15, 0))
+bottom_frame.pack(pady=(5, 0))
 
 footer = tk.Frame(root)
-footer.pack(side="right", pady=(20, 0))
+footer.pack(side="right", pady=(10, 0))
 
 ttk.Button(left, text="Start RS Overlay", style="Gray.TButton",
            command=lambda: start_script("scripts/RS_Overlay.exe", args=[last_used_boss.get()])).pack(pady=2, fill="x")
 ttk.Button(left, text="Edit Keybinds", style="Gray.TButton",
            command=lambda: open_file_editor(key_bind_config.get())).pack(pady=2, fill="x")
-ttk.Button(left, text="Build Rotation", style="Gray.TButton",
-           command=lambda: start_script("scripts/rotation_creation.exe", log_output=True)).pack(pady=2, fill="x")
+# ttk.Button(left, text="Build Rotation", style="Gray.TButton",
+#            command=lambda: start_script("scripts/rotation_creation.exe", log_output=True)).pack(pady=2, fill="x")
 
-tk.Label(left, text="Current Boss:").pack(pady=(5, 2))
+tk.Label(log_frame, text="Current Boss:").pack(pady=(0, 2))
 
 last_used_boss_trimmed = last_used_boss.get().split("/")[-1].split("\\")[-1]
 last_used_boss_trimmed = last_used_boss_trimmed.replace(".json", "")
 last_used_boss_trimmed = tk.StringVar(value=last_used_boss_trimmed)
-tk.Entry(left, textvariable=last_used_boss_trimmed, width=40).pack()
+tk.Entry(log_frame, textvariable=last_used_boss_trimmed, width=40).pack()
+ttk.Button(log_frame, text="Select Boss Script", style="Gray.TButton",
+           command=browse_rotation_file).pack(pady=10, padx=30, fill="x")
 
 ttk.Button(right, text="Start RS Trainer", style="Gray.TButton",
            command=lambda: start_script("scripts/RS_Trainer.exe", args=[last_used_boss.get()])).pack(pady=2, fill="x")
-ttk.Button(right, text="Select Boss Script", style="Gray.TButton",
-           command=browse_rotation_file).pack(pady=2, fill="x")
-ttk.Button(right, text="Build Rotation File", style="Gray.TButton",
-           command=lambda: open_file_editor(last_used_pvm_rot.get())).pack(pady=2, fill="x")
+ttk.Button(right, text="Edit Config", style="Gray.TButton",
+           command=lambda: open_file_editor(config_file.get())).pack(pady=2, fill="x")
+# ttk.Button(right, text="Build Rotation File", style="Gray.TButton",
+#            command=lambda: open_file_editor(last_used_pvm_rot.get())).pack(pady=2, fill="x")
 
 #trim everything but the .json name at the end
 last_used_pvm_rot_trimmed = last_used_pvm_rot.get().split("/")[-1].split("\\")[-1]
@@ -206,16 +229,16 @@ last_used_pvm_rot_trimmed = last_used_pvm_rot.get().split("/")[-1].split("\\")[-
 last_used_pvm_rot_trimmed = last_used_pvm_rot_trimmed.replace(".txt", "")
 last_used_pvm_rot_trimmed = tk.StringVar(value=last_used_pvm_rot_trimmed)
 
-tk.Label(right, text="Rotation Path:").pack(pady=(5, 2))
-tk.Entry(right, textvariable=last_used_pvm_rot_trimmed, width=40).pack()
+# tk.Label(right, text="Rotation Path:").pack(pady=(5, 2))
+# tk.Entry(right, textvariable=last_used_pvm_rot_trimmed, width=40).pack()
 
 # Log Output
-tk.Label(log_frame, text="Build Rotation Log:").pack()
-log_text = tk.Text(log_frame, height=10, width=70, wrap=tk.WORD)
-log_text.pack(padx=5, pady=(0, 2))
+# tk.Label(log_frame, text="Build Rotation Log:").pack()
+# log_text = tk.Text(log_frame, height=10, width=70, wrap=tk.WORD)
+# log_text.pack(padx=5, pady=(0, 2))
 
-ttk.Button(bottom_frame, text="Clear Log", style="Gray.TButton",
-           command=lambda: log_text.delete("1.0", tk.END)).pack(side="left", padx=5, pady=1)
+# ttk.Button(bottom_frame, text="Clear Log", style="Gray.TButton",
+#            command=lambda: log_text.delete("1.0", tk.END)).pack(side="left", padx=5, pady=1)
 ttk.Button(bottom_frame, text="Check for Updates", style="Gray.TButton",
            command=check_for_update).pack(side="left", padx=5, pady=1)
 ttk.Button(bottom_frame, text="Azulyn Youtube", style="Gray.TButton",

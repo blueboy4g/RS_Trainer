@@ -1,0 +1,15 @@
+{
+    "tick_duration": ".6",
+    "default_exit_button": "esc",
+    "default_restart_button": "r",
+    "mouse_abilities": "space",
+    "see_keybinds": "true",
+    "see_ability_icons": "true",
+    "see_global_cooldown_animation": "false",
+    "see_correct_or_incorrect_feedback_message": "false",
+    "overlay_screen_width": "300",
+    "overlay_screen_height": "220",
+    "ability_icon_size": "75",
+    "ability_spacing_y_dir": "60",
+    "ability_spacing_x_dir": "100"
+}
