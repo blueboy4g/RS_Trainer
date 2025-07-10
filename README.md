@@ -30,12 +30,13 @@ Modifiers such as "CTRL", "ALT", and "SHIFT" are supported.
   "Test10": ["-"],                 
   "Test11": ["`"],                
   "Test12": ["\\"],                This is backslash in game "\"
-  "Test13": ["insert"],
-  "Test14": ["home"],
-  "Test15": ["end"],
-  "Test16": ["page up"],
-  "Test17": ["page down"],
-  "Test18": ["delete"],
+  "Test13": ["//"],                This is forwardslash in game "/"
+  "Test14": ["insert"],
+  "Test15": ["home"],
+  "Test16": ["end"],
+  "Test17": ["page up"],
+  "Test18": ["page down"],
+  "Test19": ["delete"],
 
 
 ```

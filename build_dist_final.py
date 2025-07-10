@@ -7,6 +7,7 @@ from pathlib import Path
 PYTHON_SCRIPTS = [
     "main.py",
     "builder.py",
+    "key_binds.py",
     "config/config.py",
     "scripts/rs_trainer.py",
     "scripts/rs_overlay.py",

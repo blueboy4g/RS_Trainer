@@ -12,7 +12,7 @@ import webbrowser
 from config.config import *
 
 # ----------------- Config -----------------
-CURRENT_VERSION = "1.0.5"
+CURRENT_VERSION = "1.1.0"
 VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version.json"
 
 APP_NAME = "Azulyn"
@@ -145,6 +145,9 @@ def open_donation():
 def open_discord():
     webbrowser.open("https://discord.gg/Sp7Sh52B")
 
+def open_rotation():
+    webbrowser.open("https://blueboy4g.github.io/RS_Rotation_Creator/")
+
 def open_youtube():
     webbrowser.open("https://www.youtube.com/@Azulyn1")
 
@@ -203,7 +206,7 @@ footer.pack(side="right", pady=(10, 0))
 ttk.Button(left, text="Start RS Overlay", style="Gray.TButton",
            command=lambda: start_script("scripts/RS_Overlay.exe", args=[last_used_boss.get()])).pack(pady=2, fill="x")
 ttk.Button(left, text="Edit Keybinds", style="Gray.TButton",
-           command=lambda: open_file_editor(key_bind_config.get())).pack(pady=2, fill="x")
+           command=lambda: start_script("key_binds.exe")).pack(pady=2, fill="x")
 # ttk.Button(left, text="Build Rotation", style="Gray.TButton",
 #            command=lambda: start_script("scripts/rotation_creation.exe", log_output=True)).pack(pady=2, fill="x")
 
@@ -241,10 +244,12 @@ last_used_pvm_rot_trimmed = tk.StringVar(value=last_used_pvm_rot_trimmed)
 #            command=lambda: log_text.delete("1.0", tk.END)).pack(side="left", padx=5, pady=1)
 ttk.Button(bottom_frame, text="Check for Updates", style="Gray.TButton",
            command=check_for_update).pack(side="left", padx=5, pady=1)
-ttk.Button(bottom_frame, text="Azulyn Youtube", style="Gray.TButton",
+ttk.Button(bottom_frame, text="Youtube", style="Gray.TButton",
            command=open_youtube).pack(side="left", padx=5, pady=1)
-ttk.Button(bottom_frame, text="Azulyn Discord", style="Gray.TButton",
+ttk.Button(bottom_frame, text="Discord", style="Gray.TButton",
            command=open_discord).pack(side="left", padx=5, pady=1)
+ttk.Button(bottom_frame, text="Build a Rotation", style="Gray.TButton",
+           command=open_rotation).pack(side="left", padx=5, pady=1)
 ttk.Button(bottom_frame, text="Donate", style="Gray.TButton",
            command=open_donation).pack(side="left", padx=5, pady=1)
 

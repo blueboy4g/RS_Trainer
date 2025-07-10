@@ -28,7 +28,7 @@ ABILITY_KEYBINDS = keybind_config["ABILITY_KEYBINDS"]
 
 if len(sys.argv) < 2:
     print("Usage: python RS_Trainer.py <config_file>")
-    config_file = "C://Users//PC//AppData//Roaming//Azulyn//boss_rotations//azulyn_vermyx_necro.json"
+    config_file = "C://Users//PC//AppData//Roaming//Azulyn//boss_rotations//azulyn_kerapac_hm_solo_mage_melee_with_ezk.json"
 else:
     config_file = sys.argv[1]
     print(f"Using config: {config_file}")
@@ -169,7 +169,7 @@ def play_game():
         held_keys = set()
 
         def on_key_event(e):
-            global key_press_count, new_global_key_events, still_active_global_key_events
+            global key_press_count, new_global_key_events, new_global_key_events
 
             key = e.name
             if e.event_type == 'down':
@@ -178,7 +178,7 @@ def play_game():
                     key_press_count += 1
                     print(f"[GLOBAL] Key pressed once: {key} (Total: {key_press_count})")
                     still_active_global_key_events.append(key)
-                    print(still_active_global_key_events)
+                    print("Still_active " + str(still_active_global_key_events))
                     new_global_key_events = still_active_global_key_events.copy()
 
             elif e.event_type == 'up':
@@ -247,18 +247,18 @@ def play_game():
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key not in [pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_LCTRL, pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT]:
-                    print(f"Key pressed: {event.key}")
+                    #print(f"Key pressed: {event.key}")
                     key_pressed = True
                     key_down = event.key
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                print(f"Mouse clicked at {event.pos}")
+                #print(f"Mouse clicked at {event.pos}")
                 mouse_clicked = True
 
         keys = pygame.key.get_pressed()
         # Check for hits
         if key_down or mouse_clicked or new_global_key_events:
-            print("new_global_key_events:", new_global_key_events)
-            print("Key pressed:", key_down)
+            #print("new_global_key_events:", new_global_key_events)
+            #print("Key pressed:", key_down)
             if (str(config["default_exit_button"])).lower() in new_global_key_events or (str(config["default_exit_button"])).upper() in new_global_key_events:
                 running = False
             ONE_ABILITY_HIT = False
@@ -302,28 +302,29 @@ def play_game():
                         new_global_key_events = []
 
                     for k in ability.key:
-                        print("WE GOT: " + str(k))
+                        #print("WE GOT: " + str(k))
+                        pass
 
                     #TODO seems like we get random misses and im not sure why?
                     if required_keys_pressed == False:
                         for k in ability.key:
-                            print("k.lower is " + str(k.lower()))
+                            #print("k.lower is " + str(k.lower()))
                             mapped_key = get_mapped_key(k.lower())
-                            print("Mapped key is " + str(mapped_key))
+                            #print("Mapped key is " + str(mapped_key))
                             required_keys_pressed = False
-                            print("IN LOOP: " + str(k))
+                            #print("IN LOOP: " + str(k))
                             if k.lower() == "mouse":
                                 # if space is in new global key
                                 if (str(config["mouse_abilities"])) in new_global_key_events:
                                     required_keys_pressed = True
 
                             elif mapped_key in new_global_key_events:
-                                print(f"Key {mapped_key} is pressed mapped")
+                                #print(f"Key {mapped_key} is pressed mapped")
                                 required_keys_pressed = True
 
 
                             elif k.lower() in new_global_key_events:
-                                print(f"Key {k} is pressed")
+                                #print(f"Key {k} is pressed")
                                 required_keys_pressed = True
 
                             # Check for modifier combinations
@@ -366,8 +367,8 @@ def play_game():
                 if new_global_key_events == ['shift'] or new_global_key_events == ['ctrl'] or new_global_key_events == ['alt']:
                     pass
                 else:
-                    print(key_pressed)
-                    print(new_global_key_events)
+                    #print(key_pressed)
+                    #print(new_global_key_events)
                     failed_attempts += 1
                     missed_abilities += 1  # Increment missed abilities
                     print("Failed attempts:", failed_attempts)
@@ -381,6 +382,12 @@ def play_game():
         new_global_key_events = [key for key in new_global_key_events if key.lower() == "shift" or key.lower() == "ctrl" or key.lower() == "alt"]
 
         # Tick system: Check if it's time for the next tick
+        new_global_key_events.clear()
+        for key in still_active_global_key_events:
+            if key== 'shift' or key == 'ctrl' or key == 'alt':
+                pass
+            else:
+                still_active_global_key_events.remove(key)
         current_time = time.time()
         valid_spawned_abilities = [ability for ability in spawned_abilities if not ability.image == None]
         if current_time >= next_tick_time and not valid_spawned_abilities:
