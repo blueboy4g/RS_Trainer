@@ -2,7 +2,7 @@
 ONLY FOR WINDOWS 
 [Download here](https://github.com/blueboy4g/RS_Trainer/blob/main/Output/AzulynSetup.exe), click the three dots in the top right corner of the webpage and select "Download" to download the installer.
 
-If this gets support perhaps Mac/Linux will be added in the future.
+[MAC DOWNLOAD](https://github.com/blueboy4g/RS_Trainer/blob/mac_1.0.0/README.md)
 
 You'll want to edit keybinds inside the software once you launch it.
 
