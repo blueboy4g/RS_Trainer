@@ -280,5 +280,4 @@ def reorder_keybinds_json():
     with open(CONFIG_PATH, "w") as f:
         json.dump({"ABILITY_KEYBINDS": ordered}, f, indent=2)
 
-if __name__ == "__main__":
-    reorder_keybinds_json()
+

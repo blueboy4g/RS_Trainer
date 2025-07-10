@@ -10,6 +10,7 @@ import requests
 import webbrowser
 
 from config.config import *
+from order_key_binds import reorder_keybinds_json
 
 # ----------------- Config -----------------
 CURRENT_VERSION = "1.1.0"
@@ -31,7 +32,7 @@ APPDATA_BOSS_DIR = Path(os.getenv("APPDATA") or Path.home() / ".config") / "Azul
 SOURCE_BOSS_DIR = Path("boss_rotations")
 APPDATA_BOSS_DIR.mkdir(parents=True, exist_ok=True)
 
-BOSS_FILE = os.path.join(APPDATA_BOSS_DIR, "demo.json")
+BOSS_FILE = os.path.join(APPDATA_BOSS_DIR, "azulyn_telos_2499_necro.json")
 
 ICON_PATH = "Resources/azulyn_icon.ico"
 # ------------------------------------------
@@ -152,6 +153,7 @@ def open_youtube():
     webbrowser.open("https://www.youtube.com/@Azulyn1")
 
 # --------------- UI Setup ----------------
+reorder_keybinds_json()
 root = tk.Tk()
 root.title("RuneScape Trainer")
 root.geometry("450x220")
