@@ -1,12 +1,26 @@
 ## Quickstart
-ONLY FOR WINDOWS 
-[Download here](https://github.com/blueboy4g/RS_Trainer/blob/main/Output/AzulynSetup.exe), click the three dots in the top right corner of the webpage and select "Download" to download the installer.
+ONLY FOR MAC
+[Download here](https://github.com/blueboy4g/RS_Trainer/blob/mac_1.0.0/dist/installer/Azulyn%207.0.dmg), click the three dots in the top right corner of the webpage and select "Download" to download the installer.
 
-If this gets support perhaps Mac/Linux will be added in the future.
+Mac is very behind the windows editions! It took me 50 hours just to get it working for you guys.  
 
-You'll want to edit keybinds inside the software once you launch it.
+1. Install via the download icon next to “RAW” in middle/upper right.
+2. Open the download and drag into Applications.
+3. Now run the application.
+4. You probably get promoted to "allow" open now.
+5. You also probably get promoted allow Keystrokes from “Terminal” allow that.
+6. If you have a new mac you'll get prompted to install Rosetta do that as well.
+7. BOOM it should now work?
+8. Now to edit key binds OR change your PVM rotation
+9. Open finder go to Macintosh HD > Users > “your computer name here”.
+10. Hit the three keys “command” + “shift” + “.” to see hidden files you should now see a .config file, open that, open Azulyn. Here is where you will edit key binds and put boss rotations! 
+11. The mac_default.json is the boss rotation that will always run. I would save a couple rotations you want and just rename them to mac_default.json when you want it active.
+12. Want to uninstall? Delete the app from the Application folder and delete the “Azulyn” folder inside .config
 
-Create or import new boss rotation files that you can use in game either via an overlay or in a standalone application.
+[A good place to get PVM rotations](https://github.com/blueboy4g/RS_Trainer/tree/main/boss_rotations)
+
+Need help or think this needs to improve? Message me on discord and mention you're using Mac. 
+
 
 [DEMO VIDEO](https://youtu.be/DbwiqWMt4tI)
 
