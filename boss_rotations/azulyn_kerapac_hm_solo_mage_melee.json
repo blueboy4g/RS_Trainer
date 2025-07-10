@@ -1,0 +1,411 @@
+[
+  {
+    "tick": 4,
+    "ability": "Text: Pre"
+  },
+  {
+    "tick": 4,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 7,
+    "ability": "Incendiary_Shot"
+  },
+  {
+    "tick": 13,
+    "ability": "Text: Enter"
+  },
+  {
+    "tick": 13,
+    "ability": "Target_Cycle"
+  },
+  {
+    "tick": 13,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 13,
+    "ability": "Natural_Instinct"
+  },
+  {
+    "tick": 16,
+    "ability": "Piercing_Shot"
+  },
+  {
+    "tick": 19,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 19,
+    "ability": "Dark_Shard_Of_Leng"
+  },
+  {
+    "tick": 19,
+    "ability": "Dark_Sliver_Of_Leng"
+  },
+  {
+    "tick": 22,
+    "ability": "Berserk"
+  },
+  {
+    "tick": 25,
+    "ability": "Anticipation"
+  },
+  {
+    "tick": 26,
+    "ability": "Surge"
+  },
+  {
+    "tick": 29,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 32,
+    "ability": "Chaos_Roar"
+  },
+  {
+    "tick": 35,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 38,
+    "ability": "Text: P1"
+  },
+  {
+    "tick": 38,
+    "ability": "Target_Cycle"
+  },
+  {
+    "tick": 38,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 38,
+    "ability": "Assault"
+  },
+  {
+    "tick": 45,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 45,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 48,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 51,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 54,
+    "ability": "Fury"
+  },
+  {
+    "tick": 57,
+    "ability": "Overpower"
+  },
+  {
+    "tick": 60,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 63,
+    "ability": "Meteor_Strike"
+  },
+  {
+    "tick": 66,
+    "ability": "Hurricane"
+  },
+  {
+    "tick": 69,
+    "ability": "Punish"
+  },
+  {
+    "tick": 72,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 75,
+    "ability": "Text: P2"
+  },
+  {
+    "tick": 75,
+    "ability": "Corruption_Blast"
+  },
+  {
+    "tick": 78,
+    "ability": "Magma_Tempest"
+  },
+  {
+    "tick": 84,
+    "ability": "Text: Warp"
+  },
+  {
+    "tick": 84,
+    "ability": "Greater_Sunshine"
+  },
+  {
+    "tick": 87,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 90,
+    "ability": "Fractured_Staff_Of_Armadyl"
+  },
+  {
+    "tick": 90,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 93,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 96,
+    "ability": "Tsunami"
+  },
+  {
+    "tick": 96,
+    "ability": "Dive"
+  },
+  {
+    "tick": 96,
+    "ability": "Surge"
+  },
+  {
+    "tick": 99,
+    "ability": "Omnipower"
+  },
+  {
+    "tick": 102,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 102,
+    "ability": "Wild_Magic"
+  },
+  {
+    "tick": 105,
+    "ability": "Metamorphosis"
+  },
+  {
+    "tick": 108,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 111,
+    "ability": "Omnipower"
+  },
+  {
+    "tick": 114,
+    "ability": "Asphyxiate"
+  },
+  {
+    "tick": 123,
+    "ability": "Text: P3"
+  },
+  {
+    "tick": 123,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 126,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 129,
+    "ability": "Roar_Of_Awakening"
+  },
+  {
+    "tick": 129,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 132,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 135,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 138,
+    "ability": "Limitless"
+  },
+  {
+    "tick": 138,
+    "ability": "Smoke_Tendrils"
+  },
+  {
+    "tick": 141,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 144,
+    "ability": "Tsunami"
+  },
+  {
+    "tick": 147,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 150,
+    "ability": "Text: Warp"
+  },
+  {
+    "tick": 150,
+    "ability": "Preparation"
+  },
+  {
+    "tick": 153,
+    "ability": "Berserk"
+  },
+  {
+    "tick": 156,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 159,
+    "ability": "Overpower"
+  },
+  {
+    "tick": 162,
+    "ability": "Assault"
+  },
+  {
+    "tick": 165,
+    "ability": "Chaos_Roar"
+  },
+  {
+    "tick": 168,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 171,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 174,
+    "ability": "Text: C1"
+  },
+  {
+    "tick": 174,
+    "ability": "Freedom"
+  },
+  {
+    "tick": 177,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 180,
+    "ability": "Assault"
+  },
+  {
+    "tick": 183,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 186,
+    "ability": "Punish"
+  },
+  {
+    "tick": 189,
+    "ability": "Text: C2"
+  },
+  {
+    "tick": 189,
+    "ability": "Overpower"
+  },
+  {
+    "tick": 192,
+    "ability": "Dark_Shard_Of_Leng"
+  },
+  {
+    "tick": 192,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 195,
+    "ability": "Fury"
+  },
+  {
+    "tick": 198,
+    "ability": "Text: C3"
+  },
+  {
+    "tick": 198,
+    "ability": "Meteor_Strike"
+  },
+  {
+    "tick": 201,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 204,
+    "ability": "Divert"
+  },
+  {
+    "tick": 207,
+    "ability": "Berserk"
+  },
+  {
+    "tick": 210,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 213,
+    "ability": "Destroy"
+  },
+  {
+    "tick": 216,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 219,
+    "ability": "Fury"
+  },
+  {
+    "tick": 222,
+    "ability": "Text: Kera"
+  },
+  {
+    "tick": 222,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 225,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 228,
+    "ability": "Chaos_Roar"
+  },
+  {
+    "tick": 231,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 234,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 237,
+    "ability": "Assault"
+  },
+  {
+    "tick": 240,
+    "ability": "Punish"
+  },
+  {
+    "tick": 243,
+    "ability": "Dark_Shard_Of_Leng"
+  },
+  {
+    "tick": 243,
+    "ability": "Weapon_Special_Attack"
+  }
+]
+

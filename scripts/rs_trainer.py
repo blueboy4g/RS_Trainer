@@ -6,29 +6,59 @@ from scripts.ability import Ability, TickBar
 import pygame
 import tkinter as tk
 
-# TODO get tons of images from in-game
-
 import sys
 import json
 from config.config import USER_KEYBINDS
 
 
-with open(USER_KEYBINDS, "r") as f:
-    config = json.load(f)
+def show_error_popup(message):
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+    messagebox.showerror("Error", message)
+    root.destroy()  # Destroy the root window after the popup
 
+try:
+    with open(USER_KEYBINDS, "r", encoding="utf-8") as f:
+        config = json.load(f)
+except json.JSONDecodeError as e:
+    error_message = (
+        f"Error: Your .JSON file is not formatted correctly.\n"
+        f"Fix it at: '{USER_KEYBINDS}'\n"
+        f"Line {e.lineno}, Column {e.colno}.\n"
+        f"Message: {e.msg}"
+    )
+    show_error_popup(error_message)
+    sys.exit(1)
+except FileNotFoundError:
+    error_message = f"Error: The file '{USER_KEYBINDS}' was not found."
+    show_error_popup(error_message)
+    sys.exit(1)
 
 ABILITY_KEYBINDS = config["ABILITY_KEYBINDS"]
 
 if len(sys.argv) < 2:
     print("Usage: python RS_Trainer.py <config_file>")
-    config_file = "C://Users//PC//AppData//Roaming//Azulyn//boss_rotations//kerapac_hybrid_solo.json"
+    config_file = "C://Users//PC//AppData//Roaming//Azulyn//boss_rotations//telos_necro.json"
 else:
     config_file = sys.argv[1]
     print(f"Using config: {config_file}")
 
-# Example: load the config
-with open(config_file, 'r') as f:
-    note_sequence = json.load(f)
+try:
+    with open(config_file, "r", encoding="utf-8") as f:
+        ability_sequence = json.load(f)
+except json.JSONDecodeError as e:
+    error_message = (
+        f"Error: Your .JSON file is not formatted correctly.\n"
+        f"Fix it at: '{config_file}'\n"
+        f"Line {e.lineno}, Column {e.colno}.\n"
+        f"Message: {e.msg}"
+    )
+    show_error_popup(error_message)
+    sys.exit(1)
+except FileNotFoundError:
+    error_message = f"Error: The file '{config_file}' was not found."
+    show_error_popup(error_message)
+    sys.exit(1)
 
 # Now you can use `config` in your script
 
@@ -56,22 +86,22 @@ screen = pygame.display.set_mode((win_w, win_h))
 press_zone_rect = pygame.Rect(PRESS_ZONE_X, (SCREEN_HEIGHT // 2) - 225, 1, 450)  # 1 pixel wide with extra height
 tick_bars = []  # Store tick bars
 
-# Load note sequences
+# Load ability sequences
 # with open("Boss_Rotations/Vernyx.json") as f:
-#     note_sequence = json.load(f)
+#     ability_sequence = json.load(f)
 
 # Game variables
 running = True
 clock = pygame.time.Clock()
-spawned_notes = []
+spawned_abilities = []
 current_tick = 0
 next_tick_time = time.time() + TICK_DURATION
 last_tick_time = time.time()  # Track last tick time for debugging
 score = 0
-total_notes = len(note_sequence)
-missed_notes = 0
+total_abilities = len(ability_sequence)
+missed_abilities = 0
 last_tick_bar_time = None  # Store last tick bar collision time
-tick_note_counts = {}  # Dictionary to track notes stacking per tick
+tick_ability_counts = {}  # Dictionary to track abilities stacking per tick
 pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN, pygame.KEYUP])
 dial_animation = DialAnimation(win_w // 2 - 25, win_h - 75)
 dial_animation_queue = []  # Queue for animations
@@ -128,12 +158,10 @@ while running:
         current_tick += 1
         next_tick_time += TICK_DURATION  # Add 0.6s to next tick
 
-        # Spawn notes based on tick timing
-        # Spawn notes based on tick timing
-        # Spawn notes based on tick timing
-        for note_data in note_sequence:
-            if note_data["tick"] == current_tick:
-                ability = note_data["ability"]
+        # Spawn abilities based on tick timing
+        for ability_data in ability_sequence:
+            if ability_data["tick"] == current_tick:
+                ability = ability_data["ability"]
 
                 # if current_tick == 1:
                 #     added_x_spacing = 50
@@ -144,43 +172,43 @@ while running:
                 if ability in ABILITY_KEYBINDS and ability in ABILITY_IMAGES:
                     key = ABILITY_KEYBINDS[ability]  # Get mapped keybind
                     image_path = ABILITY_IMAGES[ability]  # Get mapped image
-                    width = note_data.get("width", ABILITY_DEFAULT_WIDTH)  # Default width to 75 if not provided
+                    width = ability_data.get("width", 75)  # Default width to 75 if not provided
 
-                    # Debug log for missing notes
-                    print(f"Spawning note: {ability}, Keys: {key}, Tick: {current_tick}, Width: {width}")
+                    # Debug log for missing abilities
+                    print(f"Spawning ability: {ability}, Keys: {key}, Tick: {current_tick}, Width: {width}")
 
-                    tick_count = tick_note_counts.get(current_tick, 0)
-                    note_y = (SCREEN_HEIGHT // 4) + (tick_count * NOTE_SPACING_Y)
+                    tick_count = tick_ability_counts.get(current_tick, 0)
+                    ability_y = (SCREEN_HEIGHT // 4) + (tick_count * ABILITY_SPACING_Y)
                     if key == []:
                         key = ["MOUSE"]
-                    note = Ability(
+                    ability = Ability(
                         ability=ability,
                         key=key,
                         image_path=image_path,
                         start_x=SCREEN_WIDTH, #+ added_x_spacing,
-                        start_y=note_y,
+                        start_y=ability_y,
                         width=width  # Pass custom width
                     )
-                    spawned_notes.append(note)
-                    tick_note_counts[current_tick] = tick_count + 1
+                    spawned_abilities.append(ability)
+                    tick_ability_counts[current_tick] = tick_count + 1
 
         tick_bars.append(TickBar(SCREEN_WIDTH))  # Always spawn from the right side
 
-    # Update and draw notes
-    for note in spawned_notes:
-        result = note.update(dt)
+    # Update and draw abilities
+    for ability in spawned_abilities:
+        result = ability.update(dt)
         if result == "missed":
-            missed_notes += 1
-        note.draw(screen)
+            missed_abilities += 1
+        ability.draw(screen)
 
     # Update and draw tick bars
     for bar in tick_bars:
         bar.update(press_zone_rect, dt)
         bar.draw(screen)
 
-    # Remove expired tick bars and notes
+    # Remove expired tick bars and abilities
     tick_bars = [bar for bar in tick_bars if bar.active]
-    spawned_notes = [note for note in spawned_notes if note.active]
+    spawned_abilities = [ability for ability in spawned_abilities if ability.active]
 
     # Draw pressing zone
     pygame.draw.rect(screen, (255, 0, 0), press_zone_rect)
@@ -192,11 +220,11 @@ while running:
         #print("⚠️ WARNING: Pygame window is NOT focused! Click inside the window.")
         pass
     # Check for hits
-    for note in spawned_notes[:]:
+    for ability in spawned_abilities[:]:
         try:
             required_keys_pressed = False  # Start with False (assume key is NOT pressed)
 
-            for k in note.key:
+            for k in ability.key:
                 k = k.strip().upper()  # Normalize key formatting
 
                 required_keys_pressed = all(
@@ -212,22 +240,22 @@ while running:
                      pygame.mouse.get_pressed()[0] if k == "MOUSE" else
                      keys[getattr(pygame, f'K_F{k[1:]}', None)] if k.startswith("F") and k[1:].isdigit() else
                      keys[getattr(pygame, f'K_{k.lower()}', None)] if getattr(pygame, f'K_{k.lower()}', None) else False)
-                    for k in note.key
+                    for k in ability.key
                 )
 
-            # ✅ **Check if the note’s ability should trigger the dial animation**
-            if required_keys_pressed and press_zone_rect.colliderect(note.rect):
-                print(f"Hit detected: {note.ability}")  # Debugging log
+            # ✅ **Check if the ability’s ability should trigger the dial animation**
+            if required_keys_pressed and press_zone_rect.colliderect(ability.rect):
+                print(f"Hit detected: {ability.ability}")  # Debugging log
                 score += 1
-                spawned_notes.remove(note)
+                spawned_abilities.remove(ability)
 
                 # ✅ **Only add animation if the ability is NOT in the exclusion list**
-                if note.ability not in EXCLUDED_DIAL_ANIMATIONS:
+                if ability.ability not in EXCLUDED_DIAL_ANIMATIONS:
                     new_animation = DialAnimation(win_w // 2 - 25, win_h - 75)
                     dial_animation_queue.append(new_animation)
 
         except KeyError:
-            print(f"Warning: Unrecognized ability in note: {note.ability}")
+            print(f"Warning: Unrecognized ability in ability: {ability.ability}")
 
     # Display score
     font = pygame.font.Font(None, 48)
@@ -237,23 +265,23 @@ while running:
     pygame.display.flip()
     #clock.tick(30)  # 60 FPS
 
-    # Check if all notes have played
-    if (current_tick - 15) >= max([n["tick"] for n in note_sequence]) and not spawned_notes:
+    # Check if all abilities have played
+    if (current_tick - 15) >= max([n["tick"] for n in ability_sequence]) and not spawned_abilities:
         game_over = True
         running = False  # End game loop
 
 
 # Show results screen
-def show_results(screen, score, total_notes, missed_notes):
-    accuracy = (score / total_notes) * 100 if total_notes > 0 else 0
+def show_results(screen, score, total_abilities, missed_abilities):
+    accuracy = (score / total_abilities) * 100 if total_abilities > 0 else 0
     font = pygame.font.Font(None, 48)
     screen.fill((0, 0, 0))
 
     results = [
         f"Game Over!",
         f"Final Score: {score}",
-        f"Total Notes: {total_notes}",
-        f"Missed Notes: {missed_notes}",
+        f"Total Abilities: {total_abilities}",
+        f"Missed Abilities: {missed_abilities}",
         f"Accuracy: {accuracy:.2f}%",
         "Press ESC to exit"
     ]
@@ -265,7 +293,7 @@ def show_results(screen, score, total_notes, missed_notes):
     pygame.display.flip()
 
 # Display results
-show_results(screen, score, total_notes, missed_notes)
+show_results(screen, score, total_abilities, missed_abilities)
 
 # Exit screen handling
 waiting = True

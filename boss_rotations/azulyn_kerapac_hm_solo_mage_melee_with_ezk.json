@@ -1,0 +1,386 @@
+[
+  {
+    "tick": 4,
+    "ability": "Text: Pre"
+  },
+  {
+    "tick": 4,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 7,
+    "ability": "Text: Stall"
+  },
+  {
+    "tick": 7,
+    "ability": "Incendiary_Shot"
+  },
+  {
+    "tick": 10,
+    "ability": "Text: Enter"
+  },
+  {
+    "tick": 10,
+    "ability": "Target_Cycle"
+  },
+  {
+    "tick": 10,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 10,
+    "ability": "Natural_Instinct"
+  },
+  {
+    "tick": 13,
+    "ability": "Piercing_Shot"
+  },
+  {
+    "tick": 16,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 16,
+    "ability": "Dark_Shard_Of_Leng"
+  },
+  {
+    "tick": 16,
+    "ability": "Dark_Sliver_Of_Leng"
+  },
+  {
+    "tick": 19,
+    "ability": "Berserk"
+  },
+  {
+    "tick": 22,
+    "ability": "Anticipation"
+  },
+  {
+    "tick": 23,
+    "ability": "Surge"
+  },
+  {
+    "tick": 26,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 29,
+    "ability": "Chaos_Roar"
+  },
+  {
+    "tick": 32,
+    "ability": "Dragon_claw_In_EOF"
+  },
+  {
+    "tick": 35,
+    "ability": "Text: P1"
+  },
+  {
+    "tick": 35,
+    "ability": "Target_Cycle"
+  },
+  {
+    "tick": 35,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 35,
+    "ability": "Assault"
+  },
+  {
+    "tick": 38,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 38,
+    "ability": "Dragon_claw_In_EOF"
+  },
+  {
+    "tick": 41,
+    "ability": "Dragon_claw_In_EOF"
+  },
+  {
+    "tick": 44,
+    "ability": "Dragon_claw_In_EOF"
+  },
+  {
+    "tick": 47,
+    "ability": "Fury"
+  },
+  {
+    "tick": 50,
+    "ability": "Overpower"
+  },
+  {
+    "tick": 53,
+    "ability": "Meteor_Strike"
+  },
+  {
+    "tick": 56,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 59,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 62,
+    "ability": "Smash"
+  },
+  {
+    "tick": 65,
+    "ability": "Punish"
+  },
+  {
+    "tick": 68,
+    "ability": "Fractured_Staff_Of_Armadyl"
+  },
+  {
+    "tick": 68,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 71,
+    "ability": "Text: P2"
+  },
+  {
+    "tick": 71,
+    "ability": "Corruption_Blast"
+  },
+  {
+    "tick": 74,
+    "ability": "Magma_Tempest"
+  },
+  {
+    "tick": 77,
+    "ability": "Text: Warp"
+  },
+  {
+    "tick": 77,
+    "ability": "Greater_Sunshine"
+  },
+  {
+    "tick": 80,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 83,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 86,
+    "ability": "Tsunami"
+  },
+  {
+    "tick": 89,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 92,
+    "ability": "Roar_Of_Awakening"
+  },
+  {
+    "tick": 92,
+    "ability": "Ode_To_Deceit"
+  },
+  {
+    "tick": 92,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 95,
+    "ability": "Metamorphosis"
+  },
+  {
+    "tick": 95,
+    "ability": "Fractured_Staff_Of_Armadyl"
+  },
+  {
+    "tick": 98,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 101,
+    "ability": "Omnipower"
+  },
+  {
+    "tick": 104,
+    "ability": "Asphyxiate"
+  },
+  {
+    "tick": 107,
+    "ability": "Text: P3"
+  },
+  {
+    "tick": 107,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 110,
+    "ability": "Detonate"
+  },
+  {
+    "tick": 110,
+    "ability": "Tsunami"
+  },
+  {
+    "tick": 113,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 116,
+    "ability": "Iban's_staff_In_EOF"
+  },
+  {
+    "tick": 119,
+    "ability": "Limitless"
+  },
+  {
+    "tick": 119,
+    "ability": "Smoke_Tendrils"
+  },
+  {
+    "tick": 122,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 125,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 128,
+    "ability": "Anticipation"
+  },
+  {
+    "tick": 131,
+    "ability": "Text: Warp"
+  },
+  {
+    "tick": 131,
+    "ability": "Berserk"
+  },
+  {
+    "tick": 134,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 137,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 140,
+    "ability": "Assault"
+  },
+  {
+    "tick": 143,
+    "ability": "Chaos_Roar"
+  },
+  {
+    "tick": 146,
+    "ability": "Dragon_claw_In_EOF"
+  },
+  {
+    "tick": 149,
+    "ability": "Dragon_Scimitar_In_EOF"
+  },
+  {
+    "tick": 152,
+    "ability": "Text: C1"
+  },
+  {
+    "tick": 152,
+    "ability": "Freedom"
+  },
+  {
+    "tick": 155,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 158,
+    "ability": "Assault"
+  },
+  {
+    "tick": 161,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 164,
+    "ability": "Hurricane"
+  },
+  {
+    "tick": 167,
+    "ability": "Text: C2"
+  },
+  {
+    "tick": 167,
+    "ability": "Overpower"
+  },
+  {
+    "tick": 170,
+    "ability": "Punish"
+  },
+  {
+    "tick": 173,
+    "ability": "Fury"
+  },
+  {
+    "tick": 176,
+    "ability": "Text: C3 / warp"
+  },
+  {
+    "tick": 176,
+    "ability": "Berserk"
+  },
+  {
+    "tick": 179,
+    "ability": "Divert"
+  },
+  {
+    "tick": 182,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 185,
+    "ability": "Devotion"
+  },
+  {
+    "tick": 188,
+    "ability": "Destroy"
+  },
+  {
+    "tick": 191,
+    "ability": "Chaos_Roar"
+  },
+  {
+    "tick": 194,
+    "ability": "Dragon_claw_In_EOF"
+  },
+  {
+    "tick": 197,
+    "ability": "Text: Kera"
+  },
+  {
+    "tick": 197,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 200,
+    "ability": "Chaos_Roar"
+  },
+  {
+    "tick": 200,
+    "ability": "Ek-ZekKil"
+  },
+  {
+    "tick": 203,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 206,
+    "ability": "Dragon_claw_In_EOF"
+  },
+  {
+    "tick": 209,
+    "ability": "Dragon_claw_In_EOF"
+  }
+]

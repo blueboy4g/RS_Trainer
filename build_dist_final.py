@@ -6,6 +6,8 @@ from pathlib import Path
 # ==== CONFIGURATION ====
 PYTHON_SCRIPTS = [
     "main.py",
+    "builder.py",
+    "key_binds.py",
     "config/config.py",
     "scripts/rs_trainer.py",
     "scripts/rs_overlay.py",
@@ -16,6 +18,7 @@ PYTHON_SCRIPTS = [
 
 RESOURCE_FILES = [
     "config/keybinds.json",
+    "config/config.json",
     "config/build_rotation.txt",
 ]
 

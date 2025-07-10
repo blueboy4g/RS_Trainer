@@ -1,0 +1,103 @@
+[
+  {
+    "tick": 7,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 10,
+    "ability": "Text: ~20s"
+  },
+  {
+    "tick": 10,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 13,
+    "ability": "Text: ~35s"
+  },
+  {
+    "tick": 13,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 16,
+    "ability": "Text: P2"
+  },
+  {
+    "tick": 16,
+    "ability": "Chaos_Roar"
+  },
+  {
+    "tick": 16,
+    "ability": "Vulnerability_bomb"
+  },
+  {
+    "tick": 19,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 22,
+    "ability": "Hurricane"
+  },
+  {
+    "tick": 25,
+    "ability": "Text: P4"
+  },
+  {
+    "tick": 25,
+    "ability": "Berserk"
+  },
+  {
+    "tick": 25,
+    "ability": "Adrenaline_potion"
+  },
+  {
+    "tick": 28,
+    "ability": "Target_Cycle"
+  },
+  {
+    "tick": 28,
+    "ability": "Greater_Barge"
+  },
+  {
+    "tick": 31,
+    "ability": "Havoc"
+  },
+  {
+    "tick": 34,
+    "ability": "Fury"
+  },
+  {
+    "tick": 37,
+    "ability": "Bladed Dive"
+  },
+  {
+    "tick": 37,
+    "ability": "Vulnerability_bomb"
+  },
+  {
+    "tick": 40,
+    "ability": "Target_Cycle"
+  },
+  {
+    "tick": 40,
+    "ability": "Assault"
+  },
+  {
+    "tick": 43,
+    "ability": "Overpower"
+  },
+  {
+    "tick": 46,
+    "ability": "Limitless"
+  },
+  {
+    "tick": 46,
+    "ability": "Hurricane"
+  },
+  {
+    "tick": 49,
+    "ability": "Decimate"
+  }
+]
+

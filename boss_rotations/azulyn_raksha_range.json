@@ -1,0 +1,310 @@
+[
+  {
+    "tick": 4,
+    "ability": "Text: Pre"
+  },  
+  {
+    "tick": 4,
+    "ability": "Vengeance"
+  },
+  {
+    "tick": 7,
+    "ability": "Tsunami"
+  },
+  {
+    "tick": 10,
+    "ability": "Text: Enter"
+  },  
+  {
+    "tick": 10,
+    "ability": "Target_Cycle"
+  },
+  {
+    "tick": 10,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 10,
+    "ability": "Natural_Instinct"
+  },
+  {
+    "tick": 13,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 16,
+    "ability": "Text: Wen"
+  },  
+  {
+    "tick": 16,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 19,
+    "ability": "Greater_Dazing_Shot"
+  },
+  {
+    "tick": 21,
+    "ability": "Surge"
+  },
+  {
+    "tick": 21,
+    "ability": "Greater_Death's_Swiftness"
+  },
+  {
+    "tick": 24,
+    "ability": "Freedom"
+  },
+  {
+    "tick": 27,
+    "ability": "Text: ecb"
+  },  
+  {
+    "tick": 27,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 30,
+    "ability": "Text: Wen"
+  },  
+  {
+    "tick": 30,
+    "ability": "Target_Cycle"
+  },
+  {
+    "tick": 30,
+    "ability": "Smoke_Cloud"
+  },
+  {
+    "tick": 30,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 33,
+    "ability": "Rapid_Fire"
+  },
+  {
+    "tick": 36,
+    "ability": "Text: blog"
+  },  
+  {
+    "tick": 36,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 36,
+    "ability": "Adrenaline_potion"
+  },
+  {
+    "tick": 39,
+    "ability": "Text: dbow"
+  },  
+  {
+    "tick": 39,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 42,
+    "ability": "Text: dbow/dspore"
+  }, 
+  {
+    "tick": 42,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 45,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 48,
+    "ability": "Text: ful"
+  },  
+  {
+    "tick": 48,
+    "ability": "Shadow_Tendrils"
+  },
+  {
+    "tick": 51,
+    "ability": "Text: Wen"
+  },  
+  {
+    "tick": 51,
+    "ability": "Greater_Dazing_Shot"
+  },
+  {
+    "tick": 54,
+    "ability": "Text: Dspore"
+  },  
+  {
+    "tick": 54,
+    "ability": "Incendiary_Shot"
+  },
+  {
+    "tick": 57,
+    "ability": "Text: ecb"
+  },  
+  {
+    "tick": 57,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 60,
+    "ability": "Text: ful/dbow"
+  },  
+  {
+    "tick": 60,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 63,
+    "ability": "Text: Wen"
+  },  
+  {
+    "tick": 63,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 66,
+    "ability": "Rapid_Fire"
+  },
+  {
+    "tick": 69,
+    "ability": "Text: dbow"
+  },  
+  {
+    "tick": 69,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 72,
+    "ability": "Text: sgb"
+  },  
+  {
+    "tick": 72,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 75,
+    "ability": "Text: dbow"
+  },  
+  {
+    "tick": 75,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 78,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 78,
+    "ability": "Roar_Of_Awakening"
+  },
+  {
+    "tick": 78,
+    "ability": "Ode_To_Deceit"
+  },
+  {
+    "tick": 81,
+    "ability": "Greater_Concentrated_Blast"
+  },
+  {
+    "tick": 84,
+    "ability": "Ingenuity_of_the_Humans"
+  },
+  {
+    "tick": 84,
+    "ability": "Tsunami"
+  },
+  {
+    "tick": 87,
+    "ability": "Text: wen"
+  },  
+  {
+    "tick": 87,
+    "ability": "Piercing_Shot"
+  },
+  {
+    "tick": 90,
+    "ability": "Text: blog/dspore"
+  },  
+  {
+    "tick": 90,
+    "ability": "Weapon_Special_Attack"
+  },
+  {
+    "tick": 93,
+    "ability": "Piercing_Shot"
+  },
+  {
+    "tick": 96,
+    "ability": "Text: wen"
+  },  
+  {
+    "tick": 96,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 99,
+    "ability": "Text: dspore"
+  },  
+  {
+    "tick": 99,
+    "ability": "Piercing_Shot"
+  },
+  {
+    "tick": 102,
+    "ability": "Greater_Death's_Swiftness"
+  },
+  {
+    "tick": 105,
+    "ability": "Text: ecb/ful"
+  },  
+  {
+    "tick": 105,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 108,
+    "ability": "Rapid_Fire"
+  },
+  {
+    "tick": 111,
+    "ability": "Text: dbow/wen"
+  },  
+  {
+    "tick": 111,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 114,
+    "ability": "Text: sgb"
+  }, 
+  {
+    "tick": 114,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 117,
+    "ability": "Text: dbow"
+  }, 
+  {
+    "tick": 117,
+    "ability": "Essence_of_Finality"
+  },
+  {
+    "tick": 120,
+    "ability": "Text: ful"
+  }, 
+  {
+    "tick": 120,
+    "ability": "Ricochet"
+  },
+  {
+    "tick": 123,
+    "ability": "Text: dbow/wen"
+  }, 
+  {
+    "tick": 123,
+    "ability": "Essence_of_Finality"
+  }
+]
