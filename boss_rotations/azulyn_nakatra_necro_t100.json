@@ -1,10 +1,6 @@
 [
   {
     "tick": 4,
-    "ability": "Target_Cycle"
-  },
-  {
-    "tick": 4,
     "ability": "Text: Pre"
   },
   {

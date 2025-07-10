@@ -16,31 +16,14 @@ Create or import new boss rotation files that you can use in game either via an 
 ## Keybinds
 See example keybinds below.
 
-Modifiers such as "CTRL", "ALT", and "SHIFT" are supported.
+Modifiers such as "CTRL", "ALT", and "SHIFT" are supported just check the checkbox in the UI!
 ```json
-  "Test1": ["A"],                  Supports A-Z
-  "Test2": ["1"],                  Supports 1-9
-  "Test3": ["MOUSE"],              When MOUSE the user can click or hit spacebar
-  "Test4": ["F1"],                 Supports F1-F12
-  "Test5": [],                     When blank a user can either click OR hit spacebar
-  "Test6": ["LCTRL", "F1"],        Supports CTRL modifier with any key
-  "Test7": ["SHIFT", "A"],         Supports SHIFT modifier with any key
-  "Test8": ["ALT", "1"],           Supports ALT modifier with any key
-  "Test9": ["["],                  Supports many special characters, some seen below
-  "Test10": ["-"],                 
-  "Test11": ["`"],                
-  "Test12": ["\\"],                This is backslash in game "\"
-  "Test13": ["//"],                This is forwardslash in game "/"
-  "Test14": ["insert"],
-  "Test15": ["home"],
-  "Test16": ["end"],
-  "Test17": ["page up"],
-  "Test18": ["page down"],
-  "Test19": ["delete"],
+  In the "Edit keybinds" you can put A-Z, 1-9, F1-F12, and any special characters a couple examples:
+  delete, page up, page down, home, end, insert, [, ], \, -, `, /, and more!
 
-
+  When left blank a user can either click in the UI OR hit spacebar (can configure in config file to any button) to mark as completed.
 ```
-
+![readme.png](readme.png)
 ## FAQ
 
 [FAQ VIDEO](https://youtu.be/AmuDzXJdMcA)
