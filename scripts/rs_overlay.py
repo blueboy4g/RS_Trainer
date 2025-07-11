@@ -173,6 +173,12 @@ def play_game():
 
             key = e.name
             if e.event_type == 'down':
+                if "shift" in key.lower():
+                    key = 'shift'
+                if "ctrl" in key.lower():
+                    key = 'ctrl'
+                if "alt" in key.lower():
+                    key = 'alt'
                 if key not in held_keys:
                     held_keys.add(key)
                     key_press_count += 1

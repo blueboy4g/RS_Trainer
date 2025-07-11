@@ -13,7 +13,7 @@ from config.config import *
 from order_key_binds import reorder_keybinds_json
 
 # ----------------- Config -----------------
-CURRENT_VERSION = "1.1.0"
+CURRENT_VERSION = "1.1.1"
 VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version.json"
 
 APP_NAME = "Azulyn"
