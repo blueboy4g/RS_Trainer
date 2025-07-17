@@ -153,11 +153,33 @@ def open_youtube():
     webbrowser.open("https://www.youtube.com/@Azulyn1")
 
 # --------------- UI Setup ----------------
+def center_window(window):
+    # ensure accurate window dimensions by updating idle tasks
+    window.update_idletasks()
+
+    # get window dimensions
+    window_width = window.winfo_width()
+    window_height = window.winfo_height()
+
+    # get screen dimensions
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+
+    # calculate coordinates for centering
+    x_coordinate = (screen_width // 2) - (window_width // 2)
+    y_coordinate = (screen_height // 2) - (window_height // 2)
+
+    # set the window geometry
+    window.geometry(f"{window_width}x{window_height}+{x_coordinate}+{y_coordinate}")
+
 reorder_keybinds_json()
 root = tk.Tk()
 root.title("RuneScape Trainer")
 root.geometry("450x220")
 root.iconbitmap(ICON_PATH)
+
+# centralize window
+center_window(root)
 
 # Dark button styling
 style = ttk.Style()
