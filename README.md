@@ -8,7 +8,7 @@ You'll want to edit keybinds inside the software once you launch it.
 
 Create or import new boss rotation files that you can use in game either via an overlay or in a standalone application.
 
-[HOW TO USE THIS SOFTWARE](https://youtu.be/DbwiqWMt4tI)
+[HOW TO USE THIS SOFTWARE](https://youtu.be/lcQm6yeTn08)
 
 
 [![HOW TO USE THIS SOFTWARE](http://img.youtube.com/vi/lcQm6yeTn08/0.jpg)](https://youtu.be/lcQm6yeTn08) 
