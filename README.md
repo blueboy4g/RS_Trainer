@@ -22,10 +22,10 @@ Mac is very behind the windows editions! It took me 50 hours just to get it work
 Need help or think this needs to improve? Message me on discord and mention you're using Mac. 
 
 
-[DEMO VIDEO](https://youtu.be/DbwiqWMt4tI)
+[DEMO VIDEO](https://youtu.be/VHHVkM3Ydm0)
 
 
-[![DEMO VIDEO](http://img.youtube.com/vi/DbwiqWMt4tI/0.jpg)](https://youtu.be/DbwiqWMt4tI)
+[![DEMO VIDEO](http://img.youtube.com/vi/VHHVkM3Ydm0/0.jpg)](https://youtu.be/VHHVkM3Ydm0)
 
 ## Keybinds
 See example keybinds below.
