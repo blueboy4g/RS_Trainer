@@ -11,7 +11,7 @@ Create or import new boss rotation files that you can use in game either via an 
 [HOW TO USE THIS SOFTWARE](https://youtu.be/DbwiqWMt4tI)
 
 
-[![HOW TO USE THIS SOFTWARE](http://img.youtube.com/vi/DbwiqWMt4tI/0.jpg)](https://youtu.be/DbwiqWMt4tI)
+[![HOW TO USE THIS SOFTWARE](http://img.youtube.com/vi/lcQm6yeTn08/0.jpg)](https://youtu.be/lcQm6yeTn08) 
 
 ## Keybinds
 See example keybinds below.
