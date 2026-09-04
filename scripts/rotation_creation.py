@@ -33,10 +33,20 @@ ALIASES = {
     "(r)": "<:Smoke_Cloud:000000000000000000>",     # Example replacement
 }
 
+# Strip Discord markdown + invisible characters so headers/bold don't pollute parsing
+def strip_discord_markdown(text):
+    text = text.replace("\u200b", "")            # zero-width space
+    text = re.sub(r"^#{1,6}\s*", "", text, flags=re.MULTILINE)   # headers
+    text = text.replace("**", "").replace("__", "").replace("*", "")
+    return text
+
 
 # Replace aliases
 for alias, replacement in ALIASES.items():
     text = text.replace(alias, replacement)
+
+# Normalize new-style Discord paste (markdown headers, bold, zero-width chars)
+text = strip_discord_markdown(text)
 
 
 # Hardcoded emoji name overrides
@@ -72,6 +82,27 @@ EMOJI_NAME_OVERRIDES = {
     "lengmh": "Dark_Shard_Of_Leng",
     "lengoh": "Dark_Sliver_Of_Leng",
     "gbarge": "Greater_Barge",
+    # 2026 discord rotation format additions
+    "conjurearmy": "Conjure_Undead_Army",
+    "commandghost": "Command_Vengeful_Ghost",
+    "commandskeleton": "Command_Skeleton_Warrior",
+    "commandzombie": "Command_Putrid_Zombie",
+    "commandguardian": "Command_Phantom_Guardian",
+    "vulnbomb": "Vulnerability_bomb",
+    "necrobasic": "Necromancy",
+    "disrupt": "Disruption_Shield",
+    "deathguard70": "Death_Guard",
+    "deathguard": "Death_Guard",
+    "soulsap": "Soul_Sap",
+    "touchofdeath": "Touch_of_Death",
+    "livingdeath": "Living_Death",
+    "deathskulls": "Death_Skulls",
+    "splitsoul": "Split_Soul",
+    "invokedeath": "Invoke_Death",
+    "invokebones": "Invoke_Lord_of_Bones",
+    "fingerofdeath": "Finger_of_Death",
+    "kalgscroll": "Ice_Asylum",
+    "excal": "Weapon_Special_Attack",
 }
 
 IGNORED_EMOJI_NAMES = {
@@ -95,6 +126,13 @@ sections = re.split(r"→", text)
 
 for section in sections:
     section = section.strip()
+
+    # Only keep emoji tokens and explicit tick adjustments from this section;
+    # prose ("right-click rejoin instance", "fillers", etc.) is ignored but
+    # still counts as a real step if the section contains an emoji.
+    emoji_matches_in_section = re.findall(r"<:([a-zA-Z0-9_]+):\d+>", section)
+    has_content = bool(emoji_matches_in_section) or bool(re.search(r"\b\d{1,2}t\b", section, re.I))
+
     parts = section.split()
 
     for part in parts:
@@ -126,8 +164,11 @@ for section in sections:
 
             result.append({"tick": tick, "ability": best_match})
 
-    # After each → section, increment tick by 3 (unless overridden by Nt)
-    tick += 3
+    # After each → section, increment tick by 3 (unless overridden by Nt).
+    # Skip blank sections (newlines/paragraph breaks in Discord pastes) so
+    # formatting doesn't invent empty ticks.
+    if has_content:
+        tick += 3
 
 
 # for entry in result:

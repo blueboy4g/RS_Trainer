@@ -20,6 +20,7 @@ RESOURCE_FILES = [
     "config/keybinds.json",
     "config/config.json",
     "config/build_rotation.txt",
+    "resources/azulyn_icon.ico",
 ]
 
 RESOURCE_DIRS = [

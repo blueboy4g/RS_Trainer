@@ -12,7 +12,7 @@ import webbrowser
 from config.config import *
 
 # ----------------- Config -----------------
-CURRENT_VERSION = "1.1.1"
+CURRENT_VERSION = "1.2.0"
 VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version.json"
 
 APP_NAME = "Azulyn"

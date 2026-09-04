@@ -7,6 +7,17 @@ from config.config import ABILITY_SPEED
 
 last_tick_bar_time = None  # Initialize tick timing
 
+def render_outlined_text(font, text, color, antialias=True):
+    """Render text with a black outline (+1px in each direction) so it pops on any background."""
+    base = font.render(text, antialias, color)
+    outline = font.render(text, antialias, (0, 0, 0))
+    w, h = base.get_size()
+    surf = pygame.Surface((w + 2, h + 2), pygame.SRCALPHA)
+    for dx, dy in ((0, 1), (2, 1), (1, 0), (1, 2)):
+        surf.blit(outline, (dx, dy))
+    surf.blit(base, (1, 1))
+    return surf
+
 class GameObject:
     """Base class for moving objects (TickBar & Ability)"""
     def __init__(self, x, y, width, height, speed, color=(200, 200, 200)):
@@ -79,7 +90,7 @@ class Ability(GameObject):
         self.ability = ability  # Store ability name
         self.key = key if isinstance(key, list) else [key]  # Ensure key is list
         self.is_click_ability = "MOUSE" in self.key  # Determine if it's a click ability
-        self.font = pygame.font.Font(None, 24)
+        self.font = pygame.font.SysFont("arial", 16, bold=True)
         self.stationary = stationary  # Flag to indicate if the ability is stationary
         self.visible = visible  # Flag to control visibility
         self.keybinds_visible = keybinds_visible
@@ -108,13 +119,12 @@ class Ability(GameObject):
 
         # Draw key label
         if self.keybinds_visible:
-            #TODO show the keybinds
             key_label = "CLICK" if self.is_click_ability else " + ".join(self.key)
             if self.text_color == "red":
-                text_surface = self.font.render(key_label, True, (255, 0, 0))
+                text_surface = render_outlined_text(self.font, key_label, (255, 60, 60))
             else:
-                text_surface = self.font.render(key_label, True, (255, 255, 255))
-            text_x = self.rect.x + (self.rect.width // 4)
+                text_surface = render_outlined_text(self.font, key_label, (255, 255, 255))
+            text_x = self.rect.x + (self.rect.width // 4) - 1
             text_y = max(10, self.rect.y - 22)  # Prevents text from going off-screen
             screen.blit(text_surface, (text_x, text_y))
         else:

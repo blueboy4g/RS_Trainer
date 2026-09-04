@@ -1,7 +1,7 @@
 altgraph==0.17.4
 certifi==2025.4.26
 charset-normalizer==3.4.2
-idna==3.10
+idna==3.15
 keyboard==0.13.5
 packaging==25.0
 pefile==2023.2.7
@@ -10,5 +10,7 @@ pyinstaller==6.13.0
 pyinstaller-hooks-contrib==2025.4
 pywin32==310
 pywin32-ctypes==0.2.3
-requests==2.32.3
-urllib3==2.4.0
+requests==2.34.2
+setuptools==83.0.0
+urllib3==2.7.0
+wheel==0.46.2

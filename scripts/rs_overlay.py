@@ -13,6 +13,7 @@ import win32gui
 
 import sys
 import json
+import os
 
 
 
@@ -66,8 +67,59 @@ def play_game():
         # x = round((screen_w - win_w) / 2)
         # y = round((screen_h - win_h) / 2 * 0.8)
 
+        # Restore last window position if we saved one
+        pos_file = os.path.join(os.environ["APPDATA"], "Azulyn", "overlay_pos.json")
+        try:
+            with open(pos_file, "r") as pf:
+                pos = json.load(pf)
+            os.environ["SDL_VIDEO_WINDOW_POS"] = f"{int(pos['x'])},{int(pos['y'])}"
+        except Exception:
+            os.environ.pop("SDL_VIDEO_WINDOW_POS", None)  # let the OS default center it
+
         # Create Pygame screen and set window position
         screen = pygame.display.set_mode((win_w, win_h))
+
+        # Clamp the window back on-screen (covers saved positions from
+        # disconnected monitors and monitors removed since last run)
+        try:
+            hwnd = pygame.display.get_wm_info().get("window")
+            if hwnd:
+                # virtual desktop bounds across all monitors
+                class RECT2(ctypes.Structure):
+                    _fields_ = [("left", ctypes.c_long), ("top", ctypes.c_long),
+                                ("right", ctypes.c_long), ("bottom", ctypes.c_long)]
+                user32 = ctypes.windll.user32
+                va = RECT2()
+                user32.SystemParametersInfoW(0x0030, 0, ctypes.byref(va), 0)  # SPI_GETWORKAREA (primary)
+                # enumerate all monitors for the true virtual desktop
+                bounds = {"l": va.left, "t": va.top, "r": va.right, "b": va.bottom}
+                mon_area = {"l": None}
+                MONITORENUMPROC = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_ulong, ctypes.c_ulong,
+                                                     ctypes.POINTER(RECT2), ctypes.c_double)
+                def _mon_cb(hmon, hdc, lprect, lparam):
+                    r = lprect.contents
+                    bounds["l"] = min(bounds["l"], r.left)
+                    bounds["t"] = min(bounds["t"], r.top)
+                    bounds["r"] = max(bounds["r"], r.right)
+                    bounds["b"] = max(bounds["b"], r.bottom)
+                    return 1
+                user32.EnumDisplayMonitors(0, 0, MONITORENUMPROC(_mon_cb), 0)
+                wr = win32gui.GetWindowRect(hwnd)
+                wx, wy = wr[0], wr[1]
+                # keep the window fully on the virtual desktop so it can
+                # always be seen and dragged
+                new_x = max(bounds["l"], min(wx, bounds["r"] - win_w))
+                new_y = max(bounds["t"], min(wy, bounds["b"] - win_h))
+                if (new_x, new_y) != (wx, wy):
+                    win32gui.SetWindowPos(hwnd, 0, new_x, new_y, 0, 0,
+                                          win32con.SWP_NOSIZE | win32con.SWP_NOZORDER)
+                    # save the corrected position so it doesn't fight next launch
+                    pos_file = os.path.join(os.environ["APPDATA"], "Azulyn", "overlay_pos.json")
+                    with open(pos_file, "w") as pf:
+                        json.dump({"x": new_x, "y": new_y}, pf)
+        except Exception as e:
+            print(f"Could not clamp window position: {e}")
+
         make_window_always_on_top()
         is_restart = True
         #SetWindowPos(pygame.display.get_wm_info()['window'], -1, x, y, 0, 0, 1)
@@ -625,6 +677,17 @@ def play_game():
         if (current_tick - 15) >= max([n["tick"] for n in ability_sequence]) and not spawned_abilities:
             game_over = True
             running = False  # End game loop
+
+    # Save window position so the next launch reopens in the same spot
+    try:
+        hwnd = pygame.display.get_wm_info().get("window")
+        if hwnd:
+            rect = win32gui.GetWindowRect(hwnd)
+            pos_file = os.path.join(os.environ["APPDATA"], "Azulyn", "overlay_pos.json")
+            with open(pos_file, "w") as pf:
+                json.dump({"x": rect[0], "y": rect[1]}, pf)
+    except Exception as e:
+        print(f"Could not save window position: {e}")
 
     def show_results(screen, score, total_abilities, missed_abilities):
         accuracy = (score / total_abilities) * 100 if total_abilities > 0 else 0

@@ -5,6 +5,7 @@ from scripts.dial_animation import DialAnimation
 from scripts.ability import Ability, TickBar
 import pygame
 import tkinter as tk
+from tkinter import messagebox
 
 import sys
 import json

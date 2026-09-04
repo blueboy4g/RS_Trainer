@@ -9,6 +9,10 @@ CONFIG_PATH = os.path.join(APPDATA_DIR, "keybinds.json")
 DESIRED_ORDER = [
     # GEAR SWAPS
     "Abyssal_Scourge",
+    "Annihilation",
+    "Armadyl_Battlestaff",
+    "Armadyl_Battlestaff_In_EOF",
+    "Annihilation_In_EOF",
     "Bow_of_the_Last_Guardian",
     "Champion's_Ring",
     "Channeller's_Ring",
@@ -20,6 +24,15 @@ DESIRED_ORDER = [
     "Cryptbloom_Top",
     "Dark_Bow",
     "Dark_Bow_In_EOF",
+    "Decimation",
+    "Dragon_2h_Sword",
+    "Dragon_2h_Sword_In_EOF",
+    "Dragon_Dagger",
+    "Dragon_Dagger_In_EOF",
+    "Dragon_Halberd",
+    "Dragon_Halberd_In_EOF",
+    "Dragon_Longsword",
+    "Dragon_Longsword_In_EOF",
     "Dark_Shard_Of_Leng",
     "Dark_Sliver_Of_Leng",
     "Death_Guard",
@@ -50,6 +63,13 @@ DESIRED_ORDER = [
     "Fractured_Staff_Of_Armadyl",
     "Guthix_Staff",
     "Guthix_Staff_In_EOF",
+    "Granite_Maul",
+    "Granite_Maul_In_EOF",
+    "Gloomfire_Bow",
+    "Gloomfire_bow",
+    "Gloomfire_Bow_In_EOF",
+    "Legatus_Emberstaff",
+    "Legatus_Emberstaff_In_EOF",
     "Iban's_staff",
     "Iban's_staff_In_EOF",
     "Jaws_of_the_Abyss",
@@ -71,6 +91,10 @@ DESIRED_ORDER = [
     "Royal_Crossbow",
     "Seren_godbow",
     "Seren_godbow_In_EOF",
+    "Staff_of_Light",
+    "Staff_of_Light_In_EOF",
+    "Statius_Warhammer",
+    "Statius_Warhammer_In_EOF",
     "Skull_Lantern",
     "Soulbound_Lantern",
     "Stalker's_Ring",
@@ -80,11 +104,16 @@ DESIRED_ORDER = [
     "Vestments_Of_Havoc_Robe_Top",
     "Zamorak_Bow",
     "Zamorak_Bow_In_EOF",
+    "Zamorak_Staff",
+    "Zamorak_Staff_In_EOF",
+    "Varanus_Mercy",
+    "Varanus_Mercy_In_EOF",
     "Zaros_Godsword",
     "Zorgoth's_Soul_Ring",
 
     # MISC
     "Adrenaline_potion",
+    "Adrenaline_Potion",
     "Demon_Slayer",
     "Dive",
     "Dragon_Slayer",
@@ -106,14 +135,23 @@ DESIRED_ORDER = [
     "Vulnerability_bomb",
     "Weapon_Special_Attack",
 
+    # WEAPON CATEGORIES
+    "Magic",
+    "Melee",
+    "Ranged",
+
     # MELEE
+    "Adaptive_Strike",
     "Assault",
+    "Attack",
     "Backhand",
     "Balanced_Strike",
     "Barge",
     "Berserk",
     "Bladed_Dive",
+    "Blood_Burst",
     "Blood_Tendrils",
+    "Rend",
     "Chaos_Roar",
     "Cleave",
     "Decimate",
@@ -143,6 +181,7 @@ DESIRED_ORDER = [
 
     # RANGE
     "Binding_Shot",
+    "Galeshot",
     "Bombardment",
     "Corruption_Shot",
     "Dazing_Shot",
@@ -168,6 +207,7 @@ DESIRED_ORDER = [
 
     # MAGIC
     "Animate_Dead",
+    "Runic_Charge",
     "Asphyxiate",
     "Blood_Barrage",
     "Chain",
@@ -206,6 +246,7 @@ DESIRED_ORDER = [
 
     # NECROMANCY
     "Bloat",
+    "Imbue_Shadows",
     "Blood_Siphon",
     "Command_Phantom_Guardian",
     "Command_Putrid_Zombie",

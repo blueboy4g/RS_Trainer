@@ -3,7 +3,7 @@
 
 #define MyAppName "RS Trainer"
 #define MyAppName2 "RS Trainer Rotation Builder"
-#define MyAppVersion "1.1"
+#define MyAppVersion "1.2.0"
 #define MyAppPublisher "Azulyn"
 #define MyAppExeName "main.exe"
 #define MyAppExeName2 "builder.exe"

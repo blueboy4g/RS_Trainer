@@ -12,6 +12,19 @@ eof_icons = [
     "30px-Seren_godbow.png",
     "30px-Zamorak_Bow.png",
     "30px-Dragon_Scimitar.png",
+    "30px-Gloomfire_Bow.png",
+    "30px-Legatus_Emberstaff.png",
+    "30px-Varanus_Mercy.png",
+    "30px-Zamorak_Staff.png",
+    "30px-Dragon_2h_Sword.png",
+    "30px-Dragon_Dagger.png",
+    "30px-Dragon_Longsword.png",
+    "30px-Dragon_Halberd.png",
+    "30px-Granite_Maul.png",
+    "30px-Statius_Warhammer.png",
+    "30px-Armadyl_Battlestaff.png",
+    "30px-Staff_of_Light.png",
+    "30px-Annihilation.png",
 ]
 
 for icon in eof_icons:
