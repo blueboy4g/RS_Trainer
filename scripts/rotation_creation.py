@@ -82,6 +82,7 @@ EMOJI_NAME_OVERRIDES = {
     "lengmh": "Dark_Shard_Of_Leng",
     "lengoh": "Dark_Sliver_Of_Leng",
     "gbarge": "Greater_Barge",
+    "melee": "Attack",
     # 2026 discord rotation format additions
     "conjurearmy": "Conjure_Undead_Army",
     "commandghost": "Command_Vengeful_Ghost",

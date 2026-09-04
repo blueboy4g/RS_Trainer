@@ -137,7 +137,6 @@ DESIRED_ORDER = [
 
     # WEAPON CATEGORIES
     "Magic",
-    "Melee",
     "Ranged",
 
     # MELEE
