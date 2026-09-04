@@ -322,7 +322,7 @@ class App(tk.Tk):
         self.boss_combo = ttk.Combobox(boss_row, textvariable=self.boss_var, state="readonly", font=("Segoe UI", 11))
         self.boss_combo.pack(side="left", fill="x", expand=True, padx=(10, 4), ipady=3)
         self.boss_combo.bind("<<ComboboxSelected>>", self.on_boss_selected)
-        self.rotation_files = sorted(Path(SOURCE_BOSS_DIR).glob("*.json")) if Path(SOURCE_BOSS_DIR).exists() else []
+        self.rotation_files = sorted(Path(APPDATA_DIR, "boss_rotations").glob("*.json")) if Path(APPDATA_DIR, "boss_rotations").exists() else []
         names = [f.stem for f in self.rotation_files]
         self.boss_combo["values"] = names
         if names:
@@ -523,7 +523,9 @@ class App(tk.Tk):
             pass
 
     def select_boss_script(self):
-        webbrowser.open(os.path.abspath(SOURCE_BOSS_DIR))
+        boss_dir = os.path.join(APPDATA_DIR, "boss_rotations")
+        os.makedirs(boss_dir, exist_ok=True)
+        webbrowser.open(boss_dir)
 
     def edit_keybinds(self):
         # old app launched the key_binds GUI editor next to the app; fall back to notepad
