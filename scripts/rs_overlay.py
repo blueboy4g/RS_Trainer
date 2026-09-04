@@ -678,14 +678,21 @@ def play_game():
             game_over = True
             running = False  # End game loop
 
-    # Save window position so the next launch reopens in the same spot
+    # Save window position so the next launch reopens in the same spot.
+    # IMPORTANT: SDL_VIDEO_WINDOW_POS sets the CLIENT-area position, so save
+    # the client origin (not GetWindowRect, which includes the title bar).
+    # Saving the window rect made each launch drift upward by the title-bar
+    # height until the window went off-screen.
     try:
         hwnd = pygame.display.get_wm_info().get("window")
         if hwnd:
-            rect = win32gui.GetWindowRect(hwnd)
+            class POINT2(ctypes.Structure):
+                _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
+            pt = POINT2(0, 0)
+            ctypes.windll.user32.ClientToScreen(hwnd, ctypes.byref(pt))
             pos_file = os.path.join(os.environ["APPDATA"], "Azulyn", "overlay_pos.json")
             with open(pos_file, "w") as pf:
-                json.dump({"x": rect[0], "y": rect[1]}, pf)
+                json.dump({"x": pt.x, "y": pt.y}, pf)
     except Exception as e:
         print(f"Could not save window position: {e}")
 
