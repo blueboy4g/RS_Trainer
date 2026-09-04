@@ -7,7 +7,7 @@ from pathlib import Path
 from config.config import *
 from order_key_binds import reorder_keybinds_json
 
-CURRENT_VERSION = "1.2.0"
+CURRENT_VERSION = "1.3.0"
 VERSION_URL = "https://raw.githubusercontent.com/blueboy4g/RS_Trainer/main/version.json"
 APP_NAME = "Azulyn"
 APPDATA_DIR = os.path.join(os.environ["APPDATA"], APP_NAME)
